@@ -1,0 +1,28 @@
+name: Bug report (Simple)
+description: Too small to write a proper issue
+title: "[Bug 🐛] "
+labels: ["Bug 🐛"]
+body:
+  - type: dropdown
+    id: error-type
+    attributes:
+      label: Error type
+      description: the type of error that is persisting
+      options:
+        - Won't compile (compiler / makefile)
+        - Memory (leaks / dangling pointer / double free)
+        - Crash (Segmentation fault / Bus error / Abort)
+        - Logic (Faulty behavior / Wrong output)
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      description: describe current status of error
+      options:
+        - Cause found
+        - Solution exists
+      multiple: true

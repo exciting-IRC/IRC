@@ -1,0 +1,40 @@
+name: New feature
+description: Implement a feature
+title: "[Feature ⭐] "
+labels: ["Feature ⭐"]
+body:
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature type
+      description: the type of featrue to implement
+      options:
+        - Makefile
+        - Library
+        - Graphic / UI
+        - Logic
+        - Network
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation process
+
+  - type: textarea
+    id: related-code
+    attributes:
+      label: Related code
+      description: API or example codes
+
+  - type: dropdown
+    id: others
+    attributes:
+      label: Others
+      description: describe property of feature
+      options:
+        - Needs to change existing code
+        - Documentation neeeded
+      multiple: true

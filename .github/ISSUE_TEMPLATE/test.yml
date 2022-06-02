@@ -1,0 +1,24 @@
+name: Test
+description: Add / Modified / Failed Test
+title: "[Test 🧪] "
+labels: ["Test 🧪"]
+body:
+  - type: dropdown
+    id: test-type
+    attributes:
+      label: Category
+      description: Category of issue
+      options:
+        - github action / app
+        - code coverage
+        - test library
+        - modifiy test
+        - add test
+        - failed test
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: 내용
