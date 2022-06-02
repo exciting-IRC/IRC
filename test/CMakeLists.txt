@@ -55,6 +55,10 @@ target_compile_options(
   irc_test PRIVATE
   -Wall -Wextra -Werror -pedantic -fprofile-instr-generate -fcoverage-mapping
 )
+target_link_options(
+  irc_test PRIVATE
+  -O0 -fprofile-instr-generate -fcoverage-mapping
+)
 
 target_link_libraries(
   irc_test
