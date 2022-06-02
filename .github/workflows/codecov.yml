@@ -1,0 +1,38 @@
+name: Codecov
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: build
+        run: |
+          cd test
+          mkdir build
+          cd build
+          cmake ..
+          make -j
+
+      - name: run test
+        run: |
+          export LLVM_PROFILE_FILE='irc_test.profraw'
+          ./irc_test
+
+          llvm-profdata merge -sparse 'irc_test.profraw' -o coverage.profdata
+          llvm-cov show ./irc_test -instr-profile=coverage.profdata > coverage.txt
+
+      - name: create coverage
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov
+
