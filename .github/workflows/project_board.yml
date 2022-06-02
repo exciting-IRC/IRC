@@ -7,10 +7,10 @@ on:
     types: [opened, reopened, review_requested, closed]
 
 env:
-  PROJECT_ID: 1
+  PROJECT_ID: 2
   triage: 🗃️ Triage
-  todo: 💡 Todo
-  in_progress: 🚧 In Progress
+  todo: 🔖 Todo
+  in_progress: 🏗 In progress
   done: ✅ Done
 
   event_name: ${{ github.event_name }}
