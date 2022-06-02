@@ -21,14 +21,15 @@ jobs:
           platform: x64
 
       - name: build
+        working-directory: test
         run: |
-          cd test
           mkdir build
           cd build
           cmake ..
           make -j
 
       - name: run test
+        working-directory: test/build
         run: |
           export LLVM_PROFILE_FILE='irc_test.profraw'
           ./irc_test
@@ -37,8 +38,8 @@ jobs:
           llvm-cov show ./irc_test -instr-profile=coverage.profdata > coverage.txt
 
       - name: create coverage
+        working-directory: test/build
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov
-
