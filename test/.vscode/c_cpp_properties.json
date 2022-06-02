@@ -2,7 +2,7 @@
   "configurations": [
     {
       "name": "Linux",
-      "includePath": ["${default}", "_deps/rapidcheck-src/include"],
+      "includePath": ["${default}", "build/_deps/rapidcheck-src/include", "build/_deps/googletest-src/googletest/include"],
       "defines": [],
       "compilerPath": "/usr/bin/clang",
       "intelliSenseMode": "linux-clang-x64",
