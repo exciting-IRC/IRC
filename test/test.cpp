@@ -54,7 +54,6 @@ RC_GTEST_PROP(ArrayTest, utilArrayProperties, (const std::array<int, 10> &l0)) {
   // methods should be same
   RC_ASSERT(l0.size() == l1.size());
   RC_ASSERT(l0.max_size() == l1.max_size());
-  RC_ASSERT(l0.empty() == l1.empty());
   RC_ASSERT(std::distance(l0.begin(), l0.end()) ==
             std::distance(l1.begin(), l1.end()));
   RC_ASSERT(std::distance(l0.rbegin(), l0.rend()) ==
