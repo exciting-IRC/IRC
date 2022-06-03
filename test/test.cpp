@@ -2,7 +2,6 @@
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
 
-#include <FixedBuffer/FixedBuffer.hpp>
 #include <FixedBuffer/array.hpp>
 #include <algorithm>
 #include <array>

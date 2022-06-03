@@ -29,7 +29,7 @@ struct array {
 
   // No explicit construct/copy/destroy for aggregate type
 
-  void fill(const value_type& val) { _VSTD::fill_n(elems, N, val); }
+  void fill(const value_type& val) { std::fill_n(elems, N, val); }
 
   void swap(array& other) { std::swap_ranges(elems, elems + N, other.elems); }
 
