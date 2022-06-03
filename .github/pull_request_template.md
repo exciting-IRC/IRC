@@ -1,7 +1,7 @@
-## Summary
+## 개요
 
 <!--
-About Linking a issue to PR
+풀 리퀘스트에 이슈 연결하기
 https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue
 
 - Fixes #102
@@ -10,8 +10,8 @@ https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-
 
 - Fixes
 
-## Description
+## 설명
 
 <!--
-a brief description about the changes
+무엇이 변했는지 적기
 -->
