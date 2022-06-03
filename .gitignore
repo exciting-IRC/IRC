@@ -34,3 +34,6 @@ codecov
 *.exe
 *.out
 *.app
+
+# Visual studio code configure
+.vscode
