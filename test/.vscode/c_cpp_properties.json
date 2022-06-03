@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": ["${default}", "build/_deps/rapidcheck-src/include", "build/_deps/googletest-src/googletest/include"],
+      "defines": [],
+      "compilerPath": "/usr/bin/clang",
+      "intelliSenseMode": "linux-clang-x64",
+      "cppStandard": "c++20"
+    }
+  ],
+  "version": 4
+}
