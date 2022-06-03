@@ -1,8 +1,9 @@
 #ifndef FIXEDBUFFER_HPP_
 #define FIXEDBUFFER_HPP_
 
-#include <cstddef>
 #include <algorithm>
+#include <cstddef>
+
 
 template <typename T, std::size_t buffer_size>
 class FixedBuffer {
@@ -50,14 +51,14 @@ template <typename T, std::size_t S>
 FixedBuffer<T, S>::FixedBuffer() : i_cursor_(0), o_cursor_(0) {}
 
 template <typename T, std::size_t S>
-FixedBuffer<T, S>::FixedBuffer(const FixedBuffer &other) : size_(other.size_) {
+FixedBuffer<T, S>::FixedBuffer(const FixedBuffer &other) {
   std::copy(other.begin(), other.end(), begin());
 }
 
 template <typename T, std::size_t S>
 FixedBuffer<T, S> &FixedBuffer<T, S>::operator=(const FixedBuffer &other) {
   std::copy(other.begin(), other.end(), begin());
-  size_ = other.size_;
+  // size_ = other.size_;
   return *this;
 }
 
@@ -65,22 +66,22 @@ template <typename T, std::size_t S>
 FixedBuffer<T, S>::~FixedBuffer() {}
 
 template <typename T, std::size_t S>
-FixedBuffer<T, S>::iterator FixedBuffer<T, S>::begin() {
+typename FixedBuffer<T, S>::iterator FixedBuffer<T, S>::begin() {
   return data_;
 }
 
 template <typename T, std::size_t S>
-FixedBuffer<T, S>::iterator FixedBuffer<T, S>::end() {
+typename FixedBuffer<T, S>::iterator FixedBuffer<T, S>::end() {
   return data_ + capacity_;
 }
 
 template <typename T, std::size_t S>
-FixedBuffer<T, S>::const_iterator FixedBuffer<T, S>::begin() const {
+typename FixedBuffer<T, S>::const_iterator FixedBuffer<T, S>::begin() const {
   return data_;
 }
 
 template <typename T, std::size_t S>
-FixedBuffer<T, S>::const_iterator FixedBuffer<T, S>::end() const {
+typename FixedBuffer<T, S>::const_iterator FixedBuffer<T, S>::end() const {
   return data_ + capacity_;
 }
 
@@ -129,4 +130,4 @@ T FixedBuffer<T, S>::pop() {
   return data_[o_cursor_++];
 }
 
-#endif // FIXEDBUFFER_HPP_
+#endif  // FIXEDBUFFER_HPP_

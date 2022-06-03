@@ -2,6 +2,7 @@
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
 
+#include <FixedBuffer/FixedBuffer.hpp>
 #include <FixedBuffer/array.hpp>
 #include <algorithm>
 #include <array>
@@ -55,4 +56,4 @@ RC_GTEST_PROP(ArrayTest, utilArrayProperties, (const std::array<int, 10> &l0)) {
   RC_ASSERT_THROWS_AS(l1.at(10), std::out_of_range);
 }
 
-// TODO: use RC_GTEST_PROP
+// TODO: FixedBuffer 관련 테스트 추가
