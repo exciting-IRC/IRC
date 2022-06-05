@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: run doxygen
         uses: mattnotmitt/doxygen-action@v1.9.2
         with:
           working-directory: .
-          doxyfile-path: docs/Doxyfile
-          additional-packages: font-fira-code
+          doxyfile-path: ./docs/Doxyfile
+          # additional-packages: font-fira-code
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/html/
+          publish_dir: ./docs/html/
