@@ -9,6 +9,13 @@
 #include <utility>
 
 namespace util {
+
+/**
+ * @brief C++11 array STL을 98로 다운그레이드
+ *
+ * @tparam T 원소 타입
+ * @tparam N 인자의 개수
+ */
 template <class T, size_t N>
 struct array {
   // types:
@@ -21,7 +28,7 @@ struct array {
   typedef value_type* pointer;
   typedef const value_type* const_pointer;
   typedef size_t size_type;
-  typedef ptrdiff_t difference_type;
+  typedef std::ptrdiff_t difference_type;
   typedef std::reverse_iterator<iterator> reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
