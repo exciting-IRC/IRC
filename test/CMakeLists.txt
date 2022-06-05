@@ -32,6 +32,7 @@ enable_testing()
 add_executable(
   irc_test
   test.cpp
+  testFixedBuffer.cpp
   ../dummyfunc.cpp
 )
 target_link_libraries(
