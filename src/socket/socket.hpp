@@ -1,13 +1,6 @@
 #ifndef SOCKET_SOCKET_HPP
 #define SOCKET_SOCKET_HPP
 
-/**
- * send
- * listen
- *
- *
- */
-
 #include <sys/socket.h>
 
 namespace util {
