@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>IRC: IRC</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">IRC
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 다음에 의해 생성됨 :  Doxygen 1.9.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'검색','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','검색');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_IRC.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">IRC </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
+관련 RFC문서</h1>
+<ul>
+<li>RFC 1459: [Internet Relay Chat Protocol](1)</li>
+<li>RFC 2810: [IRC: Architecture](2)</li>
+<li>RFC 2811: [IRC: Channel Management](3)</li>
+<li>RFC 2812: [IRC: Client Protocol](4)</li>
+<li>RFC 2813: [IRC: Server Protocol](5)</li>
+<li>RFC 7194: [Default Port for IRC via TLS/SSL](6)</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md3"></a>
+설명</h1>
+<p >일대일 / 일대다 채팅이 가능하게 만들어주는 프로토콜이다. 단순히 클라이언트 -&gt; 서버 -&gt; 클라이언트로 메시지가 전달되는 것 뿐만 아니라 클라이언트 -&gt; 중계서버 -&gt; 서버 -&gt; 클라이언트 같이 메시지를 서버에서 또 다른 서버로 중계해주는 기능도 있다.</p>
+<hr  />
+<p >Mandatory</p><ul>
+<li>authenticate -&gt; <code>PASS</code></li>
+<li>set nickname -&gt; <code>NICK</code></li>
+<li>set username -&gt; <code>USER</code>?</li>
+<li>join channel -&gt; <code>JOIN</code> / <code>PART</code></li>
+<li>send and receive private messages -&gt; <code>PRIVMSG</code></li>
+<li>send and receive channel</li>
+<li>operators &lt;- (admin) / regular users -&gt; <code>ADMIN</code></li>
+<li>commands that are specific to operators. -&gt; <code>KILL</code></li>
+</ul>
+<p >BONUS</p><ul>
+<li>file transfer</li>
+<li>bot</li>
+</ul>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md6"></a>
+서버</h1>
+<p >클라이언트가 연결해서 서로 대화하기 위한 종단점을 제공한다. <br  />
+ 서버와 서버끼리의 연결로 네트워크를 구성할 수 있다. (구현할 필요 X)</p>
+<h1><a class="anchor" id="autotoc_md7"></a>
+클라이언트</h1>
+<p >서버에 연결할 수 있는 요소 중 서버가 아닌것들. 모든 클라이언트는 최대 9글자의 유일한 닉네임을 가진다.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+오퍼레이터</h1>
+<p >IRC를 관리하기 위해 존재하는 특별한 클라이언트이댜. <br  />
+ 네트워크 간의 연결을 조절하기 위한 <code>SQUIT</code>, <code>CONNECT</code> 명령과, <br  />
+ 특정 유저를 추방하기 위한 <code>KILL</code> 명령 등을 사용할 권한을 가진다.</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
+채널</h1>
+<p >채널은 하나 이상의 클라이언트가 속할 수 있는 그룹이다. <br  />
+ 채널에 전달된 메시지는 해당 채널에 속하는 모든 클라이언트에게 전해진다 <br  />
+ 채널은 첫번째 클라이언트가 접속할 때 암시적으로 생성되고, 마지막 클라이언트가 접속을 종료할 때 소멸된다.</p>
+<h1><a class="anchor" id="autotoc_md10"></a>
+채널 오퍼레이터 (chop)</h1>
+<p >특정 채널을 관리하기 위한 오퍼레이터이다. <code>KICK</code>, <code>MODE</code>, <code>INVITE</code>, <code>TOPIC</code>명령을 사용할 권한을 가진다. <br  />
+ 닉네임 맨 끝에 <code>@</code>문자로 일반 클라이언트와 구별할 수 있다.</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+메시지</h1>
+<p >모든 IRC메시지는 <code>prefix</code>, <code>command</code>, <code>parameters</code>의 3 부분으로 분리되고, 각 필드는 하나 이상의 &lsquo;&rsquo; '`(공백)문자로 구별된다. 한 메시지의 최대 길이는 512글자이며, 마지막 CR LF로 메시지를 구분한다.</p>
+<h2><a class="anchor" id="autotoc_md12"></a>
+&lt;tt&gt;prefix&lt;/tt&gt;</h2>
+<ul>
+<li><code>prefix</code>필드는 메시지를 보낸 정확한 출처를 확인하는데 쓰인다. <code>prefix</code>필드가 생략된 경우에는 메시지의 출처는 메시지를 보낸 클라이언트라고 간주한다.</li>
+<li><code>prefix</code>필드는 선택적으로 존재하거나, 존재하지 않을 수 있는데, <code>prefix</code>필드의 존재는 <code>prefix</code>필드 직전에 나오는 &lsquo;&rsquo;:'`문자로 확인할 수 있다.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md13"></a>
+&lt;tt&gt;command&lt;/tt&gt;</h2>
+<ul>
+<li><code>command</code>는 유효한 IRC 명령어이거나 3글자의 응답 코드이다.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md14"></a>
+메시지 포맷 (BNF)</h2>
+<h3><a class="anchor" id="autotoc_md15"></a>
+기본</h3>
+<div class="fragment"><div class="line">&lt;message&gt;  ::= [&#39;:&#39; &lt;prefix&gt; &lt;SPACE&gt; ] &lt;command&gt; &lt;params&gt; &lt;crlf&gt;</div>
+<div class="line">&lt;prefix&gt;   ::= &lt;servername&gt; | &lt;nick&gt; [ &#39;!&#39; &lt;user&gt; ] [ &#39;@&#39; &lt;host&gt; ]</div>
+<div class="line">&lt;command&gt;  ::= &lt;letter&gt; { &lt;letter&gt; } | &lt;number&gt; &lt;number&gt; &lt;number&gt;</div>
+<div class="line">&lt;SPACE&gt;    ::= &#39; &#39; { &#39; &#39; }</div>
+<div class="line">&lt;params&gt;   ::= &lt;SPACE&gt; [ &#39;:&#39; &lt;trailing&gt; | &lt;middle&gt; &lt;params&gt; ]</div>
+<div class="line">&lt;middle&gt;   ::= &lt;Any *non-empty* sequence of octets not including SPACE</div>
+<div class="line">               or NUL or CR or LF, the first of which may not be &#39;:&#39;&gt;</div>
+<div class="line">&lt;trailing&gt; ::= &lt;Any, possibly *empty*, sequence of octets</div>
+<div class="line">                not including NUL or CR or LF&gt;</div>
+<div class="line">&lt;crlf&gt;     ::= CR LF</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md16"></a>
+파라미터</h3>
+<div class="fragment"><div class="line">&lt;target&gt;     ::= &lt;to&gt; [ &quot;,&quot; &lt;target&gt; ]</div>
+<div class="line">&lt;to&gt;         ::= &lt;channel&gt; | &lt;user&gt; &#39;@&#39; &lt;servername&gt; | &lt;nick&gt; | &lt;mask&gt;</div>
+<div class="line">&lt;channel&gt;    ::= (&#39;#&#39; | &#39;&amp;&#39;) &lt;chstring&gt;</div>
+<div class="line">&lt;servername&gt; ::= &lt;host&gt;</div>
+<div class="line">&lt;host&gt;       ::= see RFC 952 [DNS:4] for details on allowed hostnames</div>
+<div class="line">&lt;nick&gt;       ::= &lt;letter&gt; { &lt;letter&gt; | &lt;number&gt; | &lt;special&gt; }</div>
+<div class="line">&lt;mask&gt;       ::= (&#39;#&#39; | &#39;$&#39;) &lt;chstring&gt;</div>
+<div class="line">&lt;chstring&gt;   ::= &lt;any 8bit code except SPACE, BELL, NUL, CR, LF and</div>
+<div class="line">                  comma (&#39;,&#39;)&gt;</div>
+<div class="line"> </div>
+<div class="line">&lt;user&gt;       ::= &lt;nonwhite&gt; { &lt;nonwhite&gt; }</div>
+<div class="line">&lt;letter&gt;     ::= &#39;a&#39; ... &#39;z&#39; | &#39;A&#39; ... &#39;Z&#39;</div>
+<div class="line">&lt;number&gt;     ::= &#39;0&#39; ... &#39;9&#39;</div>
+<div class="line">&lt;special&gt;    ::= &#39;-&#39; | &#39;[&#39; | &#39;]&#39; | &#39;\\&#39; | &#39;`&#39; | &#39;^&#39; | &#39;{&#39; | &#39;}&#39;</div>
+<div class="line">&lt;nonwhite&gt;   ::= &lt;any 8bit code exceptSPACE (0x20), NUL (0x0),</div>
+<div class="line">                     CR(0xd), and LF (0xa)&gt;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
+명령어</h1>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+  </ul>
+</div>
+</body>
+</html>
