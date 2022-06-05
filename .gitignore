@@ -2,6 +2,10 @@
 ircserv
 codecov
 
+# Doxygen
+html
+latex
+
 # Prerequisites
 *.d
 
