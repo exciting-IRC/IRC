@@ -1,8 +1,17 @@
-set(TEST_LIST
-  test.cpp
-  testFixedBuffer.cpp
-  strutil/testjoin.cpp
-  strutil/testsplit.cpp
-  strutil/testtrim.cpp
+include(utils.cmake)
+
+CreateTestFor(FixedBuffer
+  testarray
+  testFixedBuffer
 )
-list(TRANSFORM TEST_LIST PREPEND tests/)
+
+CreateTestFor(strutil
+  testjoin
+  testsplit
+  testtrim
+)
+
+CreateTEST_LISTFrom(
+  TEST_FixedBuffer
+  TEST_strutil
+)

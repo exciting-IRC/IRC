@@ -1,6 +1,10 @@
-set(SRC_LIST
-  util/strutil/split.cpp
-  util/strutil/trim.cpp
-  server/dummy/dummyfunc.cpp
+include(utils.cmake)
+
+CreateSourceFor(util/strutil
+  split
+  trim
 )
-list(TRANSFORM SRC_LIST PREPEND ../src/)
+
+set(SRC_LIST
+  ${SRC_util/strutil}
+)
