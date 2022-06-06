@@ -12,8 +12,14 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
+
+      - name: cache css
+        uses: actions/cache@v3
         with:
-          submodules: true
+          key: doxygen-css-cache
+          path: docs/doxygen-awesome-css
+        run: |
+          git clone docs/doxygen-awesome-css
 
       - name: run doxygen
         uses: mattnotmitt/doxygen-action@v1.9.2
