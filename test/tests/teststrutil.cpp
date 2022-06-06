@@ -43,10 +43,13 @@ TEST(SplitTest, empty) {
 TEST(SplitTest, edgeCases) {
   {
     strvec expected{"a", "b", "c"};
-    ASSERT_EQ(util::split("a b c", " "), expected);
-    ASSERT_EQ(util::split("a,b,c", ","), expected);
-    ASSERT_EQ(util::split("a!!b!!c", "!!"), expected);
-    ASSERT_EQ(util::split("a->b->c", "->"), expected);
+    for (const auto &kv : std::map<std::string, std::string>{
+             {"a b c", " "},
+             {"a,b,c", ","},
+             {"a!!b!!c", "!!"},
+             {"a->b->c", "->"},
+         })
+      ASSERT_EQ(util::split(kv.first, kv.second), expected);
   }
   {
     std::string tmp = "a!!b!!c";
