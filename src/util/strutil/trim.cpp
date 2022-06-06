@@ -33,15 +33,28 @@ string& trim(string& s, const string& match) {
 }
 
 /**
- * @deprecated 이거 rtrim으로 안댐?
+ * @brief 발견한 토큰과 그 이후를 지우기
  *
- * @param match 해당하지 않는 문자열 바로 뒤를 지움
+ * @param match 발견할 토큰
  */
 string& erase_from(string& line, const string& match) {
   string::size_type index = line.find(match);
 
   if (index != string::npos)
     line.erase(index);
+  return line;
+}
+
+/**
+ * @brief 발견한 토큰과 그 전을 지우기
+ *
+ * @param match 발견할 토큰
+ */
+string& erase_before(string& line, const string& match) {
+  string::size_type index = line.rfind(match);
+
+  if (index != string::npos)
+    line.erase(0, index + match.size());
   return line;
 }
 }  // namespace util

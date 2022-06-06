@@ -16,6 +16,7 @@ enum { MAXSPLIT_ALL = -1 };
 extern const string white_space;
 
 string& erase_from(string& line, const string& match);
+string& erase_before(string& line, const string& match);
 string& ltrim(string& s, const string& match = white_space);
 string& rtrim(string& s, const string& match = white_space);
 string& trim(string& s, const string& match = white_space);
