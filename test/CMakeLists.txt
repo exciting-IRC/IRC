@@ -23,11 +23,13 @@ include(InstallDependency.cmake)
 
 set(TEST_LIST
   tests/test.cpp
+  tests/teststrutil.cpp
   tests/testFixedBuffer.cpp
 )
 
 set(SRC_LIST
-  ../src/server/dummyfunc.cpp
+  ../src/util/strutil/split.cpp
+  ../src/server/dummy/dummyfunc.cpp
 )
 
 # Create Executable
