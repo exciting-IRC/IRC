@@ -48,3 +48,11 @@ RC_GTEST_PROP(TrimTest, general, (const std::string &s)) {
       RC_ASSERT(util::trim(t) == s);
   }
 }
+
+RC_GTEST_PROP(TrimTest, empty, (const std::string &delim)) {
+  util::trim_func funcs[3] = {util::ltrim, util::rtrim, util::trim};
+  for (auto func : funcs) {
+    std::string s = "";
+    ASSERT_EQ(func(s, delim), "");
+  }
+}
