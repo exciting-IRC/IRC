@@ -5,6 +5,6 @@ CreateSourceFor(util/strutil
   trim
 )
 
-set(SRC_LIST
-  ${SRC_util/strutil}
+CreateSRC_LISTFrom(
+  SRC_util/strutil
 )
