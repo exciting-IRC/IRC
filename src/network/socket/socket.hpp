@@ -1,8 +1,8 @@
 #ifndef SOCKET_SOCKET_HPP
 #define SOCKET_SOCKET_HPP
 
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
 
 namespace util {
 

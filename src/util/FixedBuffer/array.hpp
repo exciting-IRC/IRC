@@ -1,5 +1,5 @@
-#ifndef ARRAY_HPP
-#define ARRAY_HPP
+#ifndef UTIL_ARRAY_HPP
+#define UTIL_ARRAY_HPP
 
 #include <algorithm>
 // #include <cstdlib>  // for _LIBCPP_UNREACHABLE
@@ -92,4 +92,4 @@ typename array<T, N>::const_reference array<T, N>::at(size_type n) const {
 }
 }  // namespace util
 
-#endif  // ARRAY_HPP
+#endif  // UTIL_ARRAY_HPP

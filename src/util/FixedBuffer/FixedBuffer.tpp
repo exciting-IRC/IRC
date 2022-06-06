@@ -1,36 +1,9 @@
-#ifndef FIXEDBUFFER_HPP_
-#define FIXEDBUFFER_HPP_
+#ifndef FIXEDBUFFER_TPP
+#define FIXEDBUFFER_TPP
 
-#include <algorithm>
-#include <cstddef>
-
-#include "FixedBuffer/array.hpp"
+#include "FixedBuffer.hpp"
 
 namespace util {
-
-template <typename T, std::size_t buffer_size>
-class FixedBuffer : public array<T, buffer_size> {
- public:
-  FixedBuffer();
-  FixedBuffer(const FixedBuffer &other);
-  FixedBuffer &operator=(const FixedBuffer &other);
-
- public:
-  void seekg(std::size_t pos);
-
-  void seekp(std::size_t pos);
-
-  std::size_t tellg() const;
-
-  std::size_t tellp() const;
-
-  T peek() const;
-  T pop();
-
- private:
-  std::size_t i_cursor_;
-  std::size_t o_cursor_;
-};
 
 template <typename T, std::size_t S>
 FixedBuffer<T, S>::FixedBuffer() : i_cursor_(0), o_cursor_(0) {}
@@ -77,5 +50,4 @@ T FixedBuffer<T, S>::pop() {
 }
 
 }  // namespace util
-
-#endif  // FIXEDBUFFER_HPP_
+#endif  // FIXEDBUFFER_TPP
