@@ -1,40 +1,47 @@
-cmake_minimum_required(VERSION 3.11)
-project(test
-        DESCRIPTION "C++ Property-based Testing Example (w/ RapidCheck)"
-        HOMEPAGE_URL https://github.com/exciting-IRC/IRC
-        LANGUAGES CXX)
+# Reference: https://cliutils.gitlab.io/modern-cmake
+
+# Version
+cmake_minimum_required(VERSION 3.18...3.23)
+
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
+# Project setup
+project(
+  TestIrc
+  DESCRIPTION "property based tests for IRC subject"
+  HOMEPAGE_URL https://github.com/exciting-IRC/IRC
+  LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(InstallDependency.cmake)
 
-include(FetchContent)
-FetchContent_Declare(
-    rapidcheck
-    GIT_REPOSITORY https://github.com/emil-e/rapidcheck.git
+set(TEST_LIST
+  tests/test.cpp
+  tests/testFixedBuffer.cpp
 )
 
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        main
-)
-
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-FetchContent_MakeAvailable(googletest rapidcheck)
-add_subdirectory(${rapidcheck_SOURCE_DIR}/extras/gtest)
-
-# googletests
-enable_testing()
-
-add_executable(
-  irc_test
-  test.cpp
-  testFixedBuffer.cpp
+set(SRC_LIST
   ../src/server/dummyfunc.cpp
 )
+
+# Create Executable
+add_executable(irc_test
+  ${SRC_LIST}
+  ${TEST_LIST}
+)
+
+target_include_directories(
+  irc_test PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/../src
+)
+
 target_link_libraries(
   irc_test
   rapidcheck_gtest
@@ -49,12 +56,10 @@ target_link_options(
   irc_test PRIVATE
   -O0 -fprofile-instr-generate -fcoverage-mapping
 )
-target_include_directories(
-  irc_test PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src
-)
 
+# googletests
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+enable_testing()
 include(GoogleTest)
 gtest_discover_tests(irc_test)
 
