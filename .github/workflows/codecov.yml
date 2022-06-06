@@ -31,12 +31,26 @@ jobs:
       - name: run test
         working-directory: test/build
         run: |
+          create_coverage() {
+            if [[ $1 == 'text' ]]; then
+              file=coverage.txt
+            else
+              file=coverage.html
+            fi
+
+            llvm-cov show ./irc_test \
+              --instr-profile=coverage.profdata \
+              --ignore-filename-regex='../tests/*' \
+              --ignore-filename-regex='_deps/*' \
+              --Xdemangler c++filt \
+              --format="$1" > "$file"
+          }
+
           export LLVM_PROFILE_FILE='irc_test.profraw'
           ./irc_test
-
           llvm-profdata merge -sparse 'irc_test.profraw' -o coverage.profdata
-          llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=text > coverage.txt
-          llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=html > coverage.html
+          create_coverage text
+          create_coverage html
 
       - name: upload coverage
         working-directory: test/build

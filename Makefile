@@ -9,7 +9,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 CXXFLAGS += -I src
 CXXFLAGS += -MMD
 
-SUBDIRS :=  util logger color general
+SUBDIRS := strutil util logger color general
 
 SRC_UTIL := $(foreach dir, $(SUBDIRS), $(wildcard src/util/$(dir)/*.cpp))
 

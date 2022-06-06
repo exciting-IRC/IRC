@@ -1,11 +1,10 @@
 #include <iostream>
+#include <util/strutil/strutil.hpp>
+#include <vector>
+#include <string>
 
 int main() {
-  bool flag = true;
-
-  if (flag) {
-    std::cout << "true" << std::endl;
-  } else {
-    std::cout << "false" << std::endl;
-  }
+  using namespace std;
+  vector<string> v = util::split("a,b,c", ",");
+  util::print_vector(v);
 }
