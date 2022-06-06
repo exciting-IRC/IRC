@@ -1,0 +1,29 @@
+name: Squash Develop -> Main
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  squash-devlop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: GitHub Pull Request Action
+        id: cpr
+        uses: repo-sync/pull-request@v2.6.2
+        with:
+          source_branch: develop
+          destination_branch: main
+          pr_allow_empty: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - if: steps.cpr.outputs.pull-request-operation == 'created'
+        name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: squash
+          repo: exciting-IRC/IRC
