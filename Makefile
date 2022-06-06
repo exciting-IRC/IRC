@@ -1,3 +1,4 @@
+
 NAME := ircserv
 
 MAKEFLAGS += -j
@@ -8,21 +9,22 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 CXXFLAGS += -I src
 CXXFLAGS += -MMD
 
-SUBDIRS := strutil util logger main
+SUBDIRS := strutil util logger color general
 
-SRC := $(foreach dir, $(SUBDIRS), $(wildcard src/$(dir)/*.cpp))
+SRC_UTIL := $(foreach dir, $(SUBDIRS), $(wildcard src/util/$(dir)/*.cpp))
+
+SRC := src/main.cpp $(SRC_UTIL)
 OBJ := $(SRC:%.cpp=%.o)
--include $(OBJ:%.o=%.d)
-
-include color.mk
-
-%.o: %.cpp
-	@echo "$(YEL)$@$(END)"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJ)
 	@echo "\n$(GRN)Linking...$(END)"
 	@$(CXX) $(CXXFLAGS) -o $@ $^
+
+-include $(OBJ:%.o=%.d)
+
+%.o: %.cpp
+	@echo "$(YEL)$@$(END)"
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 all: $(NAME)
 
@@ -37,3 +39,8 @@ re: fclean
 
 run: all
 	./$(NAME)
+
+say:
+	@echo $(SRC)
+
+include color.mk

@@ -11,7 +11,7 @@
 namespace util {
 
 /**
- * @brief C++11 array STL을 98로 다운그레이드
+ * @brief C++11 array STL을 c++ 98에서 쓸 수 있게 다운그레이드
  *
  * @tparam T 원소 타입
  * @tparam N 인자의 개수
@@ -34,13 +34,13 @@ struct array {
 
   T elems[N];
 
-  // No explicit construct/copy/destroy for aggregate type
+  /// 집합 생성을 위해 명시적인 생성자/소멸자 없음
 
   void fill(const value_type& val) { std::fill_n(elems, N, val); }
 
   void swap(array& other) { std::swap_ranges(elems, elems + N, other.elems); }
 
-  // iterators:
+  /// 이터레이터
   iterator begin() throw() { return iterator(data()); }
   const_iterator begin() const throw() { return const_iterator(data()); }
   iterator end() throw() { return iterator(data() + N); }
@@ -55,12 +55,12 @@ struct array {
     return const_reverse_iterator(begin());
   }
 
-  // capacity:
+  /// 용량
   size_type size() const throw() { return N; }
   size_type max_size() const throw() { return N; }
   bool empty() const throw() { return false; }
 
-  // element access:
+  /// 원소 접근
   reference operator[](size_type n) throw() { return elems[n]; }
   const_reference operator[](size_type n) const throw() { return elems[n]; }
 
@@ -88,6 +88,7 @@ template <class T, size_t N>
 typename array<T, N>::const_reference array<T, N>::at(size_type n) const {
   if (n >= N)
     throw std::out_of_range("array::at");
+
   return elems[n];
 }
 }  // namespace util
