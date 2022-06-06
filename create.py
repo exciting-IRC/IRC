@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """
 create.py: create boilerplate for *.cpp, *.hpp, *.tpp
-usage: create.py [-h] [options] [-n | -N | --namespace <N> ] <path>
+
+usage:
+    create.py [-h] [options] [-n | -N | --namespace <N> ] <path>
+
 options:
     -h, --help               show this help message and exit
     -n                       use parent directory name as namespace
     -N                       use nested directory names as namespace
     --namespace <N>          choose namespace to use.
-    -r <R>, --root <R>     root of directory path [default: src]
+    -r <R>, --root <R>       root of directory path [default: src]
 """
 from __future__ import annotations
 
