@@ -39,9 +39,15 @@ jobs:
           llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=text > coverage.txt
           llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=html > coverage.html
 
-      - name: create coverage
+      - name: upload coverage
         working-directory: test/build
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov
+
+      - name: archive coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ./test/build/coverage.html
