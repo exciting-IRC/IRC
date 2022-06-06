@@ -5,6 +5,7 @@
       "includePath": [
         "${default}",
         "${workspaceFolder}/build/_deps/rapidcheck-src/include",
+        "${workspaceFolder}/build/_deps/rapidcheck-src/extras/gtest/include",
         "${workspaceFolder}/build/_deps/googletest-src/googletest/include",
         "${workspaceFolder}/../src"
       ],
@@ -18,6 +19,7 @@
       "includePath": [
         "${default}",
         "${workspaceFolder}/build/_deps/rapidcheck-src/include",
+        "${workspaceFolder}/build/_deps/rapidcheck-src/extras/gtest/include",
         "${workspaceFolder}/build/_deps/googletest-src/googletest/include",
         "${workspaceFolder}/../src"
       ],

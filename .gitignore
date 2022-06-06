@@ -1,3 +1,7 @@
+# c_cpp_properties
+!.vscode/c_cpp_properties.json
+!test/.vscode/c_cpp_properties.json
+
 # Binary
 ircserv
 codecov
@@ -41,4 +45,4 @@ docs/doxygen-awesome-css
 *.app
 
 # Visual studio code configure
-.vscode
+.vscode/*

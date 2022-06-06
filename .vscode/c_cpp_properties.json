@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceRoot}/**"
+                "${workspaceRoot}/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
@@ -23,7 +23,7 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceRoot}/"
+                "${workspaceRoot}/src"
             ],
             "defines": [],
             "macFrameworkPath": [

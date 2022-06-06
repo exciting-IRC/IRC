@@ -34,7 +34,6 @@ jobs:
           export LLVM_PROFILE_FILE='irc_test.profraw'
           ./irc_test
 
-          opt="show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex=_deps/*'"
           llvm-profdata merge -sparse 'irc_test.profraw' -o coverage.profdata
           llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=text > coverage.txt
           llvm-cov show ./irc_test -instr-profile=coverage.profdata -ignore-filename-regex='_deps/*' -format=html > coverage.html
