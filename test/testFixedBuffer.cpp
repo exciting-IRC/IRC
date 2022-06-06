@@ -2,8 +2,8 @@
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
 
-#include <FixedBuffer/FixedBuffer.hpp>
 #include <algorithm>
+#include <util/FixedBuffer/FixedBuffer.hpp>
 
 RC_GTEST_PROP(FixedBufferTest, defaultConstructor, ()) {
   const auto buffer1 = util::FixedBuffer<char, 1>();
@@ -61,4 +61,3 @@ RC_GTEST_PROP(FixedBufferTest, tellg, (const std::array<char, 100> &l0)) {
     buf.pop();
   }
 }
-

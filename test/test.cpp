@@ -2,10 +2,10 @@
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
 
-#include <FixedBuffer/array.hpp>
 #include <algorithm>
 #include <array>
 #include <string>
+#include <util/FixedBuffer/array.hpp>
 #include <vector>
 
 // function to test

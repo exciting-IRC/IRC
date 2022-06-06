@@ -33,7 +33,7 @@ add_executable(
   irc_test
   test.cpp
   testFixedBuffer.cpp
-  ../dummyfunc.cpp
+  ../src/server/dummyfunc.cpp
 )
 target_link_libraries(
   irc_test
