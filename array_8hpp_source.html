@@ -117,50 +117,46 @@ $(document).ready(function(){initNavTree('array_8hpp_source.html',''); initResiz
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  T elems[N];</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// No explicit construct/copy/destroy for aggregate type</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">void</span> fill(<span class="keyword">const</span> value_type&amp; val) { std::fill_n(elems, N, val); }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structutil_1_1array.html#ade59f341b0e86c733380188fbe8d3b97">   39</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structutil_1_1array.html#ade59f341b0e86c733380188fbe8d3b97">fill</a>(<span class="keyword">const</span> value_type&amp; val) { std::fill_n(elems, N, val); }</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">void</span> swap(<a class="code hl_struct" href="structutil_1_1array.html">array</a>&amp; other) { std::swap_ranges(elems, elems + N, other.elems); }</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// iterators:</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  iterator begin() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> iterator(data()); }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  const_iterator begin() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> const_iterator(data()); }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  iterator end() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> iterator(data() + N); }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  const_iterator end() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> const_iterator(data() + N); }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">   44</a></span>  iterator <a class="code hl_function" href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">begin</a>() throw() { <span class="keywordflow">return</span> iterator(data()); }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  const_iterator <a class="code hl_function" href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">begin</a>() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> const_iterator(data()); }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  iterator end() throw() { <span class="keywordflow">return</span> iterator(data() + N); }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  const_iterator end() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> const_iterator(data() + N); }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  reverse_iterator rbegin() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> reverse_iterator(end()); }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  const_reverse_iterator rbegin() <span class="keyword">const</span> <span class="keywordflow">throw</span>() {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  reverse_iterator rbegin() throw() { <span class="keywordflow">return</span> reverse_iterator(end()); }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  const_reverse_iterator rbegin() <span class="keyword">const</span> throw() {</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">return</span> const_reverse_iterator(end());</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  reverse_iterator rend() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> reverse_iterator(begin()); }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  const_reverse_iterator rend() <span class="keyword">const</span> <span class="keywordflow">throw</span>() {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> const_reverse_iterator(begin());</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  reverse_iterator rend() throw() { <span class="keywordflow">return</span> reverse_iterator(<a class="code hl_function" href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">begin</a>()); }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  const_reverse_iterator rend() <span class="keyword">const</span> throw() {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> const_reverse_iterator(<a class="code hl_function" href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">begin</a>());</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// capacity:</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  size_type size() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> N; }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  size_type max_size() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> N; }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">bool</span> empty() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="structutil_1_1array.html#afd867fed35fb8ec1d9cbfbcabf9e79ea">   59</a></span>  size_type <a class="code hl_function" href="structutil_1_1array.html#afd867fed35fb8ec1d9cbfbcabf9e79ea">size</a>() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> N; }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  size_type max_size() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> N; }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">bool</span> empty() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// element access:</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  reference operator[](size_type n) <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[n]; }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  const_reference operator[](size_type n) <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[n]; }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="structutil_1_1array.html#a0991395ea080170667db3524e6145ce7">   64</a></span>  reference <a class="code hl_function" href="structutil_1_1array.html#a0991395ea080170667db3524e6145ce7">operator[]</a>(size_type n) <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[n]; }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  const_reference <a class="code hl_function" href="structutil_1_1array.html#a0991395ea080170667db3524e6145ce7">operator[]</a>(size_type n) <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[n]; }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  reference at(size_type n);</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  const_reference at(size_type n) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  reference front() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[0]; }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  const_reference front() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[0]; }</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  reference back() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[N - 1]; }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  const_reference back() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems[N - 1]; }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  reference front() throw() { <span class="keywordflow">return</span> elems[0]; }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  const_reference front() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> elems[0]; }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  reference back() throw() { <span class="keywordflow">return</span> elems[N - 1]; }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  const_reference back() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> elems[N - 1]; }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  value_type* data() <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems; }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> value_type* data() <span class="keyword">const</span> <span class="keywordflow">throw</span>() { <span class="keywordflow">return</span> elems; }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  value_type* data() throw() { <span class="keywordflow">return</span> elems; }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> value_type* data() <span class="keyword">const</span> throw() { <span class="keywordflow">return</span> elems; }</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>};</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">typename</span> array&lt;T, N&gt;::reference <a class="code hl_struct" href="structutil_1_1array.html">array&lt;T, N&gt;::at</a>(size_type n) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">typename</span> array&lt;T, N&gt;::reference array&lt;T, N&gt;::at(size_type n) {</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">if</span> (n &gt;= N)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;array::at&quot;</span>);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
@@ -171,12 +167,17 @@ $(document).ready(function(){initNavTree('array_8hpp_source.html',''); initResiz
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">typename</span> array&lt;T, N&gt;::const_reference array&lt;T, N&gt;::at(size_type n)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">if</span> (n &gt;= N)</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;array::at&quot;</span>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">return</span> elems[n];</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}  <span class="comment">// namespace util</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif  </span><span class="comment">// UTIL_ARRAY_HPP</span></div>
-<div class="ttc" id="astructutil_1_1array_html"><div class="ttname"><a href="structutil_1_1array.html">util::array</a></div><div class="ttdoc">C++11 array STL을 98로 다운그레이드</div><div class="ttdef"><b>Definition:</b> array.hpp:20</div></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">return</span> elems[n];</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}  <span class="comment">// namespace util</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#endif  </span><span class="comment">// UTIL_ARRAY_HPP</span></div>
+<div class="ttc" id="astructutil_1_1array_html"><div class="ttname"><a href="structutil_1_1array.html">util::array</a></div><div class="ttdoc">C++11 array STL을 c++ 98에서 쓸 수 있게 다운그레이드</div><div class="ttdef"><b>Definition:</b> array.hpp:20</div></div>
+<div class="ttc" id="astructutil_1_1array_html_a0991395ea080170667db3524e6145ce7"><div class="ttname"><a href="structutil_1_1array.html#a0991395ea080170667db3524e6145ce7">util::array::operator[]</a></div><div class="ttdeci">reference operator[](size_type n)</div><div class="ttdoc">원소 접근</div><div class="ttdef"><b>Definition:</b> array.hpp:64</div></div>
+<div class="ttc" id="astructutil_1_1array_html_a1f3c9d7060731d03f50ab6e089f79034"><div class="ttname"><a href="structutil_1_1array.html#a1f3c9d7060731d03f50ab6e089f79034">util::array::begin</a></div><div class="ttdeci">iterator begin()</div><div class="ttdoc">이터레이터</div><div class="ttdef"><b>Definition:</b> array.hpp:44</div></div>
+<div class="ttc" id="astructutil_1_1array_html_ade59f341b0e86c733380188fbe8d3b97"><div class="ttname"><a href="structutil_1_1array.html#ade59f341b0e86c733380188fbe8d3b97">util::array::fill</a></div><div class="ttdeci">void fill(const value_type &amp;val)</div><div class="ttdoc">집합 생성을 위해 명시적인 생성자/소멸자 없음</div><div class="ttdef"><b>Definition:</b> array.hpp:39</div></div>
+<div class="ttc" id="astructutil_1_1array_html_afd867fed35fb8ec1d9cbfbcabf9e79ea"><div class="ttname"><a href="structutil_1_1array.html#afd867fed35fb8ec1d9cbfbcabf9e79ea">util::array::size</a></div><div class="ttdeci">size_type size() const</div><div class="ttdoc">용량</div><div class="ttdef"><b>Definition:</b> array.hpp:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

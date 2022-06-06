@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('structutil_1_1array.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>C++11 array STL을 98로 다운그레이드  
+<p>C++11 array STL을 c++ 98에서 쓸 수 있게 다운그레이드  
  <a href="structutil_1_1array.html#details">더 자세히 ...</a></p>
 
 <p><code>#include &lt;<a class="el" href="array_8hpp_source.html">array.hpp</a>&gt;</code></p>
@@ -141,12 +141,14 @@ typedef std::reverse_iterator&lt; const_iterator &gt;&#160;</td><td class="memIt
 Public 멤버 함수</h2></td></tr>
 <tr class="memitem:ade59f341b0e86c733380188fbe8d3b97"><td class="memItemLeft" align="right" valign="top"><a id="ade59f341b0e86c733380188fbe8d3b97" name="ade59f341b0e86c733380188fbe8d3b97"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fill</b> (const value_type &amp;val)</td></tr>
+<tr class="memdesc:ade59f341b0e86c733380188fbe8d3b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">집합 생성을 위해 명시적인 생성자/소멸자 없음 <br /></td></tr>
 <tr class="separator:ade59f341b0e86c733380188fbe8d3b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a4a8e6156c6f5c513e5cda63a39d723"><td class="memItemLeft" align="right" valign="top"><a id="a2a4a8e6156c6f5c513e5cda63a39d723" name="a2a4a8e6156c6f5c513e5cda63a39d723"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="structutil_1_1array.html">array</a> &amp;other)</td></tr>
 <tr class="separator:a2a4a8e6156c6f5c513e5cda63a39d723"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f3c9d7060731d03f50ab6e089f79034"><td class="memItemLeft" align="right" valign="top"><a id="a1f3c9d7060731d03f50ab6e089f79034" name="a1f3c9d7060731d03f50ab6e089f79034"></a>
 iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()  throw ()</td></tr>
+<tr class="memdesc:a1f3c9d7060731d03f50ab6e089f79034"><td class="mdescLeft">&#160;</td><td class="mdescRight">이터레이터 <br /></td></tr>
 <tr class="separator:a1f3c9d7060731d03f50ab6e089f79034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3d606f06e32193a3bda8fc729c7a689"><td class="memItemLeft" align="right" valign="top"><a id="ad3d606f06e32193a3bda8fc729c7a689" name="ad3d606f06e32193a3bda8fc729c7a689"></a>
 const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const  throw ()</td></tr>
@@ -171,6 +173,7 @@ const_reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>ren
 <tr class="separator:a3967bc1bb4b85cd1c918d86048a2a5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd867fed35fb8ec1d9cbfbcabf9e79ea"><td class="memItemLeft" align="right" valign="top"><a id="afd867fed35fb8ec1d9cbfbcabf9e79ea" name="afd867fed35fb8ec1d9cbfbcabf9e79ea"></a>
 size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const  throw ()</td></tr>
+<tr class="memdesc:afd867fed35fb8ec1d9cbfbcabf9e79ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">용량 <br /></td></tr>
 <tr class="separator:afd867fed35fb8ec1d9cbfbcabf9e79ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafb191c986d745b138506ed826b3525a"><td class="memItemLeft" align="right" valign="top"><a id="aafb191c986d745b138506ed826b3525a" name="aafb191c986d745b138506ed826b3525a"></a>
 size_type&#160;</td><td class="memItemRight" valign="bottom"><b>max_size</b> () const  throw ()</td></tr>
@@ -180,6 +183,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const  t
 <tr class="separator:ab17cbd2952b2c155241a2dded9529ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0991395ea080170667db3524e6145ce7"><td class="memItemLeft" align="right" valign="top"><a id="a0991395ea080170667db3524e6145ce7" name="a0991395ea080170667db3524e6145ce7"></a>
 reference&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_type n)  throw ()</td></tr>
+<tr class="memdesc:a0991395ea080170667db3524e6145ce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">원소 접근 <br /></td></tr>
 <tr class="separator:a0991395ea080170667db3524e6145ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae40c217403a9639b1e2948e6f9bec673"><td class="memItemLeft" align="right" valign="top"><a id="ae40c217403a9639b1e2948e6f9bec673" name="ae40c217403a9639b1e2948e6f9bec673"></a>
 const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_type n) const  throw ()</td></tr>
@@ -217,7 +221,7 @@ T&#160;</td><td class="memItemRight" valign="bottom"><b>elems</b> [N]</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">상세한 설명</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, size_t N&gt;<br />
-struct util::array&lt; T, N &gt;</div><p >C++11 array STL을 98로 다운그레이드 </p>
+struct util::array&lt; T, N &gt;</div><p >C++11 array STL을 c++ 98에서 쓸 수 있게 다운그레이드 </p>
 <dl class="tparams"><dt>템플릿 파라메터</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>원소 타입 </td></tr>
