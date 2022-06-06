@@ -1,9 +1,19 @@
 {
   "folders": [
     {
+      "name": "docs",
+      "path": "docs"
+    },
+    {
+      "name": "IRC",
       "path": "."
     },
     {
+      "name": "src",
+      "path": "src"
+    },
+    {
+      "name": "test",
       "path": "test"
     }
   ],
@@ -13,6 +23,7 @@
       "**/*.h": "c",
       "**/*.c": "c",
       "**/*.cpp": "cpp",
+      "**/*.hpp": "cpp",
       "**/*.html": "html",
       "**/templates/**/*.html": "django-html",
       "**/templates/**/*.css": "css",
@@ -98,7 +109,8 @@
       "cinttypes": "c",
       "typeindex": "c",
       "typeinfo": "c",
-      "variant": "c"
+      "variant": "c",
+      "*.tpp": "cpp"
     }
   }
 }

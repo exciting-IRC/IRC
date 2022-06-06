@@ -20,17 +20,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(InstallDependency.cmake)
-
-set(TEST_LIST
-  tests/test.cpp
-  tests/teststrutil.cpp
-  tests/testFixedBuffer.cpp
-)
-
-set(SRC_LIST
-  ../src/util/strutil/split.cpp
-  ../src/server/dummy/dummyfunc.cpp
-)
+include(testList.cmake)
+include(sourceList.cmake)
 
 # Create Executable
 add_executable(irc_test
