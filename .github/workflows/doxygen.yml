@@ -18,11 +18,10 @@ jobs:
         uses: actions/cache@v3
         with:
           key: doxygen-css-cache
-          path: docs/doxygen-awesome-css
+          path: ./docs/doxygen-awesome-css
 
-      - if: ${{ steps.cache-css.outputs.cache-hit == 'false' }}
+      - if: ${{ steps.cache-css.outputs.cache-hit != 'true' }}
         name: download css
-        continue-on-error: true
         run: |
           git clone https://github.com/jothepro/doxygen-awesome-css docs/doxygen-awesome-css
 
