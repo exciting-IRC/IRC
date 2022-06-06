@@ -24,7 +24,7 @@ jobs:
         name: download css
         continue-on-error: true
         run: |
-          git clone docs/doxygen-awesome-css
+          git clone https://github.com/jothepro/doxygen-awesome-css docs/doxygen-awesome-css
 
       - name: run doxygen
         uses: mattnotmitt/doxygen-action@v1.9.2
