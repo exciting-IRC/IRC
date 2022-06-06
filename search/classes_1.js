@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['fixedbuffer_0',['FixedBuffer',['../classutil_1_1FixedBuffer.html',1,'util']]]
+  ['client_0',['Client',['../structClient.html',1,'']]],
+  ['config_1',['Config',['../structConfig.html',1,'']]]
 ];

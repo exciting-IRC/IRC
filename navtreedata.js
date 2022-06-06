@@ -58,6 +58,9 @@ var NAVTREE =
       ] ]
     ] ],
     [ "💬 IRC", "md_README.html", null ],
+    [ "네임스페이스", "namespaces.html", [
+      [ "네임스페이스 목록", "namespaces.html", "namespaces_dup" ]
+    ] ],
     [ "클래스", "annotated.html", [
       [ "클래스 목록", "annotated.html", "annotated_dup" ],
       [ "클래스 색인", "classes.html", null ],
