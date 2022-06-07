@@ -6,15 +6,15 @@
 #ifdef EV_SET
 #undef EV_SET
 // 조금 더 나은 인텔리센스 지원을 위해서 새로 정의함
-#define EV_SET(kev, ident, filter, flags, fflags, data, udata) \
+#define EV_SET(kev, _ident, _filter, _flags, _fflags, _data, _udata) \
   do {                                                         \
     struct kevent *__kevp__ = (kev);                           \
-    __kevp__->ident = (ident);                                 \
-    __kevp__->filter = (filter);                               \
-    __kevp__->flags = (flags);                                 \
-    __kevp__->fflags = (fflags);                               \
-    __kevp__->data = (data);                                   \
-    __kevp__->udata = (udata);                                 \
+    __kevp__->ident = (_ident);                                 \
+    __kevp__->filter = (_filter);                               \
+    __kevp__->flags = (_flags);                                 \
+    __kevp__->fflags = (_fflags);                               \
+    __kevp__->data = (_data);                                   \
+    __kevp__->udata = (_udata);                                 \
   } while (0)
 #endif  // EV_SET
 
