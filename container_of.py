@@ -18,19 +18,10 @@ import shutil
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
-from subprocess import PIPE, run
 from textwrap import dedent
 
-from docopt import docopt
-
+from cpputil import clang_format
 from create import wrap_header
-
-
-def clang_format(text: str) -> str:
-    result = run(["clang-format"], stdout=PIPE, input=text, encoding="ascii")
-    if result.returncode != 0:
-        raise Exception(str(result))
-    return result.stdout
 
 
 @dataclass
@@ -102,10 +93,12 @@ def create_formatted_result(size: int, path: Path | None) -> str:
     if shutil.which("clang-format"):
         text = clang_format(text)
 
-    return text
+    return text + "\n"
 
 
 def main():
+    from docopt import docopt
+
     assert __doc__ is not None
     args: dict[str, str] = docopt(__doc__)
 
