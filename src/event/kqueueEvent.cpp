@@ -1,6 +1,7 @@
 #include <unistd.h>
 
 #include <cstring>
+#include <iostream>
 #include <new>
 #include <stdexcept>
 
@@ -51,15 +52,15 @@ int EventPool::dispatchEvent(const struct timespec &ts) {
     EventHandler *eh = static_cast<EventHandler *>(kev.udata);
 
     struct Event ev;
+    ev.flags = 0;
     ev.ep = this;
-    if (kev.flags & EV_EOF) {
-      ev.kind = EventKind::kEOF;
-      ev.data = kev.ident;
-    } else if (kev.filter == EVFILT_READ) {
-      ev.kind = EventKind::kRead;
+    if (kev.filter == EVFILT_READ) {
+      ev.kind = kRead;
       ev.data = kev.data;
+      if (kev.flags & EV_EOF)
+        ev.flags |= EV_EOF;
     } else if (kev.filter == EVFILT_WRITE) {
-      ev.kind = EventKind::kWrite;
+      ev.kind = kWrite;
       ev.data = kev.data;
     } else {
       // XXX add log (unknown event)

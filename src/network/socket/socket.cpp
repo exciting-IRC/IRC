@@ -1,33 +1,43 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <fcntl.h>
 
 namespace util {
-
-inline int socket(int domain, int type, int protocol) {
-  return ::socket(domain, type, protocol);
+int socket(int domain, int type, int protocol) {
+  int sock = ::socket(domain, type, protocol);
+  if (sock == -1)
+    return -1;
+  if (fcntl(sock, F_SETFD, O_NONBLOCK) == -1)
+    return -1;
+  return sock;
 }
 
-inline int listen(int socket, int backlog) {
+int listen(int socket, int backlog) {
   return ::listen(socket, backlog);
 }
 
-inline int bind_in(int socket, const struct sockaddr_in *addr) {
+int bind_in(int socket, const struct sockaddr_in *addr) {
   return ::bind(socket, reinterpret_cast<const sockaddr *>(addr),
                 sizeof(*addr));
 }
 
-inline int connect_in(int socket, const struct sockaddr_in *addr) {
+int connect_in(int socket, const struct sockaddr_in *addr) {
   return ::connect(socket, reinterpret_cast<const sockaddr *>(addr),
                    sizeof(*addr));
 }
 
-inline ssize_t recv(int socket, void *buffer, size_t length, int flags) {
+ssize_t recv(int socket, void *buffer, size_t length, int flags) {
   return ::recv(socket, buffer, length, flags);
 }
 
-inline ssize_t send(int socket, const void *buffer, size_t length,
+ssize_t send(int socket, const void *buffer, size_t length,
                     int flags) {
   return ::send(socket, buffer, length, flags);
+}
+
+int setsockopt(int socket, int level, int option_name, const void *option_value,
+               socklen_t option_len) {
+  return ::setsockopt(socket, level, option_name, option_value, option_len);
 }
 
 }  // namespace util

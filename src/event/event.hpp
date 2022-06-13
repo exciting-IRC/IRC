@@ -4,18 +4,26 @@
 
 #include <sys/event.h>
 
-enum EventKind { kRead = EVFILT_READ, kWrite = EVFILT_WRITE, kEOF = EV_EOF };
+enum EventKind { kRead = EVFILT_READ, kWrite = EVFILT_WRITE};
+
+enum EventFlags {
+  kEOF = 1
+};
+
+// forward declearation
+class EventPool;
 
 struct Event {
   EventPool *ep;
   EventKind kind;
   intptr_t data;
+  unsigned int flags;
 };
 
 class EventHandler {
  public:
   virtual int handle(Event e) = 0;
-  virtual int getFd() = 0;
+  virtual int getFd() const = 0;
 };
 
 class EventPool {

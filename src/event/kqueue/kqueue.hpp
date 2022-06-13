@@ -20,10 +20,10 @@
 
 namespace util {
 
-inline ssize_t kevent_ctl(int kq, const struct kevent *changelist, int nchangs,
+ssize_t kevent_ctl(int kq, const struct kevent *changelist, int nchangs,
                           const struct timespec *timeout);
 
-inline ssize_t kevent_wait(int kq, struct kevent *eventlist, int nevents,
+ssize_t kevent_wait(int kq, struct kevent *eventlist, int nevents,
                            const struct timespec *timeout);
 
 using ::kevent;
