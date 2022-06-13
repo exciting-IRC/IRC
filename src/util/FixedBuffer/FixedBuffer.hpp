@@ -26,6 +26,9 @@ class FixedBuffer : public array<T, buffer_size> {
   T peek() const;
   T pop();
 
+  bool eof() const;
+  void clear();
+
  private:
   std::size_t i_cursor_;
   std::size_t o_cursor_;
