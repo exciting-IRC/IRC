@@ -10,7 +10,7 @@ using ::accept;
 using ::bind;
 using ::connect;
 
-inline int socket(int domain, int type, int protocol);
+inline int socket(int domain, int type, int protocol = 0);
 inline int listen(int socket, int backlog);
 inline int bind_in(int socket, const struct sockaddr_in *addr);
 inline int connect_in(int socket, const struct sockaddr_in *addr);
