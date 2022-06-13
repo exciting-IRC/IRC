@@ -1,0 +1,38 @@
+name: publish defense
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish-defense:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: switch to defense branch
+        run: |
+          git checkout --orphan defense
+          if [[ $(git symbolic-ref --short -q HEAD) != defense ]]; then
+            echo not defense; exit 1
+          fi
+
+      - name: merge main
+          git merge --allow-unrelated-histories main
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: install dependencies
+        run: pip install -U pip flupy
+
+      - name: nuke files not allowed in subject
+        run: python3 nuke.py --execute
+
+      - name: commit and push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: defense
