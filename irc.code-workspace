@@ -128,7 +128,9 @@
       "ios": "cpp",
       "locale": "cpp",
       "stack": "cpp",
-      "__bits": "cpp"
+      "__bits": "cpp",
+      "__tree": "cpp",
+      "filesystem": "cpp"
     }
   }
 }

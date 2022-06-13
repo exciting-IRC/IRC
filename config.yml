@@ -1,0 +1,17 @@
+# 서버 정보
+name: exicingirc
+info: asset/info.txt # 서버 정보
+motd: asset/motd.txt # 오늘의 문구 (Message Of The Day)
+
+# 개발자 정보
+# admin_motd: asset/admin.txt # 관리자로 접속 시 문구
+# admin_emails: <cjeon@student.42.fr>, <youkim@student.42.fr>
+
+# 관리자 정보
+oper_user: admin # 관리자 계정 이름
+oper_password: admin # 관리자 계정 비밀번호
+
+# 서버 설정
+max_clients: 5000 # 최대 접속자 수
+ping: 60 # 핑 주기
+timeout: 300 # 접속 시간 제한
