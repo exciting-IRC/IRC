@@ -26,6 +26,11 @@ from create import wrap_header
 
 @dataclass
 class Template:
+    """
+    typename C <- container type
+    typename T <- value type, intended to pass by value
+    """
+
     size: int = 10
 
     def maybe(self, then: str) -> str:

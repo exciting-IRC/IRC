@@ -11,7 +11,9 @@ usage:
 options:
     -h, --help     show this help message and exit
     --execute      actually remove files (not just print)
-    <file>         file extension / subdirectory to keep. [default: .txt, .cpp, .hpp, .tpp]
+    <file>         file extension / subdirectory to keep.
+                   files can be explicitly specified.
+                   [default: ".mk", ".txt", ".cpp", ".hpp", ".tpp", "src/", "Makefile"]
 """
 import shutil
 from pathlib import Path
