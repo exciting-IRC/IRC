@@ -26,12 +26,20 @@ vector<string> split(const string& str, const string& sep = "");
 
 /// stringstream 출력을 지원하는 원소에 한해 문자열로 변경
 template <typename T>
-string to_string(const T& t) {
-  std::stringstream ss;
+string to_string(const T& t);
 
-  ss << t;
-  return ss.str();
+/// istringstream 에서 변환이 가능한 타입에 한해 해당 타입으로 변환
+template <typename T>
+T convert_to(const string& from) {
+  T val;
+  std::istringstream iss(from);
+
+  iss >> val;
+  return val;
 }
+
+/// 파이썬 Path.read_text와 같은 역할
+string read_text(const string& filename);
 
 /**
  * @brief 파이썬의 str.join(이터러블)과 유사한 기능을 제공하는 함수
