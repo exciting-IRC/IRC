@@ -7,7 +7,7 @@ CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
 CXXFLAGS += -I src
-CXXFLAGS += -MMD
+CXXFLAGS += -MMD -MP
 
 SUBDIRS := strutil util logger color general
 
