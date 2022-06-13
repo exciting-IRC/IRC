@@ -1,10 +1,12 @@
 #include <iostream>
+#include <string>
+#include <util/FixedBuffer/FixedBuffer.hpp>
 #include <util/strutil/strutil.hpp>
 #include <vector>
-#include <string>
+
+#include "container_of.hpp"
 
 int main() {
   using namespace std;
-  vector<string> v = util::split("a,b,c", ",");
-  util::print_vector(v);
+  util::print_vector(V(("hello", "world", "bye", "world")));
 }
