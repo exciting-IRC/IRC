@@ -12,7 +12,7 @@ class Client;
 typedef std::list<Client *> ClientList;
 typedef util::FixedBuffer<char, 512> Buffer;
 
-class Client : public EventHandler {
+class Client : public IEventHandler {
  public:
   Client(int sock, Server &server, ClientList::iterator this_position);
 

@@ -49,18 +49,21 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
-static struct kevent create_kevent(EventKind::e kind, EventHandler *eh) {
+static struct kevent create_kevent(EventKind::e kind, IEventHandler *eh) {
   struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
+
   return ev;
 }
 
-int EventPool::addEvent(EventKind::e kind, EventHandler *eh) {
+int EventPool::addEvent(EventKind::e kind, IEventHandler *eh) {
   struct kevent ev = create_kevent(kind, eh);
+
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
 
 int EventPool::dispatchEvent(time_t sec) {
   struct timespec ts = util::create_timespec_in_sec(sec);
+
   return dispatchEvent(ts);
 }
 
@@ -70,7 +73,7 @@ int EventPool::dispatchEvent(const struct timespec &ts) {
     return -1;
   for (ssize_t i = 0; i < events; ++i) {
     struct kevent &kev = event_list_[i];
-    EventHandler *eh = static_cast<EventHandler *>(kev.udata);
+    IEventHandler *eh = static_cast<IEventHandler *>(kev.udata);
 
     struct Event ev;
     ev.flags = EventFlag::kEmpty;

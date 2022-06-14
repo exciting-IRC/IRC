@@ -24,7 +24,7 @@ struct Event {
   EventFlag::e flags;
 };
 
-class EventHandler {
+class IEventHandler {
  public:
   virtual int handle(Event e) = 0;
   virtual int getFd() const = 0;
@@ -44,7 +44,7 @@ class EventPool {
 
   bool ok();
 
-  int addEvent(EventKind::e kind, EventHandler *eh);
+  int addEvent(EventKind::e kind, IEventHandler *eh);
 
   int dispatchEvent(time_t sec);
 
