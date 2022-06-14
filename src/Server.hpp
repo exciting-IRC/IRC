@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include <list>
+
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
@@ -11,7 +12,7 @@ class Client;
 typedef std::list<Client *> ClientList;
 typedef util::FixedBuffer<char, 512> Buffer;
 
-class Server : public EventHandler {
+class Server : public IEventHandler {
  public:
   Server(const char *listen_addr, int port, int backlog);
   ~Server();

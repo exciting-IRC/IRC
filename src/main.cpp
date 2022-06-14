@@ -32,7 +32,7 @@ int main() {
   if (!pool.ok())
     err(1, "event_pool_init");
 
-  pool.addEvent(kRead, &srv);
+  pool.addEvent(EventKind::kRead, &srv);
 
   while (true) {
     int k = pool.dispatchEvent(1);

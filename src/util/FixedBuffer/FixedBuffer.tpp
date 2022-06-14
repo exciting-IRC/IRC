@@ -56,7 +56,7 @@ bool FixedBuffer<T, S>::eof() const {
 
 template <typename T, std::size_t S>
 void FixedBuffer<T, S>::clear() {
-  return o_cursor_ = i_cursor_ = 0;
+  o_cursor_ = i_cursor_ = 0;
 }
 
 }  // namespace util
