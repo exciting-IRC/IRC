@@ -4,11 +4,11 @@
 
 #include <sys/event.h>
 
-enum EventKind { kRead = EVFILT_READ, kWrite = EVFILT_WRITE};
+#include "util/general/result.hpp"
 
-enum EventFlags {
-  kEOF = 1
-};
+enum EventKind { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
+
+enum EventFlags { kEOF = 1 };
 
 // forward declearation
 class EventPool;
@@ -47,10 +47,15 @@ class EventPool {
   int dispatchEvent(const struct timespec &ts);
 
  private:
+  return_t::e initKqueue();
+  return_t::e initEventList();
+
+ private:
   struct kevent *event_list_;
   int fd_;
   bool ok_;
   int max_event_;
+  bool is_fd_open_;
 };
 
 #endif  // EVENT_EVENT_HPP

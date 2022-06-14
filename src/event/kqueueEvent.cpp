@@ -9,27 +9,41 @@
 #include "event/kqueue/kqueue.hpp"
 #include "util/general/time.hpp"
 
-EventPool::EventPool(int max_event)
-    : event_list_(NULL), ok_(false), max_event_(max_event) {
+return_t::e EventPool::initKqueue() {
   fd_ = util::kqueue();
   if (fd_ == -1)
-    return;
+    return return_t::kError;
+  is_fd_open_ = true;
+  return return_t::kOK;
+}
+
+return_t::e EventPool::initEventList() {
   event_list_ = new (std::nothrow) struct kevent[max_event_];
   if (event_list_ == NULL)
+    return return_t::kError;
+  return return_t::kOK;
+}
+
+EventPool::EventPool(int max_event)
+    : event_list_(NULL), ok_(false), max_event_(max_event), is_fd_open_(false) {
+  if (initKqueue() == return_t::kError)
+    return;
+  if (initEventList() == return_t::kError)
     return;
   ok_ = true;
 }
 
 EventPool::~EventPool() {
-  if (fd_ != -1)
-    close();
+  close();
   delete event_list_;
 }
 
 int EventPool::close() {
+  if (!is_fd_open_)
+    return 0;
   int ret = ::close(fd_);
   if (ret == 0)
-    fd_ = -1;
+    is_fd_open_ = false;
   return ret;
 }
 
