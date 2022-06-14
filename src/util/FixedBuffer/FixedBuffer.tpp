@@ -49,5 +49,15 @@ T FixedBuffer<T, S>::pop() {
   return this->elems[o_cursor_++];
 }
 
+template <typename T, std::size_t S>
+bool FixedBuffer<T, S>::eof() const {
+  return o_cursor_ == i_cursor_;
+}
+
+template <typename T, std::size_t S>
+void FixedBuffer<T, S>::clear() {
+  return o_cursor_ = i_cursor_ = 0;
+}
+
 }  // namespace util
 #endif  // FIXEDBUFFER_TPP
