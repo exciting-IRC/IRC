@@ -4,11 +4,15 @@
 
 #include <sys/event.h>
 
+#include <bitset>
+
 #include "util/general/result.hpp"
 
 struct EventKind {
   enum e { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
 };
+
+typedef std::bitset<8> EventFlagSet;
 
 struct EventFlag {
   enum e { kEmpty = 0, kEOF = 1 };
@@ -18,10 +22,14 @@ struct EventFlag {
 class EventPool;
 
 struct Event {
-  EventPool *ep;
+  Event(EventPool &pool_);
+  void setReadEvent(const struct kevent &kev);
+  void setWriteEvnet(const struct kevent &kev);
+
+  EventPool &pool;
   EventKind::e kind;
   intptr_t data;
-  EventFlag::e flags;
+  EventFlagSet flags;
 };
 
 class IEventHandler {
@@ -49,6 +57,9 @@ class EventPool {
   int dispatchEvent(time_t sec);
 
   int dispatchEvent(const struct timespec &ts);
+
+ private:
+  int handleEvent(struct kevent &kev);
 
  private:
   return_t::e initKqueue();

@@ -9,6 +9,20 @@
 #include "event/kqueue/kqueue.hpp"
 #include "util/general/time.hpp"
 
+Event::Event(EventPool &pool_) : pool(pool_), flags() {}
+
+void Event::setReadEvent(const struct kevent &kev) {
+  this->kind = EventKind::kRead;
+  this->data = kev.data;
+  if (kev.flags & EV_EOF)
+    this->flags.set(EventFlag::kEOF);
+}
+
+void Event::setWriteEvnet(const struct kevent &kev) {
+  this->kind = EventKind::kWrite;
+  this->data = kev.data;
+}
+
 return_t::e EventPool::initKqueue() {
   fd_ = util::kqueue();
   if (fd_ == -1)
@@ -67,30 +81,35 @@ int EventPool::dispatchEvent(time_t sec) {
   return dispatchEvent(ts);
 }
 
+int EventPool::handleEvent(struct kevent &kev) {
+  if (kev.flags & EV_ERROR) {
+    // log
+    return -1;
+  }
+  Event ev(*this);
+  switch (kev.filter) {
+    case EVFILT_READ:
+      ev.setReadEvent(kev);
+      break;
+
+    case EVFILT_WRITE:
+      ev.setWriteEvnet(kev);
+      break;
+    default:
+      // XXX add log
+      break;
+  }
+  IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);
+  handler->handle(ev);
+  return 0;
+}
+
 int EventPool::dispatchEvent(const struct timespec &ts) {
   ssize_t events = util::kevent_wait(fd_, event_list_, max_event_, &ts);
   if (events == -1)
     return -1;
   for (ssize_t i = 0; i < events; ++i) {
-    struct kevent &kev = event_list_[i];
-    IEventHandler *eh = static_cast<IEventHandler *>(kev.udata);
-
-    struct Event ev;
-    ev.flags = EventFlag::kEmpty;
-    ev.ep = this;
-    if (kev.filter == EVFILT_READ) {
-      ev.kind = EventKind::kRead;
-      ev.data = kev.data;
-      if (kev.flags & EV_EOF)
-        ev.flags = static_cast<EventFlag::e>(ev.flags | EventFlag::kEOF);
-    } else if (kev.filter == EVFILT_WRITE) {
-      ev.kind = EventKind::kWrite;
-      ev.data = kev.data;
-    } else {
-      // XXX add log (unknown event)
-      throw std::invalid_argument("kqueue: unknown Event occred");
-    }
-    eh->handle(ev);
+    handleEvent(event_list_[i]);
   }
   return events;
 }

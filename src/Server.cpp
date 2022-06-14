@@ -68,7 +68,7 @@ int Server::handle(Event e) {
               << std::endl;
     ClientList::iterator entry = client_list_.insert(client_list_.end(), NULL);
     *entry = new Client(client_socket, *this, entry);
-    e.ep->addEvent(EventKind::kRead, *entry);
+    e.pool.addEvent(EventKind::kRead, *entry);
   }
   return 0;
 }
