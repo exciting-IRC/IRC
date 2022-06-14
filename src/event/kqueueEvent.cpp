@@ -73,13 +73,13 @@ int EventPool::dispatchEvent(const struct timespec &ts) {
     EventHandler *eh = static_cast<EventHandler *>(kev.udata);
 
     struct Event ev;
-    ev.flags = EventFlags::kEmpty;
+    ev.flags = EventFlag::kEmpty;
     ev.ep = this;
     if (kev.filter == EVFILT_READ) {
       ev.kind = EventKind::kRead;
       ev.data = kev.data;
       if (kev.flags & EV_EOF)
-        ev.flags = static_cast<EventFlags::e>(ev.flags | EventFlags::kEOF);
+        ev.flags = static_cast<EventFlag::e>(ev.flags | EventFlag::kEOF);
     } else if (kev.filter == EVFILT_WRITE) {
       ev.kind = EventKind::kWrite;
       ev.data = kev.data;

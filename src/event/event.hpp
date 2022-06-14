@@ -10,7 +10,7 @@ struct EventKind {
   enum e { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
 };
 
-struct EventFlags {
+struct EventFlag {
   enum e { kEmpty = 0, kEOF = 1 };
 };
 
@@ -21,7 +21,7 @@ struct Event {
   EventPool *ep;
   EventKind::e kind;
   intptr_t data;
-  EventFlags::e flags;
+  EventFlag::e flags;
 };
 
 class EventHandler {

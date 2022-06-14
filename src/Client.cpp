@@ -36,7 +36,7 @@ void Client::handleReadEvent(Event &e) {
       std::cout << std::endl;
     }
   }
-  if ((e.flags & EventFlags::kEOF) || e.data == 0) {
+  if ((e.flags & EventFlag::kEOF) || e.data == 0) {
     std::cout << "Connection closed." << std::endl;
     server_.removeClient(this_position_);
   }
