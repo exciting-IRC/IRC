@@ -6,6 +6,11 @@
 
 #include <bitset>
 
+#include "util/general/result.hpp"
+#include "util/general/types.hpp"
+
+typedef fd_t socket_t;
+
 namespace util {
 
 using ::accept;
@@ -33,7 +38,7 @@ struct SendFlag_t {
  * 프로토콜 사용
  * @return int fd 또는 오류시 -1
  */
-int socket(int domain, int type, int protocol = SockProtocol_t::kDefult);
+socket_t socket(int domain, int type, int protocol = SockProtocol_t::kDefult);
 
 /**
  * @brief 소켓을 연결
@@ -42,15 +47,15 @@ int socket(int domain, int type, int protocol = SockProtocol_t::kDefult);
  * @param backlog 최대 연결 개수. 연결 가능한 개수보다 더 큰 값이나 0 이하의
  * 값이 들어오면 함수에서 적절한 값을 알아서 설정해준다.
  */
-return_t::e listen(int socket, int backlog);
-int bind_in(int socket, const struct sockaddr_in *addr);
-int connect_in(int socket, const struct sockaddr_in *addr);
-ssize_t recv(int socket, void *buffer, size_t length,
+return_t::e listen(socket_t socket, int backlog);
+int bind_in(socket_t socket, const struct sockaddr_in *addr);
+int connect_in(socket_t socket, const struct sockaddr_in *addr);
+ssize_t recv(socket_t socket, void *buffer, size_t length,
              int flags = RecvFlag_t::kDefult);
-ssize_t send(int socket, const void *buffer, size_t length,
+ssize_t send(socket_t socket, const void *buffer, size_t length,
              int flags = SendFlag_t::kDefult);
-int setsockopt(int socket, int level, int option_name, const void *option_value,
-               socklen_t option_len);
+int setsockopt(socket_t socket, int level, int option_name,
+               const void *option_value, socklen_t option_len);
 
 }  // namespace util
 
