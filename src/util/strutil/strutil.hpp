@@ -11,8 +11,6 @@ namespace util {
 using std::string;
 using std::vector;
 
-enum { MAXSPLIT_ALL = -1 };
-
 extern const string white_space;
 
 string& erase_from(string& line, const string& match);
