@@ -54,7 +54,7 @@ struct Config {
     std::string line;
     map<string, string> m;
     while (std::getline(configfile, line)) {
-      line = util::erase_from(line, "#");
+      line = util::trim(util::erase_from(line, "#"));
       if (line.empty())
         continue;
       m.insert(getkv(line));
