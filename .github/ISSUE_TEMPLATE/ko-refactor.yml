@@ -1,0 +1,9 @@
+name: 리팩터링
+description: 우리코드 예쁘게 예쁘게
+title: "[Refactor ⚙️] "
+labels: ["Refactor ⚙️"]
+body:
+  - type: textarea
+    id: implementation
+    attributes:
+      label: 내용
