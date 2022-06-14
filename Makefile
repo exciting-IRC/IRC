@@ -9,18 +9,15 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 CXXFLAGS += -I src
 CXXFLAGS += -MMD -MP
 
-SUBDIRS := strutil util logger color general
-
-SRC_UTIL := $(foreach dir, $(SUBDIRS), $(wildcard src/util/$(dir)/*.cpp))
-
-SRC := src/main.cpp $(SRC_UTIL)
+SRC := $(shell find src -name '*.cpp')
 OBJ := $(SRC:%.cpp=%.o)
+DEP := $(OBJ:%.o=%.d)
 
 $(NAME): $(OBJ)
 	@echo "\n$(GRN)Linking...$(END)"
 	@$(CXX) $(CXXFLAGS) -o $@ $^
 
--include $(OBJ:%.o=%.d)
+-include $(DEP)
 
 %.o: %.cpp
 	@echo "$(YEL)$@$(END)"
@@ -29,7 +26,7 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(DEP)
 
 fclean: clean
 	rm -f $(NAME)
