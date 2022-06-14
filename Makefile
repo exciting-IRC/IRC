@@ -11,12 +11,13 @@ CXXFLAGS += -MMD -MP
 
 SRC := $(shell find src -name '*.cpp')
 OBJ := $(SRC:%.cpp=%.o)
+DEP := $(OBJ:%.o=%.d)
 
 $(NAME): $(OBJ)
 	@echo "\n$(GRN)Linking...$(END)"
 	@$(CXX) $(CXXFLAGS) -o $@ $^
 
--include $(OBJ:%.o=%.d)
+-include $(DEP)
 
 %.o: %.cpp
 	@echo "$(YEL)$@$(END)"
@@ -25,7 +26,7 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(DEP)
 
 fclean: clean
 	rm -f $(NAME)
