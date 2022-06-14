@@ -12,8 +12,8 @@
 
 #include "Server.hpp"
 #include "event/event.hpp"
-#include "util/FixedBuffer/FixedBuffer.hpp"
 #include "socket/socket.hpp"
+#include "util/FixedBuffer/FixedBuffer.hpp"
 
 Client::Client(int sock, Server &server, ClientList::iterator this_position)
     : sock_(sock), server_(server), this_position_(this_position) {}
@@ -36,7 +36,7 @@ void Client::handleReadEvent(Event &e) {
       std::cout << std::endl;
     }
   }
-  if ((e.flags & kEOF) || e.data == 0) {
+  if ((e.flags & EventFlags::kEOF) || e.data == 0) {
     std::cout << "Connection closed." << std::endl;
     server_.removeClient(this_position_);
   }
@@ -44,10 +44,10 @@ void Client::handleReadEvent(Event &e) {
 
 int Client::handle(Event e) {
   switch (e.kind) {
-    case kRead:
+    case EventKind::kRead:
       handleReadEvent(e);
       break;
-    
+
     default:
       // XXX throw invalid_argument, logging
       break;

@@ -56,7 +56,7 @@ bool Server::ok() { return ok_; }
 int Server::getFd() const { return sock_; }
 
 int Server::handle(Event e) {
-  if (e.kind == kRead) {
+  if (e.kind == EventKind::kRead) {
     struct sockaddr_in sin;
     socklen_t length = sizeof(sin);
     int client_socket =
@@ -68,7 +68,7 @@ int Server::handle(Event e) {
               << std::endl;
     ClientList::iterator entry = client_list_.insert(client_list_.end(), NULL);
     *entry = new Client(client_socket, *this, entry);
-    e.ep->addEvent(kRead, *entry);
+    e.ep->addEvent(EventKind::kRead, *entry);
   }
   return 0;
 }

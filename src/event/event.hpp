@@ -6,18 +6,22 @@
 
 #include "util/general/result.hpp"
 
-enum EventKind { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
+struct EventKind {
+  enum e { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
+};
 
-enum EventFlags { kEOF = 1 };
+struct EventFlags {
+  enum e { kEmpty = 0, kEOF = 1 };
+};
 
 // forward declearation
 class EventPool;
 
 struct Event {
   EventPool *ep;
-  EventKind kind;
+  EventKind::e kind;
   intptr_t data;
-  unsigned int flags;
+  EventFlags::e flags;
 };
 
 class EventHandler {
@@ -40,7 +44,7 @@ class EventPool {
 
   bool ok();
 
-  int addEvent(EventKind kind, EventHandler *eh);
+  int addEvent(EventKind::e kind, EventHandler *eh);
 
   int dispatchEvent(time_t sec);
 

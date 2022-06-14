@@ -49,12 +49,12 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
-static struct kevent create_kevent(EventKind kind, EventHandler *eh) {
+static struct kevent create_kevent(EventKind::e kind, EventHandler *eh) {
   struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
   return ev;
 }
 
-int EventPool::addEvent(EventKind kind, EventHandler *eh) {
+int EventPool::addEvent(EventKind::e kind, EventHandler *eh) {
   struct kevent ev = create_kevent(kind, eh);
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
@@ -73,15 +73,15 @@ int EventPool::dispatchEvent(const struct timespec &ts) {
     EventHandler *eh = static_cast<EventHandler *>(kev.udata);
 
     struct Event ev;
-    ev.flags = 0;
+    ev.flags = EventFlags::kEmpty;
     ev.ep = this;
     if (kev.filter == EVFILT_READ) {
-      ev.kind = kRead;
+      ev.kind = EventKind::kRead;
       ev.data = kev.data;
       if (kev.flags & EV_EOF)
-        ev.flags |= EV_EOF;
+        ev.flags = static_cast<EventFlags::e>(ev.flags | EventFlags::kEOF);
     } else if (kev.filter == EVFILT_WRITE) {
-      ev.kind = kWrite;
+      ev.kind = EventKind::kWrite;
       ev.data = kev.data;
     } else {
       // XXX add log (unknown event)
