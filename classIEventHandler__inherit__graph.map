@@ -1,5 +1,5 @@
-<map id="EventHandler" name="EventHandler">
-<area shape="rect" id="node1" title=" " alt="" coords="23,5,123,32"/>
+<map id="IEventHandler" name="IEventHandler">
+<area shape="rect" id="node1" title=" " alt="" coords="21,5,125,32"/>
 <area shape="rect" id="node2" href="$classClient.html" title=" " alt="" coords="5,80,60,107"/>
 <area shape="rect" id="node3" href="$classServer.html" title=" " alt="" coords="84,80,144,107"/>
 </map>

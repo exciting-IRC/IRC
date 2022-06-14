@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['server_0',['Server',['../classServer.html',1,'']]]
+  ['ieventhandler_0',['IEventHandler',['../classIEventHandler.html',1,'']]]
 ];

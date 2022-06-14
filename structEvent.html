@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('structEvent.html',''); initResizable()
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public 멤버 함수</a> &#124;
 <a href="#pub-attribs">Public 속성</a> &#124;
 <a href="structEvent-members.html">모든 멤버 목록</a>  </div>
   <div class="headertitle"><div class="title">Event 구조체 참조</div></div>
@@ -100,23 +101,36 @@ Event에 대한 협력 다이어그램:</div>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">범례</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 멤버 함수</h2></td></tr>
+<tr class="memitem:a11ea0f0f563a7bbfaa13863b11e51763"><td class="memItemLeft" align="right" valign="top"><a id="a11ea0f0f563a7bbfaa13863b11e51763" name="a11ea0f0f563a7bbfaa13863b11e51763"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Event</b> (<a class="el" href="classEventPool.html">EventPool</a> &amp;pool_)</td></tr>
+<tr class="separator:a11ea0f0f563a7bbfaa13863b11e51763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b9cb7431dddfe8ed5cde4965f5e360b"><td class="memItemLeft" align="right" valign="top"><a id="a3b9cb7431dddfe8ed5cde4965f5e360b" name="a3b9cb7431dddfe8ed5cde4965f5e360b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setReadEvent</b> (const struct kevent &amp;kev)</td></tr>
+<tr class="separator:a3b9cb7431dddfe8ed5cde4965f5e360b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb25b611c6d5add9a5e1054aa3669d7c"><td class="memItemLeft" align="right" valign="top"><a id="aeb25b611c6d5add9a5e1054aa3669d7c" name="aeb25b611c6d5add9a5e1054aa3669d7c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setWriteEvnet</b> (const struct kevent &amp;kev)</td></tr>
+<tr class="separator:aeb25b611c6d5add9a5e1054aa3669d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public 속성</h2></td></tr>
-<tr class="memitem:a05e47346ddf17ec5959465be0112d4b3"><td class="memItemLeft" align="right" valign="top"><a id="a05e47346ddf17ec5959465be0112d4b3" name="a05e47346ddf17ec5959465be0112d4b3"></a>
-<a class="el" href="classEventPool.html">EventPool</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ep</b></td></tr>
-<tr class="separator:a05e47346ddf17ec5959465be0112d4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a628b64ab207ec0d57a24c5b9b73e8540"><td class="memItemLeft" align="right" valign="top"><a id="a628b64ab207ec0d57a24c5b9b73e8540" name="a628b64ab207ec0d57a24c5b9b73e8540"></a>
-EventKind&#160;</td><td class="memItemRight" valign="bottom"><b>kind</b></td></tr>
-<tr class="separator:a628b64ab207ec0d57a24c5b9b73e8540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a775864a9eb180a5587a6cf85bfd99880"><td class="memItemLeft" align="right" valign="top"><a id="a775864a9eb180a5587a6cf85bfd99880" name="a775864a9eb180a5587a6cf85bfd99880"></a>
+<a class="el" href="classEventPool.html">EventPool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>pool</b></td></tr>
+<tr class="separator:a775864a9eb180a5587a6cf85bfd99880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ef1abecf4527c3edd96b9255903947"><td class="memItemLeft" align="right" valign="top"><a id="af9ef1abecf4527c3edd96b9255903947" name="af9ef1abecf4527c3edd96b9255903947"></a>
+EventKind::e&#160;</td><td class="memItemRight" valign="bottom"><b>kind</b></td></tr>
+<tr class="separator:af9ef1abecf4527c3edd96b9255903947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a350a9a3ee795abddc049c1dc99aef43b"><td class="memItemLeft" align="right" valign="top"><a id="a350a9a3ee795abddc049c1dc99aef43b" name="a350a9a3ee795abddc049c1dc99aef43b"></a>
 intptr_t&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
 <tr class="separator:a350a9a3ee795abddc049c1dc99aef43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25b16040439b133e7504b5ff10fa1f37"><td class="memItemLeft" align="right" valign="top"><a id="a25b16040439b133e7504b5ff10fa1f37" name="a25b16040439b133e7504b5ff10fa1f37"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
-<tr class="separator:a25b16040439b133e7504b5ff10fa1f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69722c9fe6af2453bfd13669044f54b7"><td class="memItemLeft" align="right" valign="top"><a id="a69722c9fe6af2453bfd13669044f54b7" name="a69722c9fe6af2453bfd13669044f54b7"></a>
+EventFlagSet&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="separator:a69722c9fe6af2453bfd13669044f54b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>이 구조체에 대한 문서화 페이지는 다음의 파일로부터 생성되었습니다.:<ul>
+<hr/>이 구조체에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.:<ul>
 <li>src/event/<a class="el" href="event_8hpp_source.html">event.hpp</a></li>
+<li>src/event/kqueueEvent.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
