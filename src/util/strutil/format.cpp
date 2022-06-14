@@ -17,7 +17,7 @@ struct FormatState {
 
   // 멤버 함수
   bool on_escape(size_t i, const string& match) {
-    return fmt.substr(i, i + 1) == match;
+    return fmt.substr(i, 2) == match;
   }
   void advance_and_append(size_t& i, const string& to_add) {
     i++;
@@ -27,8 +27,8 @@ struct FormatState {
 
 string format(const string& fmt, const vector<string>& args) {
   FormatState state(fmt, args);
-
-  for (size_t i = 0; i < fmt.size(); i++) {
+  size_t i = 0;
+  for (; i < fmt.size(); i++) {
     if (state.on_escape(i, "{{")) {
       state.advance_and_append(i, "{");
     } else if (fmt[i] == '{') {
