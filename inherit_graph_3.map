@@ -1,4 +1,5 @@
 <map id="그래픽컬한 클래스 계통도" name="그래픽컬한 클래스 계통도">
-<area shape="rect" id="node1" href="$structutil_1_1array.html" title=" " alt="" coords="5,5,136,47"/>
-<area shape="rect" id="node2" href="$classutil_1_1FixedBuffer.html" title=" " alt="" coords="184,5,303,47"/>
+<area shape="rect" id="node1" href="$classEventHandler.html" title=" " alt="" coords="5,31,105,57"/>
+<area shape="rect" id="node2" href="$classClient.html" title=" " alt="" coords="156,5,211,32"/>
+<area shape="rect" id="node3" href="$classServer.html" title=" " alt="" coords="153,56,213,83"/>
 </map>

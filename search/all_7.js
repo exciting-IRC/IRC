@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_0',['size',['../structutil_1_1array.html#afd867fed35fb8ec1d9cbfbcabf9e79ea',1,'util::array']]]
+  ['operator_5b_5d_0',['operator[]',['../structutil_1_1array.html#a0991395ea080170667db3524e6145ce7',1,'util::array']]]
 ];

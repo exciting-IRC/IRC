@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>IRC: src/network/socket/socket.hpp 소스 파일</title>
+<title>IRC: src/socket/socket.hpp 소스 파일</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -99,23 +99,24 @@ $(document).ready(function(){initNavTree('socket_8hpp_source.html',''); initResi
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>using ::bind;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>using ::connect;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">inline</span> <span class="keywordtype">int</span> socket(<span class="keywordtype">int</span> domain, <span class="keywordtype">int</span> type, <span class="keywordtype">int</span> protocol);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">inline</span> <span class="keywordtype">int</span> listen(<span class="keywordtype">int</span> socket, <span class="keywordtype">int</span> backlog);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">inline</span> <span class="keywordtype">int</span> bind_in(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr_in *addr);</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">inline</span> <span class="keywordtype">int</span> connect_in(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr_in *addr);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">inline</span> ssize_t recv(<span class="keywordtype">int</span> socket, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> length, <span class="keywordtype">int</span> flags = 0);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">inline</span> ssize_t send(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> length,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                    <span class="keywordtype">int</span> flags = 0);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}  <span class="comment">// namespace util</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif  </span><span class="comment">// SOCKET_SOCKET_HPP</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">int</span> socket(<span class="keywordtype">int</span> domain, <span class="keywordtype">int</span> type, <span class="keywordtype">int</span> protocol = 0);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordtype">int</span> listen(<span class="keywordtype">int</span> socket, <span class="keywordtype">int</span> backlog);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">int</span> bind_in(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr_in *addr);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordtype">int</span> connect_in(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr_in *addr);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>ssize_t recv(<span class="keywordtype">int</span> socket, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> length, <span class="keywordtype">int</span> flags = 0);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>ssize_t send(<span class="keywordtype">int</span> socket, <span class="keyword">const</span> <span class="keywordtype">void</span> *buffer, <span class="keywordtype">size_t</span> length, <span class="keywordtype">int</span> flags = 0);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keywordtype">int</span> setsockopt(<span class="keywordtype">int</span> socket, <span class="keywordtype">int</span> level, <span class="keywordtype">int</span> option_name, <span class="keyword">const</span> <span class="keywordtype">void</span> *option_value,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>               socklen_t option_len);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}  <span class="comment">// namespace util</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#endif  </span><span class="comment">// SOCKET_SOCKET_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fc4c7f03e1a69a98c370fae55a743828.html">network</a></li><li class="navelem"><a class="el" href="dir_b9fff4404c3d44b28a8dc50e00dcf401.html">socket</a></li><li class="navelem"><b>socket.hpp</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_9ad1227260954e346101f3844f0abb3d.html">socket</a></li><li class="navelem"><b>socket.hpp</b></li>
     <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>

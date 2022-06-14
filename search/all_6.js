@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_5b_5d_0',['operator[]',['../structutil_1_1array.html#a0991395ea080170667db3524e6145ce7',1,'util::array']]]
+  ['kqueue_20_3csys_2fevent_2eh_3e_0',['KQUEUE &lt;sys/event.h&gt;',['../md_docs_kqueue.html',1,'']]]
 ];

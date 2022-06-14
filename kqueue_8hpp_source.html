@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>IRC: src/network/kqueue/kqueue.hpp 소스 파일</title>
+<title>IRC: src/event/kqueue/kqueue.hpp 소스 파일</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,24 +95,24 @@ $(document).ready(function(){initNavTree('kqueue_8hpp_source.html',''); initResi
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifdef EV_SET</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#undef EV_SET</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// 조금 더 나은 인텔리센스 지원을 위해서 새로 정의함</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define EV_SET(kev, ident, filter, flags, fflags, data, udata) \</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define EV_SET(kev, _ident, _filter, _flags, _fflags, _data, _udata) \</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">  do {                                                         \</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">    struct kevent *__kevp__ = (kev);                           \</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">    __kevp__-&gt;ident = (ident);                                 \</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">    __kevp__-&gt;filter = (filter);                               \</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">    __kevp__-&gt;flags = (flags);                                 \</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">    __kevp__-&gt;fflags = (fflags);                               \</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">    __kevp__-&gt;data = (data);                                   \</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">    __kevp__-&gt;udata = (udata);                                 \</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">    __kevp__-&gt;ident = (_ident);                                 \</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">    __kevp__-&gt;filter = (_filter);                               \</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">    __kevp__-&gt;flags = (_flags);                                 \</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">    __kevp__-&gt;fflags = (_fflags);                               \</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">    __kevp__-&gt;data = (_data);                                   \</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">    __kevp__-&gt;udata = (_udata);                                 \</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">  } while (0)</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#endif  </span><span class="comment">// EV_SET</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span>util {</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">inline</span> ssize_t kevent_ctl(<span class="keywordtype">int</span> kq, <span class="keyword">const</span> <span class="keyword">struct</span> kevent *changelist, <span class="keywordtype">int</span> nchangs,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>ssize_t kevent_ctl(<span class="keywordtype">int</span> kq, <span class="keyword">const</span> <span class="keyword">struct</span> kevent *changelist, <span class="keywordtype">int</span> nchangs,</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                          <span class="keyword">const</span> <span class="keyword">struct</span> timespec *timeout);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">inline</span> ssize_t kevent_wait(<span class="keywordtype">int</span> kq, <span class="keyword">struct</span> kevent *eventlist, <span class="keywordtype">int</span> nevents,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>ssize_t kevent_wait(<span class="keywordtype">int</span> kq, <span class="keyword">struct</span> kevent *eventlist, <span class="keywordtype">int</span> nevents,</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                           <span class="keyword">const</span> <span class="keyword">struct</span> timespec *timeout);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>using ::kevent;</div>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('kqueue_8hpp_source.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fc4c7f03e1a69a98c370fae55a743828.html">network</a></li><li class="navelem"><a class="el" href="dir_a59a0a95998619518b0ebd16f616d0ac.html">kqueue</a></li><li class="navelem"><b>kqueue.hpp</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_f278fbcf62338d746f20818c09b59427.html">event</a></li><li class="navelem"><a class="el" href="dir_765d10826491e8971dd0c5cd681a33e0.html">kqueue</a></li><li class="navelem"><b>kqueue.hpp</b></li>
     <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
