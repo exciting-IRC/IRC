@@ -48,6 +48,9 @@ struct Config {
 
   static Config from(const string &filename) {
     std::ifstream configfile(filename);
+    if (configfile.fail())
+      throw std::invalid_argument("config file not found: " + filename);
+
     std::string line;
     map<string, string> m;
     while (std::getline(configfile, line)) {
@@ -56,9 +59,9 @@ struct Config {
         continue;
       m.insert(getkv(line));
     }
-    return Config(m["name"], m["info"], m["motd"], m["oper_user"],
-                  m["oper_password"], m["max_clients"], m["ping"],
-                  m["timeout"]);
+    return Config(m.at("name"), m["info"], m["motd"], m["oper_user"],
+                  m["oper_password"], m.at("max_clients"), m.at("ping"),
+                  m.at("timeout"));
   }
 };
 
