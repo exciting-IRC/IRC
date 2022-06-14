@@ -5,8 +5,9 @@
 #include <new>
 #include <stdexcept>
 
-#include "event/kqueue/kqueue.hpp"
 #include "event/event.hpp"
+#include "event/kqueue/kqueue.hpp"
+#include "util/general/time.hpp"
 
 EventPool::EventPool(int max_event)
     : event_list_(NULL), ok_(false), max_event_(max_event) {
@@ -34,23 +35,18 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
+static struct kevent create_kevent(EventKind kind, EventHandler *eh) {
+  struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
+  return ev;
+}
+
 int EventPool::addEvent(EventKind kind, EventHandler *eh) {
-  struct kevent ev = {
-    eh->getFd(),
-    kind,
-    EV_ADD,
-    0,
-    0,
-    static_cast<void *>(eh)
-  };
+  struct kevent ev = create_kevent(kind, eh);
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
 
 int EventPool::dispatchEvent(time_t sec) {
-  struct timespec ts;
-
-  ts.tv_nsec = 0;
-  ts.tv_sec = sec;
+  struct timespec ts = util::create_timespec_in_sec(sec);
   return dispatchEvent(ts);
 }
 
