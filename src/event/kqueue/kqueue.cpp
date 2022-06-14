@@ -5,12 +5,12 @@
 namespace util {
 
 ssize_t kevent_ctl(int kq, const struct kevent *changelist, int nchangs,
-                          const struct timespec *timeout) {
+                   const struct timespec *timeout) {
   return kevent(kq, changelist, nchangs, NULL, 0, timeout);
 }
 
 ssize_t kevent_wait(int kq, struct kevent *eventlist, int nevents,
-                           const struct timespec *timeout) {
+                    const struct timespec *timeout) {
   return kevent(kq, NULL, 0, eventlist, nevents, timeout);
 }
 

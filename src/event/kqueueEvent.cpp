@@ -49,7 +49,7 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
-static struct kevent create_kevent(EventKind::e kind, IEventHandler *eh) {
+struct kevent create_kevent(EventKind::e kind, IEventHandler *eh) {
   struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
 
   return ev;
