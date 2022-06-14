@@ -16,7 +16,7 @@ class Client : public EventHandler {
  public:
   Client(int sock, Server &server, ClientList::iterator this_position);
 
-  ~Client();
+  virtual ~Client();
 
  private:
   Client(const Client &);             // = delete
@@ -32,7 +32,7 @@ class Client : public EventHandler {
   ssize_t recv(size_t length);
 
  private:
-  void Client::handleReadEvent(Event &e);
+  void handleReadEvent(Event &e);
 
  private:
   Buffer buffer;

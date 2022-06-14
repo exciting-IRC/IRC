@@ -20,18 +20,29 @@ EventPool::EventPool(int max_event)
 }
 
 EventPool::~EventPool() {
-  close();
+  if (fd_ != -1)
+    close();
   delete event_list_;
 }
 
-int EventPool::close() { return ::close(fd_); }
+int EventPool::close() {
+  int ret = ::close(fd_);
+  if (ret == 0)
+    fd_ = -1;
+  return ret;
+}
 
 bool EventPool::ok() { return ok_; }
 
 int EventPool::addEvent(EventKind kind, EventHandler *eh) {
-  struct kevent ev;
-
-  EV_SET(&ev, eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh));
+  struct kevent ev = {
+    eh->getFd(),
+    kind,
+    EV_ADD,
+    0,
+    0,
+    static_cast<void *>(eh)
+  };
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
 

@@ -7,7 +7,7 @@
 #include "Client.hpp"
 #include "Server.hpp"
 #include "event/event.hpp"
-#include "network/socket/socket.hpp"
+#include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
 const static char *bind_addr = "127.0.0.1";
@@ -36,6 +36,7 @@ int main() {
 
   while (true) {
     int k = pool.dispatchEvent(1);
+    (void)k;
     if (recived_sig) {
       printf("shutdown... %s\n", strsignal(recived_sig));
       return 0;

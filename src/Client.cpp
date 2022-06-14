@@ -12,15 +12,16 @@
 
 #include "Server.hpp"
 #include "event/event.hpp"
-#include "util/FixedBuffer/Fixedbuffer.hpp"
+#include "util/FixedBuffer/FixedBuffer.hpp"
+#include "socket/socket.hpp"
 
-Client : Client(int sock, Server &server, ClientList::iterator this_position)
+Client::Client(int sock, Server &server, ClientList::iterator this_position)
     : sock_(sock), server_(server), this_position_(this_position) {}
 
 Client::~Client() {
   if (sock_ != -1)
     close();
-};
+}
 
 int Client::getFd() const { return sock_; }
 

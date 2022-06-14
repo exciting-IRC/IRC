@@ -17,8 +17,8 @@ class Server : public EventHandler {
   ~Server();
 
  private:
-  Server(const Server &);
-  Server &operator=(const Server &);
+  Server(const Server &);             // = delete
+  Server &operator=(const Server &);  // = delete
 
  public:
   bool ok();

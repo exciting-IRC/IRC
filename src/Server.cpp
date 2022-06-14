@@ -2,13 +2,15 @@
 
 #include <err.h>
 #include <string.h>
+#include <unistd.h>
 
+#include <algorithm>
 #include <iostream>
 #include <list>
 
 #include "Client.hpp"
 #include "event/event.hpp"
-#include "network/socket/socket.hpp"
+#include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
 Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
@@ -24,6 +26,7 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
   }
 
   struct sockaddr_in addr;
+
   memset(&addr, 0, sizeof(addr));
   in_addr_t in_addr = inet_addr(listen_addr);
   if (in_addr == INADDR_NONE)
@@ -38,6 +41,14 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
   if (util::listen(sock_, backlog) == -1)
     return;
   ok_ = true;
+}
+
+Server::~Server() {
+  for (ClientList::iterator it = client_list_.begin(); it != client_list_.end();
+       ++it) {
+    delete *it;
+  }
+  close(sock_);
 }
 
 bool Server::ok() { return ok_; }
