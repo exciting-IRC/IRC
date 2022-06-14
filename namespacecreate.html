@@ -101,9 +101,6 @@ str&#160;</td><td class="memItemRight" valign="bottom"><b>wrap_header</b> (str b
 <tr class="memitem:a31fbd3df406cf512f0814b40e04ab43e"><td class="memItemLeft" align="right" valign="top"><a id="a31fbd3df406cf512f0814b40e04ab43e" name="a31fbd3df406cf512f0814b40e04ab43e"></a>
 str&#160;</td><td class="memItemRight" valign="bottom"><b>base_category_name</b> (str stem)</td></tr>
 <tr class="separator:a31fbd3df406cf512f0814b40e04ab43e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9609259ca95ada066362e47286291282"><td class="memItemLeft" align="right" valign="top"><a id="a9609259ca95ada066362e47286291282" name="a9609259ca95ada066362e47286291282"></a>
-str&#160;</td><td class="memItemRight" valign="bottom"><b>remove_prefix</b> (str text, str prefix)</td></tr>
-<tr class="separator:a9609259ca95ada066362e47286291282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17f6b31dd483ec788d1ff8ec3c839614"><td class="memItemLeft" align="right" valign="top"><a id="a17f6b31dd483ec788d1ff8ec3c839614" name="a17f6b31dd483ec788d1ff8ec3c839614"></a>
 str&#160;</td><td class="memItemRight" valign="bottom"><b>get_include</b> (Path path)</td></tr>
 <tr class="separator:a17f6b31dd483ec788d1ff8ec3c839614"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,12 +110,12 @@ str&#160;</td><td class="memItemRight" valign="bottom"><b>get_nested_namespace</
 <tr class="memitem:afcf401f1250d4ac2c42537a045e4ed65"><td class="memItemLeft" align="right" valign="top"><a id="afcf401f1250d4ac2c42537a045e4ed65" name="afcf401f1250d4ac2c42537a045e4ed65"></a>
 None&#160;</td><td class="memItemRight" valign="bottom"><b>save_text_to</b> (str text, Path path)</td></tr>
 <tr class="separator:afcf401f1250d4ac2c42537a045e4ed65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae651247a11c80ae8e16aebf1b0c246d2"><td class="memItemLeft" align="right" valign="top"><a id="ae651247a11c80ae8e16aebf1b0c246d2" name="ae651247a11c80ae8e16aebf1b0c246d2"></a>
-str&#160;</td><td class="memItemRight" valign="bottom"><b>create_text</b> (Path path, *Optional[tuple[str]] namespace)</td></tr>
-<tr class="separator:ae651247a11c80ae8e16aebf1b0c246d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc2ee274e9dfa6f05e1bb58a0811f3e5"><td class="memItemLeft" align="right" valign="top"><a id="adc2ee274e9dfa6f05e1bb58a0811f3e5" name="adc2ee274e9dfa6f05e1bb58a0811f3e5"></a>
-Optional[tuple[str]]&#160;</td><td class="memItemRight" valign="bottom"><b>get_namespace</b> (Path path, dict[str, str] args)</td></tr>
-<tr class="separator:adc2ee274e9dfa6f05e1bb58a0811f3e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6e903820bcb3b9ea4f21140c92481ce"><td class="memItemLeft" align="right" valign="top"><a id="ad6e903820bcb3b9ea4f21140c92481ce" name="ad6e903820bcb3b9ea4f21140c92481ce"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>create_text</b> (Path path, *tuple[str]|None namespace)</td></tr>
+<tr class="separator:ad6e903820bcb3b9ea4f21140c92481ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192486c3feb673574323018afc0ce239"><td class="memItemLeft" align="right" valign="top"><a id="a192486c3feb673574323018afc0ce239" name="a192486c3feb673574323018afc0ce239"></a>
+tuple[str]|None&#160;</td><td class="memItemRight" valign="bottom"><b>get_namespace</b> (Path path, dict[str, str] args)</td></tr>
+<tr class="separator:a192486c3feb673574323018afc0ce239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62e039e6bf7036e65bf0a6632bddf3a9"><td class="memItemLeft" align="right" valign="top"><a id="a62e039e6bf7036e65bf0a6632bddf3a9" name="a62e039e6bf7036e65bf0a6632bddf3a9"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr class="separator:a62e039e6bf7036e65bf0a6632bddf3a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +124,7 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <div class="textblock"><pre class="fragment">create.py: create boilerplate for *.cpp, *.hpp, *.tpp
 
 usage:
-    create.py [-h] [options] [-n | -N | --namespace &lt;N&gt; ] &lt;path&gt;
+    create.py [--help] [options] [-n | -N | --namespace &lt;N&gt; ] &lt;path&gt;
 
 options:
     -h, --help               show this help message and exit

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>IRC: Config 구조체 참조</title>
+<title>IRC: nuke 네임스페이스 참조</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('structConfig.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('namespacenuke.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -84,18 +84,42 @@ $(document).ready(function(){initNavTree('structConfig.html',''); initResizable(
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Config 구조체 참조</div></div>
+  <div class="summary">
+<a href="#func-members">함수</a>  </div>
+  <div class="headertitle"><div class="title">nuke 네임스페이스 참조</div></div>
 </div><!--header-->
 <div class="contents">
-<hr/>이 구조체에 대한 문서화 페이지는 다음의 파일로부터 생성되었습니다.:<ul>
-<li>src/util/config/<a class="el" href="config_8hpp_source.html">config.hpp</a></li>
-</ul>
-</div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+함수</h2></td></tr>
+<tr class="memitem:a73458bce2d4e0cfc7820fa685fd586da"><td class="memItemLeft" align="right" valign="top"><a id="a73458bce2d4e0cfc7820fa685fd586da" name="a73458bce2d4e0cfc7820fa685fd586da"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>nuke</b> (*list[str] exts, list[str] explicit, list[Path] subdirs, Callable[[Path], None] payload)</td></tr>
+<tr class="separator:a73458bce2d4e0cfc7820fa685fd586da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5ed9cfa9eb4b61fd821cc45693d1814"><td class="memItemLeft" align="right" valign="top"><a id="ac5ed9cfa9eb4b61fd821cc45693d1814" name="ac5ed9cfa9eb4b61fd821cc45693d1814"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
+<tr class="separator:ac5ed9cfa9eb4b61fd821cc45693d1814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">상세한 설명</h2>
+<div class="textblock"><pre class="fragment">nuke.py:
+    remove files recursively that does not fit in subject.
+    secret files are not removed.
+    use only on github action!
+
+usage:
+    nuke.py [--help] [options] [--execute] [&lt;file&gt;...]
+
+options:
+    -h, --help     show this help message and exit
+    --execute      actually remove files (not just print)
+    &lt;file&gt;         file extension / subdirectory to keep.
+                   files can be explicitly specified.
+                   [default: ".mk", ".txt", ".cpp", ".hpp", ".tpp", "src/", "Makefile"]
+</pre> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="structConfig.html">Config</a></li>
+    <li class="navelem"><a class="el" href="namespacenuke.html">nuke</a></li>
     <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>

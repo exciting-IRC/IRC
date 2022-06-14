@@ -57,6 +57,11 @@ var NAVTREE =
         [ "NOTE:", "md_docs_kqueue.html#autotoc_md30", null ]
       ] ]
     ] ],
+    [ "명령어 반환값", "md_docs_responses.html", [
+      [ "클라이언트-서버간 연결", "md_docs_responses.html#autotoc_md32", null ],
+      [ "에러 반환값 (400 ~ 599)", "md_docs_responses.html#autotoc_md33", null ],
+      [ "쓰이지는 않지만 예약된 반환값", "md_docs_responses.html#autotoc_md34", null ]
+    ] ],
     [ "💬 IRC", "md_README.html", null ],
     [ "네임스페이스", "namespaces.html", [
       [ "네임스페이스 목록", "namespaces.html", "namespaces_dup" ]

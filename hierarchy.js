@@ -7,7 +7,8 @@ var hierarchy =
       [ "util::FixedBuffer< T, buffer_size >", "classutil_1_1FixedBuffer.html", null ]
     ] ],
     [ "color_t", "structcolor__t.html", null ],
-    [ "Config", "structConfig.html", null ],
+    [ "util::Config", "structutil_1_1Config.html", null ],
+    [ "container_of.ContainerOfArgs", "classcontainer__of_1_1ContainerOfArgs.html", null ],
     [ "Event", "structEvent.html", null ],
     [ "EventFlag", "structEventFlag.html", null ],
     [ "EventKind", "structEventKind.html", null ],
@@ -19,5 +20,6 @@ var hierarchy =
     [ "util::RecvFlag_t", "structutil_1_1RecvFlag__t.html", null ],
     [ "return_t", "structreturn__t.html", null ],
     [ "util::SendFlag_t", "structutil_1_1SendFlag__t.html", null ],
-    [ "util::SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ]
+    [ "util::SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ],
+    [ "container_of.Template", "classcontainer__of_1_1Template.html", null ]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['recvflag_5ft_0',['RecvFlag_t',['../structutil_1_1RecvFlag__t.html',1,'util']]],
-  ['return_5ft_1',['return_t',['../structreturn__t.html',1,'']]]
+  ['operator_5b_5d_0',['operator[]',['../structutil_1_1array.html#a0991395ea080170667db3524e6145ce7',1,'util::array']]]
 ];
