@@ -47,7 +47,7 @@ struct Config {
         timeout(convert_to<uint32_t>(timeout)) {}
 
   static Config from(const string &filename) {
-    std::ifstream configfile(filename);
+    std::ifstream configfile(filename.c_str());
     if (configfile.fail())
       throw std::invalid_argument("config file not found: " + filename);
 
