@@ -35,10 +35,10 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
 
-  if (util::bind_in(sock_, &addr) == -1)
+  if (util::bind_in(sock_, &addr) == return_t::kError)
     return;
 
-  if (util::listen(sock_, backlog) == -1)
+  if (util::listen(sock_, backlog) == return_t::kError)
     return;
   ok_ = true;
 }
