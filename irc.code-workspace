@@ -18,6 +18,11 @@
     }
   ],
   "settings": {
+    "files.exclude": {
+      "src/": true,
+      "docs/": true,
+      "test/": true
+    },
     "files.associations": {
       "**/*.pug": "jade",
       "**/*.h": "c",
@@ -128,7 +133,9 @@
       "ios": "cpp",
       "locale": "cpp",
       "stack": "cpp",
-      "__bits": "cpp"
+      "__bits": "cpp",
+      "__tree": "cpp",
+      "filesystem": "cpp"
     }
   }
 }

@@ -2,10 +2,19 @@
 #include <signal.h>
 #include <string.h>
 
+#include <fstream>
 #include <iostream>
+#include <map>
+#include <string>
+#include <util/FixedBuffer/FixedBuffer.hpp>
+#include <util/config/config.hpp>
+#include <util/strutil/strutil.hpp>
+#include <utility>
+#include <vector>
 
 #include "Client.hpp"
 #include "Server.hpp"
+#include "container_of.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
@@ -18,9 +27,15 @@ static sig_atomic_t recived_sig;
 void server_close_handler(int sig) { recived_sig = sig; }
 
 int main() {
+  using namespace util;
+  using namespace std;
+
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
   signal(SIGQUIT, server_close_handler);
+
+  Config config = Config::from("config.yml");
+  cout << config << endl;
 
   Server srv(bind_addr, port, 64);
   if (!srv.ok())

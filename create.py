@@ -3,7 +3,7 @@
 create.py: create boilerplate for *.cpp, *.hpp, *.tpp
 
 usage:
-    create.py [-h] [options] [-n | -N | --namespace <N> ] <path>
+    create.py [--help] [options] [-n | -N | --namespace <N> ] <path>
 
 options:
     -h, --help               show this help message and exit
@@ -12,13 +12,9 @@ options:
     --namespace <N>          choose namespace to use.
     -r <R>, --root <R>       root of directory path [default: src]
 """
-from __future__ import annotations
-
 from pathlib import Path
-from sys import argv
-from typing import Optional
 
-from docopt import docopt
+from cpputil import run_docopt
 
 
 def wrap_with(body: str, wrap: tuple[str, str], *, distance: int = 1) -> str:
@@ -39,18 +35,13 @@ def base_category_name(stem: str) -> str:
     return stem.rsplit("_", maxsplit=1)[0]
 
 
-def remove_prefix(text: str, prefix: str) -> str:
-    "because cluster python is 3.8 and no str.removeprefix()"
-    return text[len(prefix) :] if text.startswith(prefix) else text
-
-
 def get_include(path: Path) -> str:
     if path.suffix == ".hpp":
         return ""
     elif path.suffix == ".tpp":
         name = base_category_name(path.stem)
     elif path.suffix == ".cpp":
-        name = remove_prefix(path.parent.stem, "lib")
+        name = path.parent.stem.removeprefix("lib")
     else:
         raise ValueError(f"Unknown file type: {path}")
 
@@ -58,7 +49,7 @@ def get_include(path: Path) -> str:
 
 
 def get_nested_namespace(names: tuple[str]) -> str:
-    names = tuple(remove_prefix(n, "lib") for n in names)
+    names = tuple(n.removeprefix("lib") for n in names)
     begins = "\n".join([f"namespace {ns} {{" for ns in names])
     ends = "\n".join([f"}}  // namespace {ns}" for ns in reversed(names)])
 
@@ -71,7 +62,7 @@ def save_text_to(text: str, path: Path) -> None:
     print(text)
 
 
-def create_text(path: Path, *, namespace: Optional[tuple[str]]) -> str:
+def create_text(path: Path, *, namespace: tuple[str] | None) -> str:
     text = get_include(path)
     if namespace:
         text += f"\n\n{get_nested_namespace(namespace)}"
@@ -79,7 +70,7 @@ def create_text(path: Path, *, namespace: Optional[tuple[str]]) -> str:
     return text if path.suffix == ".cpp" else wrap_header(text, path)
 
 
-def get_namespace(path: Path, args: dict[str, str]) -> Optional[tuple[str]]:
+def get_namespace(path: Path, args: dict[str, str]) -> tuple[str] | None:
     if namespace := args["--namespace"]:
         return (namespace,)
     elif args["-n"]:
@@ -89,8 +80,7 @@ def get_namespace(path: Path, args: dict[str, str]) -> Optional[tuple[str]]:
 
 
 def main():
-    assert __doc__ is not None
-    args: dict[str, str] = docopt(__doc__)
+    args = run_docopt(__doc__)
 
     # print(args)
 

@@ -5,6 +5,15 @@
 
 namespace util {
 
+/// stringstream 출력을 지원하는 원소에 한해 문자열로 변경
+template <typename T>
+string to_string(const T& t) {
+  std::stringstream ss;
+
+  ss << t;
+  return ss.str();
+}
+
 /**
  * @brief 파이썬의 str.join(이터러블)과 유사한 기능을 제공하는 함수
  *
