@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "util/strutil/vec_of_any.hpp"
+
+#define FMT(fmt, param) util::format(fmt, VA(param))
+
 namespace util {
 
 using std::string;
@@ -57,6 +61,19 @@ void print_vector(vector<T> v, bool oneline = true) {
   }
   std::cout << "\n";
 }
+
+/**
+ * @brief 파이썬 str.format()과 비슷한 문자열 포매팅
+ *
+ * 중괄호 한 쌍마다 args의 인자 하나로 치환됨
+ * util::format("{} {foo} {{bar}}", V(("hello", "world")))
+ * -> "hello world {{bar}}"
+ *
+ * @param fmt 문자열 포매팅 형식. 중괄호 이스케이핑: "{{", "}}"
+ * @param args 포매팅에 사용할 변수 목록
+ */
+// TODO: {0}, {1} 등의 순서 지원
+string format(const string& fmt, const vector<string>& args);
 
 }  // namespace util
 
