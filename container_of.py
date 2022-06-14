@@ -6,7 +6,7 @@ container_of.py:
     example usage - "container_of<vector<string> >("a", "b", "c)"
 
 usage:
-    create.py [--help] [options] (--dry | <path>)
+    container_of.py [--help] [options] (--dry | <path>)
 
 options:
     -h, --help            show this help message and exit
@@ -110,12 +110,12 @@ def main():
     # print(args)
 
     size = int(args["--size"])
-    path = Path(args["<path>"]) or None
+    path = Path(args["<path>"]) if args["<path>"] else None
     text = create_formatted_result(size, path)
 
     if args["--dry"]:
         print(text)
-    else:
+    elif path is not None:
         path.write_text(text)
 
 
