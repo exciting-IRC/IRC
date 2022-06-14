@@ -1,3 +1,4 @@
+#include "Server.hpp"
 
 #include <err.h>
 #include <string.h>

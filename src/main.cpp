@@ -1,11 +1,14 @@
+#include <err.h>
 #include <signal.h>
 #include <string.h>
+
 #include <iostream>
 
+#include "Client.hpp"
+#include "Server.hpp"
 #include "event/event.hpp"
 #include "network/socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "Client.hpp"
 
 const static char *bind_addr = "127.0.0.1";
 const static int port = 7778;
