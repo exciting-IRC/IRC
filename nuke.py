@@ -63,7 +63,7 @@ def main():
         explicit=explicit,  # type:ignore
         subdirs=subdirs,  # type:ignore
         payload=(
-            shutil.rmtree
+            (lambda x: shutil.rmtree(x) if x.is_dir() else x.unlink())
             if args["--execute"]
             else lambda x: print(f"will remove: {x}")
         ),
