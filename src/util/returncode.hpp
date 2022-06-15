@@ -5,7 +5,7 @@ namespace util {
 
 // shamelessly copy-pasted from:
 // https://github.com/inspircd/inspircd/blob/insp3/include/numerics.h
-enum cmdReturnCode {
+enum returnCode {
   // Replies
   RPL_UMODEIS = 221,
 
@@ -97,7 +97,7 @@ enum cmdReturnCode {
 
   ERR_NOOPERHOST = 491,
 
-  ERR_USERSDONTMATCH = 502,
+  ERR_USERSDONTMATCH = 502
 };
 
 }  // namespace util
