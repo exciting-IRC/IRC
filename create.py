@@ -10,6 +10,8 @@ options:
     -n                       use parent directory name as namespace
     -N                       use nested directory names as namespace
     --namespace <N>          choose namespace to use.
+    -s, --switch             open created file on vscode.
+    -f, --force              overwrite existing files.
     -r <R>, --root <R>       root of directory path [default: src]
 """
 from pathlib import Path
@@ -87,13 +89,18 @@ def main():
     path = Path(args["<path>"])
     fullpath = Path(__file__).parent / args["--root"] / args["<path>"]
 
-    if fullpath.exists():
+    if not(args['--force']) and fullpath.exists():
         print("file already exists")
         return
 
     namespace = get_namespace(path, args)
     text = create_text(path, namespace=namespace)
     save_text_to(text, fullpath)
+
+    if args["--switch"]:
+        from subprocess import run
+
+        run(["code", str(fullpath)])
 
 
 if __name__ == "__main__":
