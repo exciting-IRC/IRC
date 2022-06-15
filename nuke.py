@@ -44,10 +44,10 @@ def nuke(
 def main():
     args = run_docopt(__doc__)
     # fmt: off
-    files = (
-        [".mk", ".txt", ".cpp", ".hpp", ".tpp", "src/", "Makefile"]
-        + args.get("<file>", [])  # type:ignore
-    )
+    files: set[str] = {
+        ".mk", ".txt", ".cpp", ".hpp", ".tpp", ".yml", "src/", "Makefile",
+        *args.get("<file>", [])  # type:ignore
+    }
     exts, subdirs, explicit = (
         flu(files).filter(f).collect() for f in (
             lambda x: x.startswith("."),
