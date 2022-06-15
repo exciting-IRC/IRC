@@ -5,6 +5,13 @@ namespace util {
 using std::string;
 using std::vector;
 
+/**
+ * @brief 파이썬 str.format() 또는 c++20 스타일 문자열 포매팅.
+ *
+ * @param fmt 문자열 포매팅 형식. 중괄호 "{}" 안의 값은 무시됨.
+ *            중괄호 자체를 쓰려면 "{{" 또는 "}}" 쓰기.
+ * @param args 치환에 사용될 문자열의 배열.
+ */
 class FormatState {
  private:
   string fmt;
@@ -25,8 +32,8 @@ class FormatState {
       } else if (on_escaped_bracket("}}")) {
         advance_and_append("}");
       } else if (on_char('}')) {
-        throw std::runtime_error("unmatched closing brace at " +
-                                 util::to_string(curs));
+        throw std::invalid_argument("unmatched closing brace at " +
+                                    to_string(curs));
       } else {
         result += fmt[curs];
       }
@@ -34,7 +41,7 @@ class FormatState {
   }
 
   // 멤버 함수
-  bool on_char(const char c) { return (fmt[curs] == c); }
+  bool on_char(const char c) const { return (fmt[curs] == c); }
 
   bool on_escaped_bracket(const string& match) {
     return fmt.substr(curs, 2) == match;
@@ -49,17 +56,18 @@ class FormatState {
     result += args.at(arg_index++);
     for (size_t i = curs + 1; i < fmt.size(); i++) {
       if (fmt[i] == '{') {
-        throw std::runtime_error("unmatched opening brace at " + to_string(i));
+        throw std::invalid_argument("unmatched opening brace at " +
+                                    to_string(i));
       } else if (fmt[i] == '}') {
         curs = i;
         return;
       }
     }
-    throw std::runtime_error(
+    throw std::invalid_argument(
         "missing closing brace '}' at end of format string");
   }
 
-  operator string() { return result; }
+  operator string() const { return result; }
 };
 
 string format(const string& fmt, const vector<string>& args) {
