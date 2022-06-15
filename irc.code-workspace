@@ -135,7 +135,8 @@
       "stack": "cpp",
       "__bits": "cpp",
       "__tree": "cpp",
-      "filesystem": "cpp"
+      "filesystem": "cpp",
+      "format": "cpp"
     }
   }
 }
