@@ -7,6 +7,11 @@ namespace util {
 // https://github.com/inspircd/inspircd/blob/insp3/include/numerics.h
 enum returnCode {
   // Replies
+  RPL_WELCOME = 1,
+  RPL_YOURHOST = 2,
+  RPL_CREATED = 3,
+  RPL_MYINFO = 4,
+  
   RPL_UMODEIS = 221,
 
   RPL_LUSERCLIENT = 251,
