@@ -44,10 +44,10 @@ def nuke(
 def main():
     args = run_docopt(__doc__)
     # fmt: off
-    files = (
-        [".mk", ".txt", ".cpp", ".hpp", ".tpp", "src/", "Makefile"]
-        + args.get("<file>", [])  # type:ignore
-    )
+    files: set[str] = {
+        ".mk", ".txt", ".cpp", ".hpp", ".tpp", ".yml", "src/", "Makefile",
+        *args.get("<file>", [])  # type:ignore
+    }
     exts, subdirs, explicit = (
         flu(files).filter(f).collect() for f in (
             lambda x: x.startswith("."),
@@ -63,7 +63,7 @@ def main():
         explicit=explicit,  # type:ignore
         subdirs=subdirs,  # type:ignore
         payload=(
-            shutil.rmtree
+            (lambda x: shutil.rmtree(x) if x.is_dir() else x.unlink())
             if args["--execute"]
             else lambda x: print(f"will remove: {x}")
         ),

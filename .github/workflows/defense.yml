@@ -15,12 +15,13 @@ jobs:
       - name: switch to defense branch
         run: |
           git checkout --orphan defense
-          if [[ $(git symbolic-ref --short -q HEAD) != defense ]]; then
-            echo not defense; exit 1
+          this=$(git symbolic-ref --short -q HEAD)
+          if [[ $this != defense ]]; then
+            echo $this is not defense; exit 1
           fi
 
       - name: merge main
-          git merge --allow-unrelated-histories main
+        run: git merge --allow-unrelated-histories main
 
       - uses: actions/setup-python@v4
         with:
