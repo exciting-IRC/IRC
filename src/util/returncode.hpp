@@ -3,15 +3,16 @@
 
 namespace util {
 
-// shamelessly copy-pasted from:
-// https://github.com/inspircd/inspircd/blob/insp3/include/numerics.h
+/// shamelessly copy-pasted from:
+/// https://github.com/inspircd/inspircd/blob/insp3/include/numerics.h
 enum returnCode {
-  // Replies
+  // 클라이언트-서버 전용
   RPL_WELCOME = 1,
   RPL_YOURHOST = 2,
   RPL_CREATED = 3,
   RPL_MYINFO = 4,
-  
+
+  // 명령어 결과값
   RPL_UMODEIS = 221,
 
   RPL_LUSERCLIENT = 251,
@@ -58,7 +59,7 @@ enum returnCode {
   RPL_REHASHING = 382,
   RPL_TIME = 391,
 
-  // Errors
+  // 오류 메시지
   ERR_NOSUCHNICK = 401,
   ERR_NOSUCHSERVER = 402,
   ERR_NOSUCHCHANNEL = 403,
