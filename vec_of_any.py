@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-container_of.py:
-    creates boilerplate for variable argument function "container_of()".
-    container_of generates anonymous container, with maximum <size> of arguments.
-    example usage - "container_of<vector<string> >("a", "b", "c)"
+vec_of_any.py:
+    creates boilerplate for variable argument function "vec_of_any()".
+    vec_of_any generates anonymous string vector, with maximum <size> of
+    different types of arguments, at the cost of being even more verbose.
+    example usage - "vec_of_any(3, "b", 2.0f)
 
 usage:
-    container_of.py [--help] [options] (--dry | <path>)
+    vec_of_any.py [--help] [options] (--dry | <path>)
 
 options:
     -h, --help            show this help message and exit
@@ -23,38 +24,63 @@ from textwrap import dedent
 from cpputil import clang_format
 from create import wrap_header
 
+template = dedent(
+    """\
+    // do not try to directly edit this file.
+    // generate using vec_of_any.py instead
+    #include <sstream>
+
+    #define VA(param) util::vec_of_any param
+
+    namespace util {{
+
+    using std::string;
+    using std::vector;
+    using std::stringstream;
+
+    template <typename T>
+    static string s(T t) {{
+        stringstream ss;
+        ss << t;
+        return ss.str();
+    }}
+
+    {text}
+    }} // namespace util
+    """
+)
+
 
 @dataclass
 class Template:
-    """
-    typename C <- container type
-    typename T <- value type, intended to pass by value
-    """
-
     size: int = 10
 
     def maybe(self, then: str) -> str:
         return "" if self.size == 0 else then
 
+    def create_template_args(self) -> str:
+        args = ", ".join(f"class T{n}" for n in range(self.size))
+        return self.maybe(f"template <{args}>")
+
     def create_args(self, *, with_type: bool = False) -> str:
-        arg = "T arg{n}" if with_type else "arg{n}"
+        arg = "T{n} arg{n}" if with_type else "s(arg{n})"
         return self.maybe(
             ", ".join([arg.format(n=n) for n in range(self.size)])
         )
 
     def create_args_array(self) -> str:
         return self.maybe(
-            f"const T args[{self.size}] = {{{self.create_args()}}};"
+            f"const string args[{self.size}] = {{{self.create_args()}}};"
         )
 
     def create_return(self) -> str:
-        return f"""return C({self.maybe(f"args, args + {self.size}")});"""
+        return f"""return vector<string>({self.maybe(f"args, args + {self.size}")});"""
 
     def __str__(self) -> str:
         return dedent(
             f"""\
-            template <typename C, typename T>
-            inline C container_of({self.create_args(with_type=True)}) {{
+            {self.create_template_args()}
+            inline vector<string> vec_of_any({self.create_args(with_type=True)}) {{
                 {self.create_args_array()}
                 {self.create_return()}
             }}
@@ -62,37 +88,21 @@ class Template:
         )
 
 
-HEADER = dedent(
-    f"""\
-    #define VEC_OF(T, param) container_of<std::vector<T> > param
-    #define V(param) VEC_OF(std::string, param)
-    """
-)
-
-
 @dataclass(frozen=True)
-class ContainerOfArgs:
+class VecOfAny:
     size: int = 10
 
     @cached_property
     def as_text(self) -> str:
         text = "\n".join([str(Template(n)) for n in range(self.size + 1)])
-        return dedent(
-            f"""\
-            // do not try to directly edit this file.
-            // generate using container_of.py instead
-            {HEADER}
-
-            {text}
-            """
-        )
+        return template.format(text=text)
 
     def __repr__(self) -> str:
         return self.as_text
 
 
 def create_formatted_result(size: int, path: Path | None) -> str:
-    text = ContainerOfArgs(size).as_text
+    text = VecOfAny(size).as_text
     if path:
         text = wrap_header(text, path)
     if shutil.which("clang-format"):
