@@ -38,14 +38,15 @@ def base_category_name(stem: str) -> str:
 
 
 def get_include(path: Path) -> str:
-    if path.suffix == ".hpp":
-        return ""
-    elif path.suffix == ".tpp":
-        name = base_category_name(path.stem)
-    elif path.suffix == ".cpp":
-        name = path.parent.stem.removeprefix("lib")
-    else:
-        raise ValueError(f"Unknown file type: {path}")
+    match path.suffix:
+        case ".hpp":
+            return ""
+        case ".tpp":
+            name = base_category_name(path.stem)
+        case ".cpp":
+            name = path.parent.stem.removeprefix("lib")
+        case _:
+            raise ValueError(f"Unknown file type: {path}")
 
     return f"#include <{'/'.join(path.parent.parts)}/{name}.hpp>"
 
