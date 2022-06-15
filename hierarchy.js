@@ -13,6 +13,7 @@ var hierarchy =
     [ "EventFlag", "structEventFlag.html", null ],
     [ "EventKind", "structEventKind.html", null ],
     [ "EventPool", "classEventPool.html", null ],
+    [ "util::format", "classutil_1_1format.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
       [ "Client", "classClient.html", null ],
       [ "Server", "classServer.html", null ]
@@ -21,5 +22,7 @@ var hierarchy =
     [ "return_t", "structreturn__t.html", null ],
     [ "util::SendFlag_t", "structutil_1_1SendFlag__t.html", null ],
     [ "util::SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ],
-    [ "container_of.Template", "classcontainer__of_1_1Template.html", null ]
+    [ "container_of.Template", "classcontainer__of_1_1Template.html", null ],
+    [ "vec_of_any.Template", "classvec__of__any_1_1Template.html", null ],
+    [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
 ];
