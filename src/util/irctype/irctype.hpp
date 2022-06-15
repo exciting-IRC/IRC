@@ -1,6 +1,8 @@
 #ifndef UTIL_IRCTYPE_HPP
 #define UTIL_IRCTYPE_HPP
 
+namespace util {
+
 /**
  * @brief [A-Za-z]
  */
@@ -30,5 +32,7 @@ bool isSpecial(char c);
  *  ' '   (space)
  */
 bool isRegular(char c);
+
+}
 
 #endif  // UTIL_IRCTYPE_HPP

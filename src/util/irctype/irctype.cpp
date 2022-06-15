@@ -10,6 +10,6 @@ bool isSeprator(char c) { return c == ':' || c == ' '; }
 
 bool isSpecial(char c) { return c == '\r' || c == '\n' || c == '\0'; }
 
-bool isNospcrlfcl(char c) { return !isSeprator(c) && !isSpecial(c); }
+bool isRegular(char c) { return !isSeprator(c) && !isSpecial(c); }
 
 }  // namespace util

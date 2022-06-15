@@ -34,6 +34,8 @@ class FixedBuffer : public array<T, buffer_size> {
   std::size_t o_cursor_;
 };
 
+typedef util::FixedBuffer<char, 512> Buffer;
+
 }  // namespace util
 
 #include "FixedBuffer.tpp"

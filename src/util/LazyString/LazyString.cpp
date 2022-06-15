@@ -4,6 +4,12 @@ namespace util {
 
 LazyString::LazyString() : start_(NULL), end_(NULL) {}
 
+void LazyString::clear() {
+  std::string::clear();
+  start_ = NULL;
+  end_ = NULL;
+}
+
 void LazyString::apply() {
   if (start_ && end_) {
     append(start_, end_);
@@ -16,4 +22,4 @@ void LazyString::setStart(const char *start) { start_ = start; }
 
 void LazyString::setEnd(const char *end) { end_ = end; }
 
-}
+}  // namespace util
