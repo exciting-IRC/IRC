@@ -9,6 +9,7 @@ CreateTestFor(strutil
   testjoin
   testsplit
   testtrim
+  testformat
 )
 
 CreateTEST_LISTFrom(
