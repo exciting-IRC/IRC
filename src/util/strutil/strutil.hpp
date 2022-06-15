@@ -78,7 +78,7 @@ class format {
   string fmt;
   vector<string> args;
   std::string result;
-  int arg_index;
+  size_t arg_index;
   size_t curs;
 
  private:
@@ -86,6 +86,8 @@ class format {
   bool on_escaped_bracket(const string& match);
   void advance_and_append(const string& to_add);
   void advance_to_closing_bracket();
+  void insert_arg();  //< 인자 삽입후 다음 인자로 이동
+  void insert_arg(size_t index); //< 인덱스의 인자 삽입 후 이동 없음
 
  public:
   format(const string& fmt, const vector<string>& args);

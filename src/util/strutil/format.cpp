@@ -34,13 +34,28 @@ void format::advance_and_append(const string& to_add) {
   result += to_add;
 }
 
-void format::advance_to_closing_bracket() {
+void format::insert_arg() {
+  if (arg_index >= args.size())
+    throw std::invalid_argument(
+        "positional argument index out of range, expected at least " +
+        to_string(arg_index + 1) + " arguments but got " +
+        to_string(args.size()));
   result += args.at(arg_index++);
+}
+
+void format::insert_arg(size_t index) {
+  if (index >= args.size())
+    throw std::invalid_argument("index out of range: " + to_string(index));
+  result += args[index];
+}
+
+void format::advance_to_closing_bracket() {
   for (size_t i = curs + 1; i < fmt.size(); i++) {
     if (fmt[i] == '{') {
       throw std::invalid_argument("unmatched opening brace at " + to_string(i));
     } else if (fmt[i] == '}') {
       curs = i;
+      insert_arg();
       return;
     }
   }
