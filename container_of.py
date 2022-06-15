@@ -23,6 +23,16 @@ from textwrap import dedent
 from cpputil import clang_format
 from create import wrap_header
 
+template = dedent(
+    """\
+    // do not try to directly edit this file.
+    // generate using container_of.py instead
+    #define VEC_OF(T, param) container_of<std::vector<T> > param
+    #define V(param) VEC_OF(std::string, param)
+    {text}
+    """
+)
+
 
 @dataclass
 class Template:
@@ -62,14 +72,6 @@ class Template:
         )
 
 
-HEADER = dedent(
-    f"""\
-    #define VEC_OF(T, param) container_of<std::vector<T> > param
-    #define V(param) VEC_OF(std::string, param)
-    """
-)
-
-
 @dataclass(frozen=True)
 class ContainerOfArgs:
     size: int = 10
@@ -77,15 +79,7 @@ class ContainerOfArgs:
     @cached_property
     def as_text(self) -> str:
         text = "\n".join([str(Template(n)) for n in range(self.size + 1)])
-        return dedent(
-            f"""\
-            // do not try to directly edit this file.
-            // generate using container_of.py instead
-            {HEADER}
-
-            {text}
-            """
-        )
+        return template.format(text=text)
 
     def __repr__(self) -> str:
         return self.as_text
