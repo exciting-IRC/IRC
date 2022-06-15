@@ -73,7 +73,28 @@ void print_vector(vector<T> v, bool oneline = true) {
  * @param args 포매팅에 사용할 변수 목록
  */
 // TODO: {0}, {1} 등의 순서 지원
-string format(const string& fmt, const vector<string>& args);
+class format {
+ private:
+  string fmt;
+  vector<string> args;
+  std::string result;
+  int arg_index;
+  size_t curs;
+
+ private:
+  bool on_char(const char c) const;
+  bool on_escaped_bracket(const string& match);
+  void advance_and_append(const string& to_add);
+  void advance_to_closing_bracket();
+
+ public:
+  format(const string& fmt, const vector<string>& args);
+
+  string str() const;
+  operator string() const;
+};
+
+std::ostream& operator<<(std::ostream& os, const format& f);
 
 }  // namespace util
 
