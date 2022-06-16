@@ -9,7 +9,7 @@
 
 namespace util {
 template <typename K, typename V>
-pair<K, V> p(K k, V v) {
+std::pair<K, V> p(K k, V v) {
   return std::make_pair(k, v);
 }
 }  // namespace util
