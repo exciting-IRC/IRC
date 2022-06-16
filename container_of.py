@@ -28,6 +28,7 @@ template = dedent(
     // do not try to directly edit this file.
     // generate using container_of.py instead
 
+    #define MAP_OF(K, V, param) container_of<std::map<K, V>, std::pair<K, V> > param
     #define VEC_OF(T, param) container_of<std::vector<T> > param
     #define V(param) VEC_OF(std::string, param)
 
