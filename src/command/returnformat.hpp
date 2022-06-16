@@ -1,19 +1,17 @@
 #ifndef COMMAND_REPLIES_HPP
 #define COMMAND_REPLIES_HPP
 
-#include <map>
 #include <string>
-#include <utility>
 
 #include "command/returncode.hpp"
+#include "util/general/safemap.hpp"
 #include "util/vargs/container_of.hpp"
 
 namespace util {
-using std::map;
 using std::pair;
 using std::string;
 
-typedef map<returnCode, string> return_map;
+typedef SafeMap<returnCode, string> return_map;
 typedef pair<returnCode, string> return_pair;
 
 template <typename K, typename V>
@@ -33,4 +31,5 @@ return_map retfmt = container_of<return_map, return_pair>(
     p(ERR_NOSUCHNICK, "{nick} :No such nick/channel"),
     p(ERR_ERRONEUSNICKNAME, "{nick} :Erroneous nickname"));
 }  // namespace util
+
 #endif  // COMMAND_REPLIES_HPP
