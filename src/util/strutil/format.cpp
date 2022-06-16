@@ -26,7 +26,7 @@ format::format(const string& fmt, const vector<string>& args)
 bool format::on_char(const char c) const { return (fmt[curs] == c); }
 
 bool format::on_escaped_bracket(const string& match) {
-  return fmt.substr(curs, 2) == match;
+  return fmt.find(match, curs) == curs;
 }
 
 void format::advance_and_append(const string& to_add) {
