@@ -12,54 +12,15 @@
 #include <utility>
 #include <vector>
 
-#include "Client.hpp"
-#include "IRCParser.hpp"
+#include "ClientConn.hpp"
 #include "Server.hpp"
-#include "command/command.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/general/map_get.hpp"
-#include "util/general/prettyprint.hpp"
 #include "util/vargs/container_of.hpp"
-#define VL(param) VEC_OF(util::LazyString, param)
 
-using namespace std;
-using namespace util;
-
-void dispatchMessage(const Message& message) {
-  try {
-    command cmd = map_get(commandsMap, to_upper(message.command));
-    User user = {message.prefix, message.prefix, ""};
-    cout << "<- " << cmd(user, message.params) << "\n";
-  } catch (const exception& e) {
-    cerr << "ERR: dispatchMessage: " << e.what() << endl;
-  }
-}
-
-// typedef string (ICommand::*cmd)();
-
-int main() {
-  vector<string> available_commands =
-      V(("pass", "nick", "user", "join", "part", "privmsg", "admin", "kill",
-         "quit", "afddafs"));
-
-  for (size_t i = 0; i < available_commands.size(); i++) {
-    Message m = {"foo", available_commands[i], VL(("asdf", "afafsd"))};
-    cout << "-> " << m.command << m.params << endl;
-    dispatchMessage(m);
-  }
-  // cout << to_string("Hello, world!") << endl;
-  // cout << FMT(retfmt[RPL_WELCOME], ("scarf", "scarf", "localhost")) << endl;
-  // cout << FMT(retfmt[RPL_YOURHOST], ("localhost", "0.0.1")) << endl;
-  // cout << FMT(retfmt[RPL_CREATED], ("2020-01-01")) << endl;
-  // cout << FMT(retfmt[RPL_MYINFO], ("localhost", "0.0.1", "", "")) << endl;
-  // container_of<command_map>(p("PASS", commandNick));
-}
-
-/*
 const static char *bind_addr = "127.0.0.1";
-const static int port = 7778;
+const static int port = 6667;
 
 static sig_atomic_t recived_sig;
 
@@ -98,4 +59,3 @@ int main() {
   }
   return 0;
 }
-*/

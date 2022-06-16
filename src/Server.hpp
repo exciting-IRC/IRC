@@ -7,9 +7,9 @@
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
 class Server;
-class Client;
+class ClientConn;
 
-typedef std::list<Client *> ClientList;
+typedef std::list<ClientConn *> CCList;
 
 class Server : public IEventHandler {
  public:
@@ -27,10 +27,10 @@ class Server : public IEventHandler {
 
   int handle(Event e);  // override, final
 
-  void removeClient(ClientList::iterator pos);
+  void removeClient(CCList::iterator pos);
 
  private:
-  ClientList client_list_;
+  CCList client_list_;
   int sock_;
   bool ok_;
 };
