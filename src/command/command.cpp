@@ -30,14 +30,14 @@ bool nick_other_char_valid(const char ch) {
 
 bool nick_is_valid(const string& nick) {
   if (nick.empty() or nick.length() > 9 or
-      not nick_first_char_valid(nick.front()))
+      not nick_first_char_valid(nick.front()))  // XXX: front()는 c++11
     return false;
   if (nick.length() == 1)
     return true;
   else
     return util::all_of(nick.begin() + 1, nick.end(), nick_other_char_valid);
 }
-
+// TODO: #51에서 추가된 Handler로 옮기기
 string Nick(User& user, const vector<LazyString>& args) {
   if (args.empty())
     return NUMERIC_REPLY(ERR_NONICKNAMEGIVEN, ());
