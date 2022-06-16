@@ -52,14 +52,14 @@ class IRCParser {
   const Message &getMessage();
 
  private:
-  ParserResult::e parseBegin(util::Buffer &buffer, char ch);
-  ParserResult::e parsePrefix(util::Buffer &buffer, char ch);
-  ParserResult::e parseCommand(util::Buffer &buffer, char ch);
-  ParserResult::e parseParamStart(util::Buffer &buffer, char ch);
-  ParserResult::e parseParam(util::Buffer &buffer, char ch);
-  ParserResult::e parseTrailingStart(util::Buffer &buffer, char ch);
-  ParserResult::e parseTrailing(util::Buffer &buffer, char ch);
-  ParserResult::e parseLF(char ch);
+  ParserResult::e parseBegin(const char *cursor);
+  ParserResult::e parsePrefix(const char *cursor);
+  ParserResult::e parseCommand(const char *cursor);
+  ParserResult::e parseParamStart(const char *cursor);
+  ParserResult::e parseParam(const char *cursor);
+  ParserResult::e parseTrailingStart(const char *cursor);
+  ParserResult::e parseTrailing(const char *cursor);
+  ParserResult::e parseLF(const char *cursor);
 
  private:
   Message msg_;

@@ -19,8 +19,8 @@
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
-const static char *bind_addr = "127.0.0.1";
-const static int port = 7778;
+const static char *bind_addr = "10.11.1.5";
+const static int port = 6667;
 
 static sig_atomic_t recived_sig;
 
