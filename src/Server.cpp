@@ -8,7 +8,7 @@
 #include <iostream>
 #include <list>
 
-#include "Client.hpp"
+#include "ClientConn.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
@@ -44,7 +44,7 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
 }
 
 Server::~Server() {
-  for (ClientList::iterator it = client_list_.begin(); it != client_list_.end();
+  for (CCList::iterator it = client_list_.begin(); it != client_list_.end();
        ++it) {
     delete *it;
   }
@@ -66,14 +66,14 @@ int Server::handle(Event e) {
     std::cout << "Accept connection: "
               << addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL)
               << std::endl;
-    ClientList::iterator entry = client_list_.insert(client_list_.end(), NULL);
-    *entry = new Client(client_socket, *this, entry);
+    CCList::iterator entry = client_list_.insert(client_list_.end(), NULL);
+    *entry = new ClientConn(client_socket, *this, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
   }
   return 0;
 }
 
-void Server::removeClient(ClientList::iterator pos) {
+void Server::removeClient(CCList::iterator pos) {
   delete *pos;
   client_list_.erase(pos);
 }

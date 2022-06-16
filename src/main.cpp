@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "Client.hpp"
+#include "ClientConn.hpp"
 #include "Server.hpp"
 #include "container_of.hpp"
 #include "event/event.hpp"

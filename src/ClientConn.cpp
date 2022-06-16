@@ -1,4 +1,4 @@
-#include "Client.hpp"
+#include "ClientConn.hpp"
 
 #include <err.h>
 #include <signal.h>
@@ -18,17 +18,17 @@
 #include "util/LazyString/LazyString.hpp"
 #include "util/irctype/irctype.hpp"
 
-Client::Client(int sock, Server &server, ClientList::iterator this_position)
+ClientConn::ClientConn(int sock, Server &server, CCList::iterator this_position)
     : sock_(sock), server_(server), this_position_(this_position) {}
 
-Client::~Client() {
+ClientConn::~ClientConn() {
   if (sock_ != -1)
     close();
 }
 
-int Client::getFd() const { return sock_; }
+int ClientConn::getFd() const { return sock_; }
 
-void Client::handleReadEvent(Event &e) {
+void ClientConn::handleReadEvent(Event &e) {
   if (e.data != 0) {
     ssize_t len = recv(e.data);
     if (len > 0) {
@@ -49,7 +49,7 @@ void Client::handleReadEvent(Event &e) {
   }
 }
 
-int Client::handle(Event e) {
+int ClientConn::handle(Event e) {
   switch (e.kind) {
     case EventKind::kRead:
       handleReadEvent(e);
@@ -62,9 +62,9 @@ int Client::handle(Event e) {
   return 0;
 }
 
-int Client::close() { return ::close(sock_); }
+int ClientConn::close() { return ::close(sock_); }
 
-ssize_t Client::recv(size_t length) {
+ssize_t ClientConn::recv(size_t length) {
   ssize_t ret = util::recv(sock_, buffer_.begin(), length);
   if (ret == -1)
     return ret;
