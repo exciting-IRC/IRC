@@ -16,9 +16,8 @@ using std::string;
 template <typename Container>
 string join(const Container& c, const string& sep = "");
 
-
 }  // namespace util
 
-#include "join.hpp"
+#include "join.tpp"
 
 #endif  // UTIL_STRUTIL_JOIN_HPP
