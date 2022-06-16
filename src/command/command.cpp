@@ -2,10 +2,12 @@
 
 #include "command/returncode.hpp"
 #include "command/returnformat.hpp"
+#include "util/general/map_get.hpp"
 #include "util/general/result.hpp"
+#include "util/strutil/format.hpp"
 #include "util/vargs/container_of.hpp"
 
-#define REPLY(code, param) FMT(retfmt[code], param)
+#define REPLY(code, param) FMT(map_get(util::retfmt, code), param)
 
 namespace util {
 

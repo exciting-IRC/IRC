@@ -1,11 +1,15 @@
 #ifndef COMMAND_COMMAND_HPP
 #define COMMAND_COMMAND_HPP
 
+#include <map>
 #include <string>
+#include <vector>
 
 #include "util/LazyString/LazyString.hpp"
-#include "util/general/ConstMap.hpp"
+
 namespace util {
+using std::string;
+using std::vector;
 
 struct User {
   string username;
@@ -15,7 +19,7 @@ struct User {
 
 typedef string (*command)(User& user, const vector<LazyString>& args);
 typedef std::pair<string, command> command_pair;
-typedef ConstMap<string, command> command_map;
+typedef std::map<string, command> command_map;
 
 extern const command_map commandsMap;
 }  // namespace util
