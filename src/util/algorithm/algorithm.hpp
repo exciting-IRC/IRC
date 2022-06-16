@@ -15,11 +15,17 @@ template <class BidirIt>
 BidirIt next(BidirIt it,
              typename std::iterator_traits<BidirIt>::difference_type n = 1);
 
-/// 모든 원소가 참인지 여부 확인
+/// 모든 원소가 참인지 확인
 template <typename InputIterator, typename UnaryPredicate>
 bool all_of(InputIterator first, InputIterator last, UnaryPredicate pred);
 
-// TODO: none_of, any_of 추가
+/// 모든 원소가 거짓인지 확인
+template <typename InputIterator, typename UnaryPredicate>
+bool none_of(InputIterator first, InputIterator last, UnaryPredicate pred);
+
+/// 원소가 하나라도 참인지 확인
+template <typename InputIterator, typename UnaryPredicate>
+bool any_of(InputIterator first, InputIterator last, UnaryPredicate pred);
 
 }  // namespace util
 

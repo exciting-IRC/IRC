@@ -3,6 +3,8 @@
 
 #include <util/algorithm/algorithm.hpp>
 
+#include "algorithm.hpp"
+
 namespace util {
 
 template <class BidirIt>
@@ -28,6 +30,22 @@ bool all_of(InputIterator first, InputIterator last, UnaryPredicate pred) {
   }
   return true;
 }
+
+template <typename InputIterator, typename UnaryPredicate>
+bool none_of(InputIterator first, InputIterator last, UnaryPredicate pred) {
+  return not any_of(first, last, pred);
+}
+
+template <typename InputIterator, typename UnaryPredicate>
+bool any_of(InputIterator first, InputIterator last, UnaryPredicate pred) {
+  for (; first != last; ++first) {
+    if (pred(*first)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace util
 
 #endif  // UTIL_ALGORITHM_ALGORITHM_TPP
