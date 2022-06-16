@@ -8,6 +8,8 @@ ParserResult::e IRCParser::parseBegin(util::Buffer &buffer, char ch) {
   if (ch == ':') {
     state_ = ParserState::kPrefix;
     msg_.prefix.setStart(buffer.data() + buffer.tellg());
+  } else if (ch == '\r') {
+    state_ = ParserState::kEmptyLF;
   } else if (util::isLetter(ch) || util::isDigit(ch)) {
     state_ = ParserState::kCommand;
     msg_.command.setStart(buffer.data() + buffer.tellg());
@@ -160,6 +162,11 @@ ParserResult::e IRCParser::parse(util::Buffer &buffer) {
         break;
       case ParserState::kLF:
         return parseLF(ch);
+        break;
+      case ParserState::kEmptyLF:
+        if (parseLF(ch) == ParserResult::kFailure)
+          return ParserResult::kFailure;
+        clear();
         break;
       default:
         return ParserResult::kFailure;

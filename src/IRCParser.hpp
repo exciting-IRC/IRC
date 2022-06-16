@@ -19,7 +19,8 @@ struct ParserState {
     kParam,
     kTrailingStart,
     kTrailing,
-    kLF
+    kLF,
+    kEmptyLF
   };
 };
 
