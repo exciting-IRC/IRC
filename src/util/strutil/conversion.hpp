@@ -17,6 +17,12 @@ string to_string(const string& t);
 template <typename T>
 T convert_to(const string& from);
 
+/// 문자열을 대문자로 변경
+string to_upper(string str);
+
+/// 문자열을 소문자로 변경
+string to_lower(string str);
+
 }  // namespace util
 
 #include "conversion.tpp"
