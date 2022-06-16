@@ -1,20 +1,14 @@
 #ifndef UTIL_GENERAL_PRETTYPRINT_HPP
 #define UTIL_GENERAL_PRETTYPRINT_HPP
 
-#include <algorithm>
 #include <iostream>
-#include <iterator>
 #include <map>
 #include <vector>
 
+#include "util/algorithm/algorithm.hpp"
+
 namespace util {
 
-template <class BidirIt>
-static BidirIt prev(
-    BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1) {
-  std::advance(it, -n);
-  return it;
-}
 template <typename T1, typename T2>
 std::ostream& operator<<(std::ostream& os, const std::pair<T1, T2>& p) {
   os << p.first << ": " << p.second;
