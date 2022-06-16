@@ -19,7 +19,7 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/general/cout.hpp"
+#include "util/general/prettyprint.hpp"
 #include "util/general/map_get.hpp"
 #include "util/vargs/container_of.hpp"
 #define VL(param) VEC_OF(util::LazyString, param)
