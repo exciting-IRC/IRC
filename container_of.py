@@ -39,6 +39,18 @@ template = dedent(
     }}
     }} // namespace util
 
+    // hardcoded size 0 cases
+    template <typename C>
+    inline C container_of() {{
+      return C();
+    }}
+
+    template <typename C, typename T>
+    inline C container_of() {{
+      return C();
+    }}
+    // end of hardcoded size 0 cases
+
     {text}
     """
 )
@@ -47,33 +59,28 @@ template = dedent(
 @dataclass
 class Template:
     """
+    size must be greater than 0
+
     typename C <- container type
     typename T <- value type, intended to pass by value
     """
 
     size: int = 10
 
-    def maybe(self, then: str) -> str:
-        return "" if self.size == 0 else then
-
     def create_args(self, *, with_type: bool = False) -> str:
         arg = "T arg{n}" if with_type else "arg{n}"
-        return self.maybe(
-            ", ".join([arg.format(n=n) for n in range(self.size)])
-        )
+        return ", ".join(arg.format(n=n) for n in range(self.size))
 
     def create_args_array(self) -> str:
-        return self.maybe(
-            f"const T args[{self.size}] = {{{self.create_args()}}};"
-        )
+        return f"const T args[{self.size}] = {{{self.create_args()}}};"
 
     def create_return(self) -> str:
-        return f"""return C({self.maybe(f"args, args + {self.size}")});"""
+        return f"""return C({f"args, args + {self.size}"});"""
 
     def __str__(self) -> str:
         return dedent(
             f"""\
-            template <typename C{self.maybe(", typename T")}>
+            template <typename C, typename T>
             inline C container_of({self.create_args(with_type=True)}) {{
                 {self.create_args_array()}
                 {self.create_return()}
@@ -88,7 +95,7 @@ class ContainerOfArgs:
 
     @cached_property
     def as_text(self) -> str:
-        text = "\n".join(str(Template(n)) for n in range(self.size + 1))
+        text = "\n".join(str(Template(n)) for n in range(1, self.size + 1))
         return template.format(
             text=text,
         )

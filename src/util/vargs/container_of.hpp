@@ -15,10 +15,17 @@ std::pair<K, V> p(K k, V v) {
 }
 }  // namespace util
 
+// hardcoded size 0 cases
 template <typename C>
 inline C container_of() {
   return C();
 }
+
+template <typename C, typename T>
+inline C container_of() {
+  return C();
+}
+// end of hardcoded size 0 cases
 
 template <typename C, typename T>
 inline C container_of(T arg0) {
