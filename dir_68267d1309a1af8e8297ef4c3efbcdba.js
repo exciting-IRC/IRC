@@ -5,5 +5,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "util", "dir_b7878ad5ecbf2506f4125b9d34c97e45.html", "dir_b7878ad5ecbf2506f4125b9d34c97e45" ],
     [ "Client.hpp", "Client_8hpp_source.html", null ],
     [ "container_of.hpp", "container__of_8hpp_source.html", null ],
+    [ "IRCParser.hpp", "IRCParser_8hpp_source.html", null ],
     [ "Server.hpp", "Server_8hpp_source.html", null ]
 ];

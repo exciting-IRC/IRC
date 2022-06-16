@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_5b_5d_0',['operator[]',['../structutil_1_1array.html#a0991395ea080170667db3524e6145ce7',1,'util::array']]]
+  ['clear_0',['clear',['../classutil_1_1LazyString.html#af5fc0e95cc0bd104838b2f965cb77c8e',1,'util::LazyString']]]
 ];

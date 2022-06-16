@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['template_0',['Template',['../classcontainer__of_1_1Template.html',1,'container_of.Template'],['../classvec__of__any_1_1Template.html',1,'vec_of_any.Template']]]
+  ['parserresult_0',['ParserResult',['../structParserResult.html',1,'']]],
+  ['parserstate_1',['ParserState',['../structParserState.html',1,'']]]
 ];
