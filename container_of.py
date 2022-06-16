@@ -105,7 +105,7 @@ def create_result(size: int, path: Path | None) -> str:
     else:
         text = f"// clang-format: off\n{text}"
 
-    return text
+    return text + "\n"
 
 
 def main():
