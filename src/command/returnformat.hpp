@@ -10,14 +10,10 @@
 namespace util {
 using std::pair;
 using std::string;
+using util::p;
 
 typedef ConstMap<returnCode, string> return_map;
 typedef pair<returnCode, string> return_pair;
-
-template <typename K, typename V>
-static pair<K, V> p(K k, V v) {
-  return std::make_pair(k, v);
-}
 
 return_map retfmt = container_of<return_map, return_pair>(
     p(RPL_WELCOME,

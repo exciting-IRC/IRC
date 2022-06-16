@@ -1,10 +1,18 @@
-#ifndef SRC_CONTAINER_OF_HPP
-#define SRC_CONTAINER_OF_HPP
+#ifndef SRC_UTIL_VARGS_CONTAINER_OF_HPP
+#define SRC_UTIL_VARGS_CONTAINER_OF_HPP
 
 // do not try to directly edit this file.
 // generate using container_of.py instead
+
 #define VEC_OF(T, param) container_of<std::vector<T> > param
 #define V(param) VEC_OF(std::string, param)
+
+namespace util {
+template <typename K, typename V>
+pair<K, V> p(K k, V v) {
+  return std::make_pair(k, v);
+}
+}  // namespace util
 
 template <typename C, typename T>
 inline C container_of() {
@@ -75,5 +83,4 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 10);
 }
 
-#endif  // SRC_CONTAINER_OF_HPP
-
+#endif  // SRC_UTIL_VARGS_CONTAINER_OF_HPP

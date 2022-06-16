@@ -27,8 +27,17 @@ template = dedent(
     """\
     // do not try to directly edit this file.
     // generate using container_of.py instead
+
     #define VEC_OF(T, param) container_of<std::vector<T> > param
     #define V(param) VEC_OF(std::string, param)
+
+    namespace util {{
+    template <typename K, typename V>
+    pair<K, V> p(K k, V v) {{
+      return std::make_pair(k, v);
+    }}
+    }} // namespace util
+
     {text}
     """
 )
