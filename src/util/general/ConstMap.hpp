@@ -4,20 +4,25 @@
 #include <map>
 #include <utility>
 
+#include "util/strutil/strutil.hpp"
+
 namespace util {
 /**
  * @brief std::map을 상속받았지만 const operator[]가 있음
  */
 template <typename K, typename T>
-class SafeMap : public std::map<K, T> {
+class ConstMap {
+ private:
+  std::map<K, T> m;
+
  public:
   template <typename Iter>
-  SafeMap(Iter begin, Iter end) : std::map<K, T>(begin, end) {}
+  ConstMap(Iter begin, Iter end) : m(begin, end) {}
 
   const T& operator[](const K& key) const {
-    typename std::map<K, T>::const_iterator it = this->find(key);
-    if (it == this->end())
-      throw std::invalid_argument("key not found");
+    typename std::map<K, T>::const_iterator it = m.find(key);
+    if (it == m.end())
+      throw std::invalid_argument("key " + to_string(key) + " not found");
     return it->second;
   }
 };

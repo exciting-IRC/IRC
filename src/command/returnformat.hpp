@@ -4,14 +4,14 @@
 #include <string>
 
 #include "command/returncode.hpp"
-#include "util/general/safemap.hpp"
+#include "util/general/ConstMap.hpp"
 #include "util/vargs/container_of.hpp"
 
 namespace util {
 using std::pair;
 using std::string;
 
-typedef SafeMap<returnCode, string> return_map;
+typedef ConstMap<returnCode, string> return_map;
 typedef pair<returnCode, string> return_pair;
 
 template <typename K, typename V>
