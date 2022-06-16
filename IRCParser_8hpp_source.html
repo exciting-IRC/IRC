@@ -141,14 +141,14 @@ $(document).ready(function(){initNavTree('IRCParser_8hpp_source.html',''); initR
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <a class="code hl_struct" href="structMessage.html">Message</a> &amp;getMessage();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  ParserResult::e parseBegin(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  ParserResult::e parsePrefix(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  ParserResult::e parseCommand(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  ParserResult::e parseParamStart(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  ParserResult::e parseParam(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  ParserResult::e parseTrailingStart(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  ParserResult::e parseTrailing(<a class="code hl_class" href="classutil_1_1FixedBuffer.html">util::Buffer</a> &amp;buffer, <span class="keywordtype">char</span> ch);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  ParserResult::e parseLF(<span class="keywordtype">char</span> ch);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  ParserResult::e parseBegin(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  ParserResult::e parsePrefix(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  ParserResult::e parseCommand(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  ParserResult::e parseParamStart(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  ParserResult::e parseParam(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  ParserResult::e parseTrailingStart(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  ParserResult::e parseTrailing(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  ParserResult::e parseLF(<span class="keyword">const</span> <span class="keywordtype">char</span> *cursor);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_struct" href="structMessage.html">Message</a> msg_;</div>

@@ -83,7 +83,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"Client_8hpp_source.html"
+"ClientConn_8hpp_source.html"
 ];
 
 var SYNCONMSG = '패널 동기화를 비활성화하기 위해 클릭하십시오';

@@ -16,6 +16,7 @@ var hierarchy =
     [ "util::format", "classutil_1_1format.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
       [ "Client", "classClient.html", null ],
+      [ "ClientConn", "classClientConn.html", null ],
       [ "Server", "classServer.html", null ]
     ] ],
     [ "IRCParser", "classIRCParser.html", null ],
@@ -31,5 +32,7 @@ var hierarchy =
     ] ],
     [ "container_of.Template", "classcontainer__of_1_1Template.html", null ],
     [ "vec_of_any.Template", "classvec__of__any_1_1Template.html", null ],
+    [ "UserInfo", "structUserInfo.html", null ],
+    [ "UserMode", "structUserMode.html", null ],
     [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
 ];

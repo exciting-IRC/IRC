@@ -19,6 +19,7 @@ var annotated_dup =
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
     [ "Client", "classClient.html", null ],
+    [ "ClientConn", "classClientConn.html", null ],
     [ "color_t", "structcolor__t.html", null ],
     [ "Event", "structEvent.html", null ],
     [ "EventFlag", "structEventFlag.html", null ],
@@ -30,5 +31,7 @@ var annotated_dup =
     [ "ParserResult", "structParserResult.html", null ],
     [ "ParserState", "structParserState.html", null ],
     [ "return_t", "structreturn__t.html", null ],
-    [ "Server", "classServer.html", null ]
+    [ "Server", "classServer.html", null ],
+    [ "UserInfo", "structUserInfo.html", null ],
+    [ "UserMode", "structUserMode.html", null ]
 ];

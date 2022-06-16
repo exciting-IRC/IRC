@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vecofany_0',['VecOfAny',['../classvec__of__any_1_1VecOfAny.html',1,'vec_of_any']]]
+  ['userinfo_0',['UserInfo',['../structUserInfo.html',1,'']]],
+  ['usermode_1',['UserMode',['../structUserMode.html',1,'']]]
 ];

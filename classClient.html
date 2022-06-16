@@ -111,79 +111,20 @@ Client에 대한 협력 다이어그램:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:a86bae347b27f943b609235db4318e0c2"><td class="memItemLeft" align="right" valign="top"><a id="a86bae347b27f943b609235db4318e0c2" name="a86bae347b27f943b609235db4318e0c2"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Client</b> (int sock, <a class="el" href="classServer.html">Server</a> &amp;server, ClientList::iterator this_position)</td></tr>
-<tr class="separator:a86bae347b27f943b609235db4318e0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af49b65f16ec709c6421a67107aadbd6e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#af49b65f16ec709c6421a67107aadbd6e">getFd</a> () const</td></tr>
-<tr class="separator:af49b65f16ec709c6421a67107aadbd6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af79d9f380d4f22b8f07beeae64c77333"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#af79d9f380d4f22b8f07beeae64c77333">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
-<tr class="separator:af79d9f380d4f22b8f07beeae64c77333"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2da5f9e41a9421eddcc10a22d17326a6"><td class="memItemLeft" align="right" valign="top"><a id="a2da5f9e41a9421eddcc10a22d17326a6" name="a2da5f9e41a9421eddcc10a22d17326a6"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> ()</td></tr>
-<tr class="separator:a2da5f9e41a9421eddcc10a22d17326a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a257acee2d6eb393175e768a3913bb383"><td class="memItemLeft" align="right" valign="top"><a id="a257acee2d6eb393175e768a3913bb383" name="a257acee2d6eb393175e768a3913bb383"></a>
-ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>recv</b> (size_t length)</td></tr>
-<tr class="separator:a257acee2d6eb393175e768a3913bb383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b6ad01d19536e1bcbfc0005d81180e2"><td class="memItemLeft" align="right" valign="top"><a id="a8b6ad01d19536e1bcbfc0005d81180e2" name="a8b6ad01d19536e1bcbfc0005d81180e2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Client</b> (<a class="el" href="classClientConn.html">ClientConn</a> *conn, const std::string &amp;nickname, const std::string &amp;password)</td></tr>
+<tr class="separator:a8b6ad01d19536e1bcbfc0005d81180e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8dd592f774d92c9f6e7ef17b979baa"><td class="memItemLeft" align="right" valign="top"><a id="a0e8dd592f774d92c9f6e7ef17b979baa" name="a0e8dd592f774d92c9f6e7ef17b979baa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getFd</b> ()</td></tr>
+<tr class="separator:a0e8dd592f774d92c9f6e7ef17b979baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019e9946d0d9db02d23430889074e403"><td class="memItemLeft" align="right" valign="top"><a id="a019e9946d0d9db02d23430889074e403" name="a019e9946d0d9db02d23430889074e403"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>handle</b> ()</td></tr>
+<tr class="separator:a019e9946d0d9db02d23430889074e403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">멤버 함수 문서화</h2>
-<a id="af49b65f16ec709c6421a67107aadbd6e" name="af49b65f16ec709c6421a67107aadbd6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af49b65f16ec709c6421a67107aadbd6e">&#9670;&nbsp;</a></span>getFd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Client::getFd </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><a class="el" href="classIEventHandler.html">IEventHandler</a>를 구현.</p>
-
-</div>
-</div>
-<a id="af79d9f380d4f22b8f07beeae64c77333" name="af79d9f380d4f22b8f07beeae64c77333"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79d9f380d4f22b8f07beeae64c77333">&#9670;&nbsp;</a></span>handle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Client::handle </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structEvent.html">Event</a>&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><a class="el" href="classIEventHandler.html">IEventHandler</a>를 구현.</p>
-
-</div>
-</div>
-<hr/>이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.:<ul>
-<li>src/<a class="el" href="Client_8hpp_source.html">Client.hpp</a></li>
-<li>src/Client.cpp</li>
+<a name="details" id="details"></a><h2 class="groupheader">상세한 설명</h2>
+<div class="textblock"><p >a - user is flagged as away; i - marks a users as invisible; w - user receives wallops; r - restricted user connection; o - operator flag; O - local operator flag; s - marks a user for receipt of server notices. (deprecated) </p>
+</div><hr/>이 클래스에 대한 문서화 페이지는 다음의 파일로부터 생성되었습니다.:<ul>
+<li>src/Client.cc</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
