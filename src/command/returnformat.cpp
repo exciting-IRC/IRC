@@ -13,5 +13,6 @@ const return_map retfmt = container_of<return_map, return_pair>(
       "modes}"),
     p(ERR_NONICKNAMEGIVEN, ":No nickname given"),
     p(ERR_NOSUCHNICK, "{nick} :No such nick/channel"),
-    p(ERR_ERRONEUSNICKNAME, "{nick} :Erroneous nickname"));
+    p(ERR_ERRONEUSNICKNAME, "{nick} :Erroneous nickname"),
+    p(ERR_NICKNAMEINUSE, "{nick} :Nickname is already in use"));
 }  // namespace util
