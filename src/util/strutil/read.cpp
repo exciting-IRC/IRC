@@ -7,7 +7,7 @@ namespace util {
 using std::string;
 
 string read_text(const string& filename) {
-  std::ifstream ifs(filename);
+  std::ifstream ifs(filename.c_str());
   std::stringstream buffer;
 
   buffer << ifs.rdbuf();
