@@ -14,6 +14,9 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/strutil/strutil.hpp"
+#include "util/LazyString/LazyString.hpp"
+#include "util/irctype/irctype.hpp"
 
 Client::Client(int sock, Server &server, ClientList::iterator this_position)
     : sock_(sock), server_(server), this_position_(this_position) {}
@@ -27,13 +30,17 @@ int Client::getFd() const { return sock_; }
 
 void Client::handleReadEvent(Event &e) {
   if (e.data != 0) {
-    std::cout << "-recv: " << e.data << std::endl;
     ssize_t len = recv(e.data);
     if (len > 0) {
-      while (!buffer.eof()) {
-        std::cout << buffer.pop();
+      ParserResult::e result = parser_.parse(buffer_);
+      if (result == ParserResult::kFailure) {
+        parser_.clear();
+        std::cout << "Failed to parse message" << std::endl;
+        // XXX log
+      } else if (result == ParserResult::kSuccess) {
+        parser_.clear();
+        std::cout << "Parse Success" << std::endl;
       }
-      std::cout << std::endl;
     }
   }
   if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
@@ -58,10 +65,10 @@ int Client::handle(Event e) {
 int Client::close() { return ::close(sock_); }
 
 ssize_t Client::recv(size_t length) {
-  ssize_t ret = util::recv(sock_, buffer.begin(), length);
+  ssize_t ret = util::recv(sock_, buffer_.begin(), length);
   if (ret == -1)
     return ret;
-  buffer.seekg(0);
-  buffer.seekp(ret);
+  buffer_.seekg(0);
+  buffer_.seekp(ret);
   return ret;
 }

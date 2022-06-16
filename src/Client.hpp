@@ -5,12 +5,12 @@
 
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "IRCParser.hpp"
 
 class Server;
 class Client;
 
 typedef std::list<Client *> ClientList;
-typedef util::FixedBuffer<char, 512> Buffer;
 
 class Client : public IEventHandler {
  public:
@@ -35,7 +35,8 @@ class Client : public IEventHandler {
   void handleReadEvent(Event &e);
 
  private:
-  Buffer buffer;
+  util::Buffer buffer_;
+  IRCParser parser_;
   int sock_;
   Server &server_;
   ClientList::iterator this_position_;

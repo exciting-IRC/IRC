@@ -10,7 +10,6 @@ class Server;
 class Client;
 
 typedef std::list<Client *> ClientList;
-typedef util::FixedBuffer<char, 512> Buffer;
 
 class Server : public IEventHandler {
  public:
