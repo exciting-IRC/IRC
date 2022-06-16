@@ -3,15 +3,15 @@
 container_of.py:
     creates boilerplate for variable argument function "container_of()".
     container_of generates anonymous container, with maximum <size> of arguments.
+    default writes stdout, provide <path> to write to file.
     example usage - "container_of<vector<string> >("a", "b", "c)"
 
 usage:
-    container_of.py [--help] [options] (--dry | <path>)
+    container_of.py [--help] [options] [ <path> ]
 
 options:
     -h, --help            show this help message and exit
     -n <N>, --size <N>    number of maximum argument size. [default: 10]
-    -d, --dry             write to stdout instead of file.
 """
 
 import shutil
@@ -72,7 +72,7 @@ class Template:
     def __str__(self) -> str:
         return dedent(
             f"""\
-            template <typename C, typename T>
+            template <typename C{self.maybe(", typename T")}>
             inline C container_of({self.create_args(with_type=True)}) {{
                 {self.create_args_array()}
                 {self.create_return()}
@@ -81,27 +81,31 @@ class Template:
         )
 
 
-@dataclass(frozen=True)
+@dataclass
 class ContainerOfArgs:
     size: int = 10
 
     @cached_property
     def as_text(self) -> str:
-        text = "\n".join([str(Template(n)) for n in range(self.size + 1)])
-        return template.format(text=text)
+        text = "\n".join(str(Template(n)) for n in range(self.size + 1))
+        return template.format(
+            text=text,
+        )
 
     def __repr__(self) -> str:
         return self.as_text
 
 
-def create_formatted_result(size: int, path: Path | None) -> str:
+def create_result(size: int, path: Path | None) -> str:
     text = ContainerOfArgs(size).as_text
     if path:
         text = wrap_header(text, path)
-    if shutil.which("clang-format"):
+    if size < 100 and shutil.which("clang-format"):
         text = clang_format(text)
+    else:
+        text = f"// clang-format: off\n{text}"
 
-    return text + "\n"
+    return text
 
 
 def main():
@@ -114,12 +118,12 @@ def main():
 
     size = int(args["--size"])
     path = Path(args["<path>"]) if args["<path>"] else None
-    text = create_formatted_result(size, path)
+    text = create_result(size, path)
 
-    if args["--dry"]:
-        print(text)
-    elif path is not None:
+    if path:
         path.write_text(text)
+    else:
+        print(text)
 
 
 if __name__ == "__main__":
