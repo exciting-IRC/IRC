@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "util/strutil/vec_of_any.hpp"
+#include "util/vargs/vec_of_any.hpp"
 
 #define FMT(fmt, param) util::format(fmt, VA(param))
 
@@ -86,8 +86,8 @@ class format {
   bool on_escaped_bracket(const string& match);
   void advance_and_append(const string& to_add);
   void advance_to_closing_bracket();
-  void insert_arg();  //< 인자 삽입후 다음 인자로 이동
-  void insert_arg(size_t index); //< 인덱스의 인자 삽입 후 이동 없음
+  void insert_arg();              //< 인자 삽입후 다음 인자로 이동
+  void insert_arg(size_t index);  //< 인덱스의 인자 삽입 후 이동 없음
 
  public:
   format(const string& fmt, const vector<string>& args);
