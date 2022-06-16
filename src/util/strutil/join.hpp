@@ -1,18 +1,11 @@
-#ifndef STRUTIL_HPP
-#define STRUTIL_HPP
+#ifndef UTIL_STRUTIL_JOIN_HPP
+#define UTIL_STRUTIL_JOIN_HPP
 
-#include <util/strutil/strutil.hpp>
+#include <string>
 
 namespace util {
 
-/// stringstream 출력을 지원하는 원소에 한해 문자열로 변경
-template <typename T>
-string to_string(const T& t) {
-  std::stringstream ss;
-
-  ss << t;
-  return ss.str();
-}
+using std::string;
 
 /**
  * @brief 파이썬의 str.join(이터러블)과 유사한 기능을 제공하는 함수
@@ -20,6 +13,9 @@ string to_string(const T& t) {
  * @tparam Container 이터레이터의 원소가 << 출력을 지원하는 컨테이너
  * @param sep 연결 문자열, 기본값 ""
  */
+template <typename Container>
+string join(const Container& c, const string& sep = "");
+
 template <typename Container>
 string join(const Container& c, const string& sep) {
   std::stringstream ss;
@@ -34,4 +30,4 @@ string join(const Container& c, const string& sep) {
 
 }  // namespace util
 
-#endif  // STRUTIL_HPP
+#endif  // UTIL_STRUTIL_JOIN_HPP
