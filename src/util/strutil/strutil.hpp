@@ -30,6 +30,9 @@ vector<string> split(const string& str, const string& sep = "");
 template <typename T>
 string to_string(const T& t);
 
+template <>
+string to_string(const string& t);
+
 /// istringstream 에서 변환이 가능한 타입에 한해 해당 타입으로 변환
 template <typename T>
 T convert_to(const string& from) {

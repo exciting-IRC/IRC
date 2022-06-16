@@ -32,7 +32,6 @@ string join(const Container& c, const string& sep) {
   return ss.str();
 }
 
-
 }  // namespace util
 
-#endif // STRUTIL_HPP
+#endif  // STRUTIL_HPP

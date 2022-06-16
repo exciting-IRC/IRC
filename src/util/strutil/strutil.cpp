@@ -13,4 +13,9 @@ string read_text(const string& filename) {
   return buffer.str();
 }
 
+template <>
+string to_string(const string& t) {
+  return t;
+}
+
 }  // namespace util
