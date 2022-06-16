@@ -14,17 +14,22 @@ bool isLetter(char c);
 bool isDigit(char c);
 
 /**
- * @brief ':'(colon) or ' '(space)
+ * @brief ':'(colon) 또는 ' '(space)
  */
 bool isSeprator(char c);
 
 /**
- * @brief '\\r'(CR) or '\\n'(LF) or '\\0'(NUL)
+ * @brief '\\r'(CR) 또는 '\\n'(LF) 또는 '\\0'(NUL)
  */
-bool isSpecial(char c);
+bool isEol(char c);
 
 /**
- * @brief every character except
+ * @brief 다음 중 하나: "[]\`_^{|}"
+ */
+bool isSpecial(const char c);
+
+/**
+ * @brief 다음을 제외한 문자들
  *  '\\r' (CR),
  *  '\\n' (LF),
  *  '\\0' (NUL),
@@ -33,6 +38,6 @@ bool isSpecial(char c);
  */
 bool isRegular(char c);
 
-}
+}  // namespace util
 
 #endif  // UTIL_IRCTYPE_HPP
