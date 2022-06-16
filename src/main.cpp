@@ -19,8 +19,8 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/general/prettyprint.hpp"
 #include "util/general/map_get.hpp"
+#include "util/general/prettyprint.hpp"
 #include "util/vargs/container_of.hpp"
 #define VL(param) VEC_OF(util::LazyString, param)
 
@@ -45,7 +45,7 @@ int main() {
          "quit", "afddafs"));
 
   for (size_t i = 0; i < available_commands.size(); i++) {
-    Message m = {"foo", available_commands[i], VL(("asdf"))};
+    Message m = {"foo", available_commands[i], VL(("asdf", "afafsd"))};
     cout << "-> " << m.command << m.params << endl;
     dispatchMessage(m);
   }
