@@ -63,14 +63,20 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
-struct kevent create_kevent(EventKind::e kind, IEventHandler *eh) {
-  struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
+struct kevent create_kevent(EventKind::e kind, IEventHandler *eh, uint16_t flag) {
+  struct kevent ev = {eh->getFd(), kind, flag, 0, 0, static_cast<void *>(eh)};
 
   return ev;
 }
 
 int EventPool::addEvent(EventKind::e kind, IEventHandler *eh) {
-  struct kevent ev = create_kevent(kind, eh);
+  struct kevent ev = create_kevent(kind, eh, EV_ADD);
+
+  return util::kevent_ctl(fd_, &ev, 1, NULL);
+}
+
+int EventPool::removeEvent(EventKind::e kind, IEventHandler *eh) {
+  struct kevent ev = create_kevent(kind, eh, EV_DELETE);
 
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }

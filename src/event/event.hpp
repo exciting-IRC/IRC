@@ -54,6 +54,8 @@ class EventPool {
 
   int addEvent(EventKind::e kind, IEventHandler *eh);
 
+  int removeEvent(EventKind::e kind, IEventHandler *eh);
+
   int dispatchEvent(time_t sec);
 
   int dispatchEvent(const struct timespec &ts);
