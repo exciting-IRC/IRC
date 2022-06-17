@@ -18,9 +18,11 @@ void Event::setReadEvent(const struct kevent &kev) {
     this->flags.set(EventFlag::kEOF);
 }
 
-void Event::setWriteEvnet(const struct kevent &kev) {
+void Event::setWriteEvent(const struct kevent &kev) {
   this->kind = EventKind::kWrite;
   this->data = kev.data;
+  if (kev.flags & EV_EOF)
+    this->flags.set(EventFlag::kEOF);
 }
 
 return_t::e EventPool::initKqueue() {
@@ -63,14 +65,20 @@ int EventPool::close() {
 
 bool EventPool::ok() { return ok_; }
 
-struct kevent create_kevent(EventKind::e kind, IEventHandler *eh) {
-  struct kevent ev = {eh->getFd(), kind, EV_ADD, 0, 0, static_cast<void *>(eh)};
+struct kevent create_kevent(EventKind::e kind, IEventHandler *eh, uint16_t flag) {
+  struct kevent ev = {eh->getFd(), kind, flag, 0, 0, static_cast<void *>(eh)};
 
   return ev;
 }
 
 int EventPool::addEvent(EventKind::e kind, IEventHandler *eh) {
-  struct kevent ev = create_kevent(kind, eh);
+  struct kevent ev = create_kevent(kind, eh, EV_ADD);
+
+  return util::kevent_ctl(fd_, &ev, 1, NULL);
+}
+
+int EventPool::removeEvent(EventKind::e kind, IEventHandler *eh) {
+  struct kevent ev = create_kevent(kind, eh, EV_DELETE);
 
   return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
@@ -93,7 +101,7 @@ int EventPool::handleEvent(struct kevent &kev) {
       break;
 
     case EVFILT_WRITE:
-      ev.setWriteEvnet(kev);
+      ev.setWriteEvent(kev);
       break;
     default:
       // XXX add log

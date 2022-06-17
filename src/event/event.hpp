@@ -24,7 +24,7 @@ class EventPool;
 struct Event {
   Event(EventPool &pool_);
   void setReadEvent(const struct kevent &kev);
-  void setWriteEvnet(const struct kevent &kev);
+  void setWriteEvent(const struct kevent &kev);
 
   EventPool &pool;
   EventKind::e kind;
@@ -53,6 +53,8 @@ class EventPool {
   bool ok();
 
   int addEvent(EventKind::e kind, IEventHandler *eh);
+
+  int removeEvent(EventKind::e kind, IEventHandler *eh);
 
   int dispatchEvent(time_t sec);
 
