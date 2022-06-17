@@ -2,14 +2,17 @@
 #define SERVER_HPP
 
 #include <list>
+#include <map>
 
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
 class Server;
+class Client;
 class ClientConn;
 
 typedef std::list<ClientConn *> CCList;
+typedef std::map<std::string, Client *> ClientMap;
 
 class Server : public IEventHandler {
  public:
@@ -27,10 +30,14 @@ class Server : public IEventHandler {
 
   int handle(Event e);  // override, final
 
-  void removeClient(CCList::iterator pos);
+  void moveClientConn(CCList::iterator pos);
+  void removeClientConn(CCList::iterator pos);
+
+  void addClient(const std::string &nick, Client *client);
 
  private:
-  CCList client_list_;
+  CCList client_conn_;
+  ClientMap clients_;
   int sock_;
   bool ok_;
 };

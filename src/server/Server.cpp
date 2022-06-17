@@ -44,7 +44,7 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
 }
 
 Server::~Server() {
-  for (CCList::iterator it = client_list_.begin(); it != client_list_.end();
+  for (CCList::iterator it = client_conn_.begin(); it != client_conn_.end();
        ++it) {
     delete *it;
   }
@@ -66,14 +66,22 @@ int Server::handle(Event e) {
     std::cout << "Accept connection: "
               << addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL)
               << std::endl;
-    CCList::iterator entry = client_list_.insert(client_list_.end(), NULL);
+    CCList::iterator entry = client_conn_.insert(client_conn_.end(), NULL);
     *entry = new ClientConn(client_socket, *this, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
   }
   return 0;
 }
 
-void Server::removeClient(CCList::iterator pos) {
+void Server::moveClientConn(CCList::iterator pos) {
+  client_conn_.erase(pos);
+}
+
+void Server::removeClientConn(CCList::iterator pos) {
   delete *pos;
-  client_list_.erase(pos);
+  client_conn_.erase(pos);
+}
+
+void Server::addClient(const std::string &nick, Client *client) {
+  clients_.insert(ClientMap::value_type(nick, client));
 }
