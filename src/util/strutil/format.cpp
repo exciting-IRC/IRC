@@ -51,12 +51,13 @@ void format::insert_arg(size_t index) {
 }
 
 void format::advance_to_closing_bracket() {
-  for (size_t i = curs + 1; i < fmt.size(); i++) {
+  const size_t begin = curs + 1;
+  for (size_t i = begin; i < fmt.size(); i++) {
     if (fmt[i] == '{') {
       throw std::invalid_argument("unmatched opening brace '{' at " +
                                   to_string(i));
     } else if (fmt[i] == '}') {
-      size_t begin = curs + 1, len = i - begin;
+      size_t len = i - begin;
       curs = i;
       string word = fmt.substr(begin, len);
       if (len > 0 and util::all_of(word.begin(), word.end(), ::isdigit)) {
