@@ -7,6 +7,7 @@
 #include "IRCParser.hpp"
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/moveptr.hpp"
 
 class Server;
 class ClientConn;
@@ -27,12 +28,22 @@ struct UserMode {
   };
 };
 
-struct UserInfo {
+struct UserIdent {
   std::string password_;
   std::string user_;
   std::string realname_;
   std::string nickname_;
   unsigned int mode_;
+};
+
+struct ConnState {
+  enum e {
+    kClear = 0,
+    kPass = (1 << 0),
+    kUser = (1 << 1),
+    kNick = (1 << 3),
+    kComplate = (kPass | kUser | kNick)
+  };
 };
 
 class ClientConn : public IEventHandler {
@@ -54,6 +65,14 @@ class ClientConn : public IEventHandler {
 
   ssize_t recv(size_t length);
 
+  ParserResult::e parse();
+
+  const Message &getMessage();
+
+  UserIdent *moveIdent() {
+    return util::moveptr(ident_);
+  }
+
  private:
   static const MPMap getMPMap();
   void handleReadEvent(Event &e);
@@ -69,8 +88,8 @@ class ClientConn : public IEventHandler {
   int sock_;
   Server &server_;
   CCList::iterator this_position_;
-  UserInfo info_;
-  int flag_;
+  UserIdent *ident_;
+  unsigned char state_;
 };
 
 #endif  // CLIENT_CONN_HPP

@@ -10,22 +10,28 @@
 #include <string>
 #include <vector>
 
-#include "server/Server.hpp"
 #include "event/event.hpp"
+#include "server/Server.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/LazyString/LazyString.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/strutil.hpp"
+#include "client/Client.hpp"
 
 const MPMap ClientConn::map_ = ClientConn::getMPMap();
 
 ClientConn::ClientConn(int sock, Server &server, CCList::iterator this_position)
-    : sock_(sock), server_(server), this_position_(this_position), flag_(0) {}
+    : sock_(sock),
+      server_(server),
+      this_position_(this_position),
+      ident_(new UserIdent()),
+      state_(ConnState::kClear) {}
 
 ClientConn::~ClientConn() {
   if (sock_ != -1)
     close();
+  delete ident_;
 }
 
 const MPMap ClientConn::getMPMap() {
@@ -39,26 +45,26 @@ const MPMap ClientConn::getMPMap() {
 }
 
 void ClientConn::processNick(const Message &m) {
-  info_.nickname_ = m.params[0];
+  ident_->nickname_ = m.params[0];
   std::cout << "NICK" << std::endl;
-  ++flag_;
+  state_ |= ConnState::kNick;
 }
 
 void ClientConn::processUser(const Message &m) {
-  info_.user_ = m.params[0];
+  ident_->user_ = m.params[0];
 
   // XXX 매우매우매우 위험함
   int k = atoi(m.params[1].c_str());
-  info_.mode_ = (k & UserMode::w) | (k & UserMode::i);
-  info_.realname_ = m.params[3];
+  ident_->mode_ = (k & UserMode::w) | (k & UserMode::i);
+  ident_->realname_ = m.params[3];
   std::cout << "USER" << std::endl;
-  ++flag_;
+  state_ |= ConnState::kUser;
 }
 
 void ClientConn::processPass(const Message &m) {
-  info_.password_ = m.params[0];
+  ident_->password_ = m.params[0];
   std::cout << "PASS" << std::endl;
-  ++flag_;
+  state_ |= ConnState::kPass;
 }
 
 #include <functional>
@@ -88,26 +94,23 @@ void ClientConn::handleReadEvent(Event &e) {
         parser_.clear();
         std::cout << "Failed to parse message" << std::endl;
       }
-      if (flag_ == 3) {
-        std::cout << "send" << std::endl;
-        char *buf = new char[512];
-
-        int len =
-            sprintf(buf,
-                    ":eircd 001 :Welcome to the -Exciting- IRC [%s]\r\n"
-                    ":eircd 002 :Your host is eircd-test version 0.0.2\r\n"
-                    ":eircd 003 :This server was created 0\r\n"
-                    ":eircd 004 eircd 0.0.2 ai :\r\n",
-                    info_.nickname_.c_str());
-        util::send(sock_, buf, len);
-        delete[] buf;
-        flag_ = 0;
-      }
     }
-  }
-  if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
+  } else if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
     std::cout << "Connection closed." << std::endl;
-    server_.removeClient(this_position_);
+    server_.removeClientConn(this_position_);
+  }
+  if (state_ == ConnState::kComplate) {
+    const std::string &nick = ident_->nickname_;
+    Client *client = new Client(server_, this);
+    client->setMessageBuffer("aaaaaa");
+
+    server_.moveClientConn(this_position_);
+    server_.addClient(nick, client);
+
+    e.pool.removeEvent(EventKind::kRead, this);
+    e.pool.addEvent(EventKind::kRead, client);
+    e.pool.addEvent(EventKind::kWrite, client);
+    //client->send ...
   }
 }
 
@@ -134,3 +137,7 @@ ssize_t ClientConn::recv(size_t length) {
   buffer_.seekp(ret);
   return ret;
 }
+
+ParserResult::e ClientConn::parse() { return parser_.parse(buffer_); }
+
+const Message &ClientConn::getMessage() { return parser_.getMessage(); }
