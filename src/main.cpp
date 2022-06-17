@@ -6,9 +6,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <util/FixedBuffer/FixedBuffer.hpp>
-#include <util/config/config.hpp>
-#include <util/strutil/strutil.hpp>
 #include <utility>
 #include <vector>
 
@@ -17,7 +14,9 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/general/functor.hpp"
+#include "util/algorithm/functor.hpp"
+#include "util/config/config.hpp"
+#include "util/strutil/strutil.hpp"
 #include "util/vargs/container_of.hpp"
 
 const static char* bind_addr = "127.0.0.1";
