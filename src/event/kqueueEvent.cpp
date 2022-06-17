@@ -18,7 +18,7 @@ void Event::setReadEvent(const struct kevent &kev) {
     this->flags.set(EventFlag::kEOF);
 }
 
-void Event::setWriteEvnet(const struct kevent &kev) {
+void Event::setWriteEvent(const struct kevent &kev) {
   this->kind = EventKind::kWrite;
   this->data = kev.data;
 }
@@ -99,7 +99,7 @@ int EventPool::handleEvent(struct kevent &kev) {
       break;
 
     case EVFILT_WRITE:
-      ev.setWriteEvnet(kev);
+      ev.setWriteEvent(kev);
       break;
     default:
       // XXX add log
