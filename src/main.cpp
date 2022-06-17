@@ -32,7 +32,6 @@ int main() {
 
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
-  signal(SIGQUIT, server_close_handler);
 
   Config config = Config::from("config.yml");
   cout << config << endl;
