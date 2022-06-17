@@ -12,8 +12,8 @@
 #include <utility>
 #include <vector>
 
-#include "ClientConn.hpp"
-#include "Server.hpp"
+#include "client/ClientConn.hpp"
+#include "server/Server.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"

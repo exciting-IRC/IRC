@@ -8,7 +8,7 @@
 #include <iostream>
 #include <list>
 
-#include "ClientConn.hpp"
+#include "client/ClientConn.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"

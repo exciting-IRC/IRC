@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "Server.hpp"
+#include "server/Server.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
