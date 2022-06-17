@@ -35,9 +35,9 @@ int main() {
   signal(SIGTERM, server_close_handler);
   signal(SIGQUIT, server_close_handler);
 
-  FUNCTOR(int, exitwith, (const string& msg), {
+  FUNCTOR(int, exitwith, (const string& msg, int returncode = 0), {
     std::cout << msg << std::endl;
-    return 0;
+    exit(returncode);
   });
 
   Config config = Config::from("config.yml");
@@ -47,7 +47,7 @@ int main() {
   if (not server.ok())
     err(1, "server_init");
 
-  std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
+  COUT_FMT("Listen at {bind_addr}:{port}", (bind_addr, port));
 
   EventPool pool(64);
   if (not pool.ok())
@@ -59,7 +59,6 @@ int main() {
     pool.dispatchEvent(1);
     if (recived_sig) {
       exitwith(FMT("shutdown... {}", (strsignal(recived_sig))));
-      return 0;
     }
   }
   return 0;
