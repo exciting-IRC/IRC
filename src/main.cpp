@@ -17,9 +17,10 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/general/functor.hpp"
 #include "util/vargs/container_of.hpp"
 
-const static char *bind_addr = "127.0.0.1";
+const static char* bind_addr = "127.0.0.1";
 const static int port = 6667;
 
 static sig_atomic_t recived_sig;
@@ -34,26 +35,30 @@ int main() {
   signal(SIGTERM, server_close_handler);
   signal(SIGQUIT, server_close_handler);
 
-  Config config = Config::from("config.yml");
-  cout << config << endl;
+  FUNCTOR(int, exitwith, (const string& msg), {
+    std::cout << msg << std::endl;
+    return 0;
+  });
 
-  Server srv(bind_addr, port, 64);
-  if (!srv.ok())
+  Config config = Config::from("config.yml");
+  // cout << config << endl;
+
+  Server server(bind_addr, port, 64);
+  if (not server.ok())
     err(1, "server_init");
 
   std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
 
   EventPool pool(64);
-  if (!pool.ok())
+  if (not pool.ok())
     err(1, "event_pool_init");
 
-  pool.addEvent(EventKind::kRead, &srv);
+  pool.addEvent(EventKind::kRead, &server);
 
   while (true) {
-    int k = pool.dispatchEvent(1);
-    (void)k;
+    pool.dispatchEvent(1);
     if (recived_sig) {
-      printf("shutdown... %s\n", strsignal(recived_sig));
+      exitwith(FMT("shutdown... {}", (strsignal(recived_sig))));
       return 0;
     }
   }
