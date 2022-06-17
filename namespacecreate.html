@@ -124,14 +124,16 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <div class="textblock"><pre class="fragment">create.py: create boilerplate for *.cpp, *.hpp, *.tpp
 
 usage:
-    create.py [--help] [options] [-n | -N | --namespace &lt;N&gt; ] &lt;path&gt;
+    create.py [--help] [options] [-n | -N | --ns &lt;N&gt; ] &lt;path&gt;
 
 options:
-    -h, --help               show this help message and exit
-    -n                       use parent directory name as namespace
-    -N                       use nested directory names as namespace
-    --namespace &lt;N&gt;          choose namespace to use.
-    -r &lt;R&gt;, --root &lt;R&gt;       root of directory path [default: src]
+    -h, --help            show this help message and exit
+    -n                    use parent directory name as namespace
+    -N                    use nested directory names as namespace
+    --ns &lt;N&gt;              choose namespace to use.
+    -s, --switch          open created file on vscode.
+    -f, --force           overwrite existing files.
+    -r &lt;R&gt;, --root &lt;R&gt;    root of directory path [default: src]
 </pre> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

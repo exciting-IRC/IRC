@@ -40,27 +40,26 @@ var NAVTREE =
           [ "기본", "md_docs_IRC.html#autotoc_md15", null ],
           [ "파라미터", "md_docs_IRC.html#autotoc_md16", null ]
         ] ]
-      ] ],
-      [ "명령어", "md_docs_IRC.html#autotoc_md17", null ]
+      ] ]
     ] ],
     [ "KQUEUE <sys/event.h>", "md_docs_kqueue.html", [
-      [ "struct kevent", "md_docs_kqueue.html#autotoc_md19", [
-        [ "<tt>ident</tt> : 이벤트의 식별자", "md_docs_kqueue.html#autotoc_md20", null ],
-        [ "<tt>filter</tt> : 이벤트 종류", "md_docs_kqueue.html#autotoc_md21", null ],
-        [ "<tt>flags</tt> : 이벤트 동작을 결정하는 범용적인 플래그", "md_docs_kqueue.html#autotoc_md22", null ],
-        [ "<tt>fflags</tt> (filter flags): 이벤트 동작을 결정하는 필터 종속적인 플래그", "md_docs_kqueue.html#autotoc_md23", null ],
-        [ "<tt>data</tt>: 이벤트 동작을 결정하거나 결과값이 담기는 필터 종속적인 데이터", "md_docs_kqueue.html#autotoc_md24", null ],
-        [ "<tt>udata</tt>: 사용자가 직접 넘길 수 있는 void *형 인자", "md_docs_kqueue.html#autotoc_md25", null ]
+      [ "struct kevent", "md_docs_kqueue.html#autotoc_md18", [
+        [ "<tt>ident</tt> : 이벤트의 식별자", "md_docs_kqueue.html#autotoc_md19", null ],
+        [ "<tt>filter</tt> : 이벤트 종류", "md_docs_kqueue.html#autotoc_md20", null ],
+        [ "<tt>flags</tt> : 이벤트 동작을 결정하는 범용적인 플래그", "md_docs_kqueue.html#autotoc_md21", null ],
+        [ "<tt>fflags</tt> (filter flags): 이벤트 동작을 결정하는 필터 종속적인 플래그", "md_docs_kqueue.html#autotoc_md22", null ],
+        [ "<tt>data</tt>: 이벤트 동작을 결정하거나 결과값이 담기는 필터 종속적인 데이터", "md_docs_kqueue.html#autotoc_md23", null ],
+        [ "<tt>udata</tt>: 사용자가 직접 넘길 수 있는 void *형 인자", "md_docs_kqueue.html#autotoc_md24", null ]
       ] ],
-      [ "kqueue(2)", "md_docs_kqueue.html#autotoc_md27", null ],
-      [ "kevent(2)", "md_docs_kqueue.html#autotoc_md29", [
-        [ "NOTE:", "md_docs_kqueue.html#autotoc_md30", null ]
+      [ "kqueue(2)", "md_docs_kqueue.html#autotoc_md26", null ],
+      [ "kevent(2)", "md_docs_kqueue.html#autotoc_md28", [
+        [ "NOTE:", "md_docs_kqueue.html#autotoc_md29", null ]
       ] ]
     ] ],
     [ "명령어 반환값", "md_docs_responses.html", [
-      [ "클라이언트-서버간 연결", "md_docs_responses.html#autotoc_md32", null ],
-      [ "에러 반환값 (400 ~ 599)", "md_docs_responses.html#autotoc_md33", null ],
-      [ "쓰이지는 않지만 예약된 반환값", "md_docs_responses.html#autotoc_md34", null ]
+      [ "클라이언트-서버간 연결", "md_docs_responses.html#autotoc_md31", null ],
+      [ "에러 반환값 (400 ~ 599)", "md_docs_responses.html#autotoc_md32", null ],
+      [ "쓰이지는 않지만 예약된 반환값", "md_docs_responses.html#autotoc_md33", null ]
     ] ],
     [ "💬 IRC", "md_README.html", null ],
     [ "네임스페이스", "namespaces.html", [

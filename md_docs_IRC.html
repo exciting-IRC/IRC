@@ -90,19 +90,20 @@ $(document).ready(function(){initNavTree('md_docs_IRC.html',''); initResizable()
 <div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
 관련 RFC문서</h1>
 <ul>
-<li>RFC 1459: [Internet Relay Chat Protocol](1)</li>
-<li>RFC 2810: [IRC: Architecture](2)</li>
-<li>RFC 2811: [IRC: Channel Management](3)</li>
-<li>RFC 2812: [IRC: <a class="el" href="classClient.html">Client</a> Protocol](4)</li>
-<li>RFC 2813: [IRC: <a class="el" href="classServer.html">Server</a> Protocol](5)</li>
-<li>RFC 7194: [Default Port for IRC via TLS/SSL](6)</li>
+<li>RFC 1459: <a href="https://datatracker.ietf.org/doc/html/rfc1459">Internet Relay Chat Protocol</a></li>
+<li>RFC 2810: <a href="https://datatracker.ietf.org/doc/html/rfc2810">IRC: Architecture</a></li>
+<li>RFC 2811: <a href="https://datatracker.ietf.org/doc/html/rfc2811">IRC: Channel Management</a></li>
+<li>RFC 2812: <a href="https://datatracker.ietf.org/doc/html/rfc2812">IRC: Client Protocol</a></li>
+<li>RFC 2813: <a href="https://datatracker.ietf.org/doc/html/rfc2813">IRC: Server Protocol</a></li>
+<li>RFC 7194: <a href="https://datatracker.ietf.org/doc/html/rfc7194">Default Port for IRC via TLS/SSL</a></li>
 </ul>
 <hr  />
 <h1><a class="anchor" id="autotoc_md3"></a>
 설명</h1>
 <p >일대일 / 일대다 채팅이 가능하게 만들어주는 프로토콜이다. 단순히 클라이언트 -&gt; 서버 -&gt; 클라이언트로 메시지가 전달되는 것 뿐만 아니라 클라이언트 -&gt; 중계서버 -&gt; 서버 -&gt; 클라이언트 같이 메시지를 서버에서 또 다른 서버로 중계해주는 기능도 있다.</p>
 <hr  />
-<p >Mandatory</p><ul>
+<p >Mandatory</p>
+<ul>
 <li>authenticate -&gt; <code>PASS</code></li>
 <li>set nickname -&gt; <code>NICK</code></li>
 <li>set username -&gt; <code>USER</code>?</li>
@@ -112,12 +113,13 @@ $(document).ready(function(){initNavTree('md_docs_IRC.html',''); initResizable()
 <li>operators &lt;- (admin) / regular users -&gt; <code>ADMIN</code></li>
 <li>commands that are specific to operators. -&gt; <code>KILL</code></li>
 </ul>
-<p >BONUS</p><ul>
+<p >BONUS</p>
+<ul>
 <li>file transfer</li>
 <li>bot</li>
 </ul>
 <hr  />
- <h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 서버</h1>
 <p >클라이언트가 연결해서 서로 대화하기 위한 종단점을 제공한다. <br  />
  서버와 서버끼리의 연결로 네트워크를 구성할 수 있다. (구현할 필요 X)</p>
@@ -184,9 +186,7 @@ $(document).ready(function(){initNavTree('md_docs_IRC.html',''); initResizable()
 <div class="line">&lt;special&gt;    ::= &#39;-&#39; | &#39;[&#39; | &#39;]&#39; | &#39;\\&#39; | &#39;`&#39; | &#39;^&#39; | &#39;{&#39; | &#39;}&#39;</div>
 <div class="line">&lt;nonwhite&gt;   ::= &lt;any 8bit code exceptSPACE (0x20), NUL (0x0),</div>
 <div class="line">                     CR(0xd), and LF (0xa)&gt;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
-명령어</h1>
-</div></div><!-- contents -->
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

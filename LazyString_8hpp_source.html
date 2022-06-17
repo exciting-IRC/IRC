@@ -98,27 +98,30 @@ $(document).ready(function(){initNavTree('LazyString_8hpp_source.html',''); init
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <a class="code hl_function" href="classutil_1_1LazyString.html#aa1eeb690dcae5772f1729b09677276cf">LazyString</a>();</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="comment">// LazyString &amp;operator=(const LazyString &amp;) = default</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="comment">// LazyString (const LazyString &amp;) = default</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// ~LazyString() = default</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#af5fc0e95cc0bd104838b2f965cb77c8e">clear</a>();</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#adbba8434174325cd18f9b30102200457">apply</a>();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#af32f4aa259f7ee33e64ae239b7be9f30">setStart</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *start);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#a3ab16f32ddf91e4575e359df04d56e2f">setEnd</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *end);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *start_;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *end_;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}  <span class="comment">// namespace util</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif  </span><span class="comment">// UTIL_LAZYSTRING_HPP</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_function" href="classutil_1_1LazyString.html#aa1eeb690dcae5772f1729b09677276cf">LazyString</a>(<span class="keyword">const</span> T &amp;str) : std::string(str), start_(NULL), end_(NULL) {}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// LazyString &amp;operator=(const LazyString &amp;) = default</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// LazyString (const LazyString &amp;) = default</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="comment">// ~LazyString() = default</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#af5fc0e95cc0bd104838b2f965cb77c8e">clear</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#adbba8434174325cd18f9b30102200457">apply</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#af32f4aa259f7ee33e64ae239b7be9f30">setStart</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *start);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classutil_1_1LazyString.html#a3ab16f32ddf91e4575e359df04d56e2f">setEnd</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *end);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *start_;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *end_;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}  <span class="comment">// namespace util</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif  </span><span class="comment">// UTIL_LAZYSTRING_HPP</span></div>
 <div class="ttc" id="aclassutil_1_1LazyString_html"><div class="ttname"><a href="classutil_1_1LazyString.html">util::LazyString</a></div><div class="ttdoc">apply()를 하기 전까지는 문자열의 포인터만 가지고 있다가 apply()를 하는 순간 실제 string으로 적용해주는 클래스</div><div class="ttdef"><b>Definition:</b> LazyString.hpp:12</div></div>
 <div class="ttc" id="aclassutil_1_1LazyString_html_a3ab16f32ddf91e4575e359df04d56e2f"><div class="ttname"><a href="classutil_1_1LazyString.html#a3ab16f32ddf91e4575e359df04d56e2f">util::LazyString::setEnd</a></div><div class="ttdeci">void setEnd(const char *end)</div><div class="ttdoc">추가할 문자열의 끝 다음 부분을 지정한다.</div><div class="ttdef"><b>Definition:</b> LazyString.cpp:23</div></div>
 <div class="ttc" id="aclassutil_1_1LazyString_html_aa1eeb690dcae5772f1729b09677276cf"><div class="ttname"><a href="classutil_1_1LazyString.html#aa1eeb690dcae5772f1729b09677276cf">util::LazyString::LazyString</a></div><div class="ttdeci">LazyString()</div><div class="ttdoc">새로운 빈 LazyString을 생성한다</div><div class="ttdef"><b>Definition:</b> LazyString.cpp:5</div></div>

@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('md_docs_kqueue.html',''); initResizabl
   <div class="headertitle"><div class="title">KQUEUE &lt;sys/event.h&gt; </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md19"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md18"></a>
 struct kevent</h1>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>kevent {</div>
 <div class="line">  uintptr_t ident;   <span class="comment">/* identifier for this event */</span></div>
@@ -99,14 +99,14 @@ struct kevent</h1>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line">EV_SET(ev, ident, filter, flags, fflags, data, udata);</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md20"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md19"></a>
 &lt;tt&gt;ident&lt;/tt&gt; : 이벤트의 식별자</h2>
 <ul>
 <li><code>EVFILT_SIGNAL</code>의 경우 시그널 번호</li>
 <li><code>EVFILT_READ</code>의 경우 감시할 fd</li>
 <li>...</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 &lt;tt&gt;filter&lt;/tt&gt; : 이벤트 종류</h2>
 <ul>
 <li><code>EVFILT_READ</code> : 읽기 작업이 준비된 경우</li>
@@ -115,7 +115,7 @@ struct kevent</h1>
 <li><code>EVFILT_SIGNAL</code> : 특정 시그널이 발생한 경우</li>
 <li>...</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 &lt;tt&gt;flags&lt;/tt&gt; : 이벤트 동작을 결정하는 범용적인 플래그</h2>
 <ul>
 <li><code>EV_ADD</code> : 이벤트 추가</li>
@@ -125,7 +125,7 @@ struct kevent</h1>
 <li><code>EV_DISABLE</code> : 이벤트 비활성화</li>
 <li>...</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 &lt;tt&gt;fflags&lt;/tt&gt; (filter flags): 이벤트 동작을 결정하는 필터 종속적인 플래그</h2>
 <ul>
 <li><code>EVFILT_TIMER</code>의 <code>NOTE_SECONDS</code> : data를 초 단위로 해석함</li>
@@ -134,7 +134,7 @@ struct kevent</h1>
 <li><code>EVFILT_VNODE</code>의 <code>NOTE_DELETE</code> : fd에 <code>unlink(2)</code>를 실행시켰을 경우</li>
 <li>...</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 &lt;tt&gt;data&lt;/tt&gt;: 이벤트 동작을 결정하거나 결과값이 담기는 필터 종속적인 데이터</h2>
 <ul>
 <li><code>EVFILT_TIMER</code>의 경우: 타임아웃 주기</li>
@@ -142,10 +142,10 @@ struct kevent</h1>
 <li><code>EVFILT_SIGNAL</code>의 경우: 마지막으로 확인한 이후 발생한 시그널 수</li>
 <li>...</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 &lt;tt&gt;udata&lt;/tt&gt;: 사용자가 직접 넘길 수 있는 void *형 인자</h2>
 <hr  />
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 kqueue(2)</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> kqueue(<span class="keywordtype">void</span>);</div>
 </div><!-- fragment --><p> 새로운 kqueue fd를 할당한다.</p>
@@ -154,7 +154,7 @@ kqueue(2)</h1>
 <li>실패: -1</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 kevent(2)</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> kevent(</div>
 <div class="line">  <span class="keywordtype">int</span> kq,</div>
@@ -175,7 +175,7 @@ kevent(2)</h1>
 <li>성공: 발생한 이벤트의 수</li>
 <li>실패: -1</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 NOTE:</h2>
 <ul>
 <li>반환값이 0이 아닌 경우 발생된 이벤트의 정보는 <code>eventlist</code>의 [0, ret)에 담겨있다. 이때 발생된 이벤트의 종류는 <code>filter</code>에 담겨 있고, 플래그의 <code>EV_EOF</code>, <code>EV_ERROR</code>이 켜진 경우 적절한 대응을 해야한다.</li>

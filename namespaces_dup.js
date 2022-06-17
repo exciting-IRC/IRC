@@ -11,7 +11,8 @@ var namespaces_dup =
       [ "LazyString", "classutil_1_1LazyString.html", "classutil_1_1LazyString" ],
       [ "RecvFlag_t", "structutil_1_1RecvFlag__t.html", null ],
       [ "SendFlag_t", "structutil_1_1SendFlag__t.html", null ],
-      [ "SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ]
+      [ "SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ],
+      [ "User", "structutil_1_1User.html", null ]
     ] ],
     [ "vec_of_any", "namespacevec__of__any.html", "namespacevec__of__any" ]
 ];
