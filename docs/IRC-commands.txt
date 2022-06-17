@@ -1,0 +1,91 @@
+PASS <password>
+
+NICK <nickname>
+
+USER <user> <mode> <unused> <realname>
+
+OPER <name> <password>
+
+MODE <nickname> *( ( "+" | "-" ) *( "i" | "w" | "o" | "O" | "r" ) )
+
+SERVICE <nickname> <reserved> <distribution> <type> <reserved> <info>
+
+QUIT [ <Quit Message> ]
+
+SQUIT <server> <comment>
+
+JOIN ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] ) | "0"
+
+PART <channel> *( "," <channel> ) [ <Part Message> ]
+
+MODE <channel> *( ( "-" | "+" ) *<modes> *<modeparams> )
+
+TOPIC <channel> [ <topic> ]
+
+NAMES [ <channel> *( "," <channel> ) [ <target> ] ]
+
+LIST [ <channel> *( "," <channel> ) [ <target> ] ]
+
+INVITE <nickname> <channel>
+
+KICK <channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
+
+PRIVMSG <msgtarget> <text to be sent>
+
+NOTICE <msgtarget> <text>
+
+MOTD [ <target> ]
+
+LUSERS [ <mask> [ <target> ] ]
+
+VERSION [ <target> ]
+
+STATS [ <query> [ <target> ] ]
+
+LINKS [ [ <remote server> ] <server mask> ]
+
+TIME [ <target> ]
+
+CONNECT <target server> <port> [ <remote server> ]
+
+TRACE [ <target> ]
+
+ADMIN [ <target> ]
+
+INFO [ <target> ]
+
+SERVLIST [ <mask> [ <type> ] ]
+
+SQUERY <servicename> <text>
+
+WHO [ <mask> [ "o" ] ]
+
+WHOIS [ <target> ] <mask> *( "," <mask> )
+
+WHOWAS <nickname> *( "," <nickname> ) [ <count> [ <target> ] ]
+
+KILL <nickname> <comment>
+
+PING <server1> [ <server2> ]
+
+PONG <server> [ <server2> ]
+
+ERROR <error message>
+
+AWAY [ <text> ]
+
+REHASH None
+
+DIE None
+
+RESTART None
+
+SUMMON <user> [ <target> [ <channel> ] ]
+
+USERS [ <target> ]
+
+WALLOPS <Text to be sent>
+
+USERHOST <nickname> *( SPACE <nickname> )
+
+ISON <nickname> *( SPACE <nickname> )
