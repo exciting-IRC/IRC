@@ -136,7 +136,8 @@
       "__bits": "cpp",
       "__tree": "cpp",
       "filesystem": "cpp",
-      "format": "cpp"
+      "format": "cpp",
+      "__functional_03": "cpp"
     }
   }
 }

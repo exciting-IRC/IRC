@@ -4,15 +4,15 @@ vec_of_any.py:
     creates boilerplate for variable argument function "vec_of_any()".
     vec_of_any generates anonymous string vector, with maximum <size> of
     different types of arguments, at the cost of being even more verbose.
+    default writes stdout, provide <path> to write to file.
     example usage - "vec_of_any(3, "b", 2.0f)
 
 usage:
-    vec_of_any.py [--help] [options] (--dry | <path>)
+    vec_of_any.py [--help] [options] [ <path> ]
 
 options:
     -h, --help            show this help message and exit
     -n <N>, --size <N>    number of maximum argument size. [default: 10]
-    -d, --dry             write to stdout instead of file.
 """
 
 import shutil
@@ -101,12 +101,14 @@ class VecOfAny:
         return self.as_text
 
 
-def create_formatted_result(size: int, path: Path | None) -> str:
+def create_result(size: int, path: Path | None) -> str:
     text = VecOfAny(size).as_text
     if path:
         text = wrap_header(text, path)
-    if shutil.which("clang-format"):
+    if size < 100 and shutil.which("clang-format"):
         text = clang_format(text)
+    else:
+        text = f"// clang-format: off\n{text}"
 
     return text + "\n"
 
@@ -121,12 +123,12 @@ def main():
 
     size = int(args["--size"])
     path = Path(args["<path>"]) if args["<path>"] else None
-    text = create_formatted_result(size, path)
+    text = create_result(size, path)
 
-    if args["--dry"]:
-        print(text)
-    elif path is not None:
+    if path:
         path.write_text(text)
+    else:
+        print(text)
 
 
 if __name__ == "__main__":

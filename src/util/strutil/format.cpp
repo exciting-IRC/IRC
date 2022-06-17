@@ -15,7 +15,7 @@ format::format(const string& fmt, const vector<string>& args)
     } else if (on_escaped_bracket("}}")) {
       advance_and_append("}");
     } else if (on_char('}')) {
-      throw std::invalid_argument("unmatched closing brace at " +
+      throw std::invalid_argument("unmatched closing brace '}' at " +
                                   to_string(curs));
     } else {
       result += fmt[curs];
@@ -26,7 +26,7 @@ format::format(const string& fmt, const vector<string>& args)
 bool format::on_char(const char c) const { return (fmt[curs] == c); }
 
 bool format::on_escaped_bracket(const string& match) {
-  return fmt.substr(curs, 2) == match;
+  return fmt.find(match, curs) == curs;
 }
 
 void format::advance_and_append(const string& to_add) {
@@ -52,7 +52,8 @@ void format::insert_arg(size_t index) {
 void format::advance_to_closing_bracket() {
   for (size_t i = curs + 1; i < fmt.size(); i++) {
     if (fmt[i] == '{') {
-      throw std::invalid_argument("unmatched opening brace at " + to_string(i));
+      throw std::invalid_argument("unmatched opening brace '{' at " +
+                                  to_string(i));
     } else if (fmt[i] == '}') {
       curs = i;
       insert_arg();

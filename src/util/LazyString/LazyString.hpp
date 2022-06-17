@@ -16,6 +16,9 @@ class LazyString : public std::string {
    */
   LazyString();
 
+  template <typename T>
+  LazyString(const T &str) : std::string(str), start_(NULL), end_(NULL) {}
+
   // LazyString &operator=(const LazyString &) = default
   // LazyString (const LazyString &) = default
   // ~LazyString() = default

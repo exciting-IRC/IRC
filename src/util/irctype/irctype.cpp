@@ -1,15 +1,28 @@
+#include <algorithm>
 #include <cctype>
+
+#include "util/FixedBuffer/array.hpp"
 
 namespace util {
 
-bool isLetter(char c) { return std::isalpha(c); }
+bool isLetter(const char c) {
+  return std::isalpha(static_cast<unsigned char>(c));
+}
 
-bool isDigit(char c) { return std::isdigit(c); }
+bool isDigit(const char c) {
+  return std::isdigit(static_cast<unsigned char>(c));
+}
 
-bool isSeprator(char c) { return c == ':' || c == ' '; }
+bool isSeprator(const char c) { return c == ':' || c == ' '; }
 
-bool isSpecial(char c) { return c == '\r' || c == '\n' || c == '\0'; }
+bool isEol(const char c) { return c == '\r' || c == '\n' || c == '\0'; }
 
-bool isRegular(char c) { return !isSeprator(c) && !isSpecial(c); }
+bool isSpecial(const char c) {
+  const static util::array<char, 9> special = {'[', ']', '\\', '`', '_',
+                                               '^', '{', '|',  '}'};
+  return std::find(special.begin(), special.end(), c) != special.end();
+}
+
+bool isRegular(const char c) { return not isSeprator(c) and not isEol(c); }
 
 }  // namespace util

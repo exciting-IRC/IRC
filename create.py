@@ -3,14 +3,16 @@
 create.py: create boilerplate for *.cpp, *.hpp, *.tpp
 
 usage:
-    create.py [--help] [options] [-n | -N | --namespace <N> ] <path>
+    create.py [--help] [options] [-n | -N | --ns <N> ] <path>
 
 options:
-    -h, --help               show this help message and exit
-    -n                       use parent directory name as namespace
-    -N                       use nested directory names as namespace
-    --namespace <N>          choose namespace to use.
-    -r <R>, --root <R>       root of directory path [default: src]
+    -h, --help            show this help message and exit
+    -n                    use parent directory name as namespace
+    -N                    use nested directory names as namespace
+    --ns <N>              choose namespace to use.
+    -s, --switch          open created file on vscode.
+    -f, --force           overwrite existing files.
+    -r <R>, --root <R>    root of directory path [default: src]
 """
 from pathlib import Path
 
@@ -36,14 +38,15 @@ def base_category_name(stem: str) -> str:
 
 
 def get_include(path: Path) -> str:
-    if path.suffix == ".hpp":
-        return ""
-    elif path.suffix == ".tpp":
-        name = base_category_name(path.stem)
-    elif path.suffix == ".cpp":
-        name = path.parent.stem.removeprefix("lib")
-    else:
-        raise ValueError(f"Unknown file type: {path}")
+    match path.suffix:
+        case ".hpp":
+            return ""
+        case ".tpp":
+            name = base_category_name(path.stem)
+        case ".cpp":
+            name = path.parent.stem.removeprefix("lib")
+        case _:
+            raise ValueError(f"Unknown file type: {path}")
 
     return f"#include <{'/'.join(path.parent.parts)}/{name}.hpp>"
 
@@ -71,7 +74,7 @@ def create_text(path: Path, *, namespace: tuple[str] | None) -> str:
 
 
 def get_namespace(path: Path, args: dict[str, str]) -> tuple[str] | None:
-    if namespace := args["--namespace"]:
+    if namespace := args["--ns"]:
         return (namespace,)
     elif args["-n"]:
         return (path.parent.stem,)
@@ -87,13 +90,18 @@ def main():
     path = Path(args["<path>"])
     fullpath = Path(__file__).parent / args["--root"] / args["<path>"]
 
-    if fullpath.exists():
+    if not (args["--force"]) and fullpath.exists():
         print("file already exists")
         return
 
     namespace = get_namespace(path, args)
     text = create_text(path, namespace=namespace)
     save_text_to(text, fullpath)
+
+    if args["--switch"]:
+        from subprocess import run
+
+        run(["code", str(fullpath)])
 
 
 if __name__ == "__main__":
