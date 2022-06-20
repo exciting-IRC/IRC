@@ -82,27 +82,31 @@ void ClientConn::handleReadEvent(Event &e) {
       while ((result = parser_.parse(buffer_)) == ParserResult::kSuccess) {
         processMessage(parser_.getMessage());
         parser_.clear();
-        COUT_FMT("Parse Success", ());
+        std::cout << "Parse Success" << std::endl;
       }
       if (result == ParserResult::kFailure) {
         parser_.clear();
-        COUT_FMT("Failed to parse message", ());
+        std::cout << "Failed to parse message" << std::endl;
       }
       if (flag_ == 3) {
-        COUT_FMT("sending welcome message", ());
-        util::send(
-            sock_,
-            FMT(":eircd 001 :Welcome to the -Exciting- IRC [{nickname}]\r\n"
-                ":eircd 002 :Your host is eircd-test version 0.0.2\r\n"
-                ":eircd 003 :This server was created 0\r\n"
-                ":eircd 004 eircd 0.0.2 ai :\r\n",
-                (info_.nickname_)));
+        std::cout << "send" << std::endl;
+        char *buf = new char[512];
+
+        int len =
+            sprintf(buf,
+                    ":eircd 001 :Welcome to the -Exciting- IRC [%s]\r\n"
+                    ":eircd 002 :Your host is eircd-test version 0.0.2\r\n"
+                    ":eircd 003 :This server was created 0\r\n"
+                    ":eircd 004 eircd 0.0.2 ai :\r\n",
+                    info_.nickname_.c_str());
+        util::send(sock_, buf, len);
+        delete[] buf;
         flag_ = 0;
       }
     }
   }
   if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
-    COUT_FMT("Connection closed.", ());
+    std::cout << "Connection closed." << std::endl;
     server_.removeClient(this_position_);
   }
 }
