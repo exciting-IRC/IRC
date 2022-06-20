@@ -47,6 +47,8 @@ class format {
 
   string str() const;
   operator string() const;
+  bool operator==(const std::string& other) const;
+  bool operator!=(const std::string& other) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const format& f);

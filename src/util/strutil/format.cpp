@@ -74,6 +74,12 @@ void format::advance_to_closing_bracket() {
 
 string format::str() const { return result; }
 format::operator string() const { return result; }
+bool format::operator==(const std::string& other) const {
+  return result == other;
+}
+bool format::operator!=(const std::string& other) const {
+  return result != other;
+}
 
 std::ostream& operator<<(std::ostream& os, const format& f) {
   return os << static_cast<string>(f);

@@ -8,9 +8,10 @@
 using strvec = std::vector<std::string>;
 
 TEST(FormatTest, edgeCases) {
-  RC_ASSERT(FMT("{foo} {} {{}}", ("hello", 3)).str() == "hello 3 {}");
+  RC_ASSERT(FMT("{foo} {} {{}}", ("hello", 3)) == "hello 3 {}");
   for (auto fmt : strvec{"{", "}", "{}"})
     RC_ASSERT_THROWS_AS(FMT(fmt, ()), std::invalid_argument);
+  RC_ASSERT(FMT("hello {0} {0} {0}", ("world")) == "hello world world world");
 }
 
 auto create_fmtbrace() -> std::string {
@@ -43,5 +44,5 @@ RC_GTEST_PROP(FormatTest, general, (const strvec& v)) {
       s += e + create_fmtbrace();
     return s;
   }();
-  ASSERT_EQ(util::format(fmt, v).str(), result);
+  ASSERT_EQ(util::format(fmt, v), result);
 }
