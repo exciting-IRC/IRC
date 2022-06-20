@@ -2,6 +2,7 @@
 #define STRUTIL_HPP
 
 #include <sstream>
+#include <iomanip>
 
 namespace util {
 using std::string;
@@ -22,6 +23,15 @@ T convert_to(const string& from) {
 
   iss >> val;
   return val;
+}
+
+/// 숫자를 패딩하기
+template <typename T>
+string pad_num(const T& t, size_t width, char fill) {
+  std::stringstream ss;
+
+  ss << std::setw(width) << std::setfill(fill) << t;
+  return ss.str();
 }
 
 }  // namespace util
