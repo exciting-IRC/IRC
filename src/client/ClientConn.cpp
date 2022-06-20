@@ -283,7 +283,6 @@ int ClientConn::close() { return ::close(sock_); }
 
 ssize_t ClientConn::recvBuffer(size_t length) {
   ssize_t ret = util::recv(sock_, recv_buffer_.begin(), length);
-  write(1, recv_buffer_.data(), ret);
   if (ret == -1)
     return ret;
   recv_buffer_.seekg(0);
