@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>IRC: 멤버 목록</title>
+<title>IRC: src/util/algorithm/functor.hpp 소스 파일</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('classutil_1_1format.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('functor_8hpp_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -84,22 +84,22 @@ $(document).ready(function(){initNavTree('classutil_1_1format.html',''); initRes
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">util::format 멤버 목록</div></div>
+  <div class="headertitle"><div class="title">functor.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>다음에 대한 모든 멤버의 목록입니다 : <a class="el" href="classutil_1_1format.html">util::format</a> (모든 상속된 멤버들도 포함합니다.)</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>format</b>(const string &amp;fmt, const vector&lt; string &gt; &amp;args) (다음에서 정의됨 : <a class="el" href="classutil_1_1format.html">util::format</a>)</td><td class="entry"><a class="el" href="classutil_1_1format.html">util::format</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator string</b>() const (다음에서 정의됨 : <a class="el" href="classutil_1_1format.html">util::format</a>)</td><td class="entry"><a class="el" href="classutil_1_1format.html">util::format</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator!=</b>(const std::string &amp;other) const (다음에서 정의됨 : <a class="el" href="classutil_1_1format.html">util::format</a>)</td><td class="entry"><a class="el" href="classutil_1_1format.html">util::format</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator==</b>(const std::string &amp;other) const (다음에서 정의됨 : <a class="el" href="classutil_1_1format.html">util::format</a>)</td><td class="entry"><a class="el" href="classutil_1_1format.html">util::format</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>str</b>() const (다음에서 정의됨 : <a class="el" href="classutil_1_1format.html">util::format</a>)</td><td class="entry"><a class="el" href="classutil_1_1format.html">util::format</a></td><td class="entry"></td></tr>
-</table></div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef UTIL_ALGORITHM_FUNCTOR_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define UTIL_ALGORITHM_FUNCTOR_HPP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#define FUNCTOR(returns, name, parameter, body) \</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">  static const struct name { returns operator() parameter const body } name</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#endif  </span><span class="comment">// UTIL_GENERAL_FUNCTOR_HPP</span></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b7878ad5ecbf2506f4125b9d34c97e45.html">util</a></li><li class="navelem"><a class="el" href="dir_15c7c5e1d9ed468d4eb576d6f793f29c.html">algorithm</a></li><li class="navelem"><b>functor.hpp</b></li>
     <li class="footer">다음에 의해 생성됨 :  <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
