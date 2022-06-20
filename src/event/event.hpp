@@ -64,8 +64,8 @@ class EventPool {
   int handleEvent(struct kevent &kev);
 
  private:
-  return_t::e initKqueue();
-  return_t::e initEventList();
+  result_t::e initKqueue();
+  result_t::e initEventList();
 
  private:
   struct kevent *event_list_;

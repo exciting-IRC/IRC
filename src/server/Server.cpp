@@ -23,16 +23,16 @@ Server::~Server() {
   close(sock_);
 }
 
-return_t::e Server::init(const char *listen_addr, int port, int backlog) {
+result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   sock_ = util::socket(PF_INET, SOCK_STREAM);
   if (sock_ == -1) {
-    return return_t::kError;
+    return result_t::kError;
   }
 
   int option = true;
   if (util::setsockopt(sock_, SOL_SOCKET, SO_REUSEADDR, &option,
                        sizeof(option)) == -1) {
-    return return_t::kError;
+    return result_t::kError;
   }
 
   struct sockaddr_in addr;
@@ -45,13 +45,13 @@ return_t::e Server::init(const char *listen_addr, int port, int backlog) {
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
 
-  if (util::bind_in(sock_, &addr) == return_t::kError)
-    return return_t::kError;
+  if (util::bind_in(sock_, &addr) == result_t::kError)
+    return result_t::kError;
 
-  if (util::listen(sock_, backlog) == return_t::kError)
-    return return_t::kError;
+  if (util::listen(sock_, backlog) == result_t::kError)
+    return result_t::kError;
   
-  return return_t::kOK;
+  return result_t::kOK;
 }
 
 int Server::getFd() const { return sock_; }

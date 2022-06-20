@@ -62,5 +62,5 @@ void server_close_handler(int sig) { recived_sig = sig; }
 Server server;
 
 int main() {
-  if (server.init(bind_addr, port, 64) == return_t::kError);
+  if (server.init(bind_addr, port, 64) == result_t::kError);
 }

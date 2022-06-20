@@ -15,17 +15,17 @@ socket_t socket(int domain, int type, int protocol) {
   return sock;
 }
 
-return_t::e listen(socket_t socket, int backlog) {
-  return static_cast<return_t::e>(::listen(socket, backlog));
+result_t::e listen(socket_t socket, int backlog) {
+  return static_cast<result_t::e>(::listen(socket, backlog));
 }
 
-return_t::e bind_in(socket_t socket, const struct sockaddr_in *addr) {
-  return static_cast<return_t::e>(
+result_t::e bind_in(socket_t socket, const struct sockaddr_in *addr) {
+  return static_cast<result_t::e>(
       ::bind(socket, reinterpret_cast<const sockaddr *>(addr), sizeof(*addr)));
 }
 
-return_t::e connect_in(socket_t socket, const struct sockaddr_in *addr) {
-  return static_cast<return_t::e>(::connect(
+result_t::e connect_in(socket_t socket, const struct sockaddr_in *addr) {
+  return static_cast<result_t::e>(::connect(
       socket, reinterpret_cast<const sockaddr *>(addr), sizeof(*addr)));
 }
 
@@ -37,9 +37,9 @@ ssize_t send(socket_t socket, const void *buffer, size_t length, int flags) {
   return ::send(socket, buffer, length, flags);
 }
 
-return_t::e setsockopt(socket_t socket, int level, int option_name,
+result_t::e setsockopt(socket_t socket, int level, int option_name,
                        const void *option_value, socklen_t option_len) {
-  return static_cast<return_t::e>(
+  return static_cast<result_t::e>(
       ::setsockopt(socket, level, option_name, option_value, option_len));
 }
 

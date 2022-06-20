@@ -25,7 +25,7 @@ class Server : public IEventHandler {
   Server &operator=(const Server &);  // = delete
 
  public:
-  return_t::e init(const char *listen_addr, int port, int backlog);
+  result_t::e init(const char *listen_addr, int port, int backlog);
 
   int getFd() const;  // override, final
 
