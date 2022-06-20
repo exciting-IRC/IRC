@@ -2,6 +2,7 @@
 
 #include "ClientConn.hpp"
 #include "util/config/config.hpp"
+#include "server/Server.hpp"
 #include <iostream>
 #include <unistd.h>
 
@@ -73,6 +74,11 @@ int Client::handle(Event e) {
 void Client::pong() {
   std::string reply = FMT(":{0} PONG {0} {0}", (config.name));
   std::cout << reply << "\n";
+}
+
+void Client::send(const std::string &msg) {
+  setMessageBuffer(msg);
+  server.getPool().addEvent(EventKind::kWrite, this);
 }
 
 void Client::setMessageBuffer(const std::string &msg) { buffer_.reset(msg); }

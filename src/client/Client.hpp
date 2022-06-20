@@ -64,6 +64,8 @@ class Client : public IEventHandler {
 
   void pong();
 
+  void send(const std::string &msg);
+
  private:
   ClientConn *conn_;
   UserIdent *ident_;

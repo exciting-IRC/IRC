@@ -8,6 +8,7 @@
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/moveptr.hpp"
+#include "client/Client.hpp"
 
 class Server;
 class ClientConn;
@@ -69,13 +70,13 @@ class ClientConn : public IEventHandler {
 
   const Message &getMessage();
 
-  UserIdent *moveIdent() {
-    return util::moveptr(ident_);
-  }
+  UserIdent *moveIdent();
+
 
  private:
   static const MPMap getMPMap();
   void handleReadEvent(Event &e);
+  void registerClient(const Event &e);
   void processMessage(const Message &m);
   void processNick(const Message &m);
   void processUser(const Message &m);

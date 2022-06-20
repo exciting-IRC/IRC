@@ -115,18 +115,22 @@ void ClientConn::handleReadEvent(Event &e) {
     server.removeClientConn(this_position_);
   }
   if (state_ == ConnState::kComplate) {
-    const std::string &nick = ident_->nickname_;
-    Client *client = new Client(this);
-    client->setMessageBuffer("aaaaaa");
-
-    server.moveClientConn(this_position_);
-    server.addClient(nick, client);
-
-    e.pool.removeEvent(EventKind::kRead, this);
-    e.pool.addEvent(EventKind::kRead, client);
-    e.pool.addEvent(EventKind::kWrite, client);
+    registerClient(e);
     //client->send ...
   }
+}
+
+void ClientConn::registerClient(const Event &e) {
+  const std::string &nick = ident_->nickname_;
+  Client *client = new Client(this);
+  client->setMessageBuffer("aaaaaa");
+
+  server.moveClientConn(this_position_);
+  server.addClient(nick, client);
+
+  e.pool.removeEvent(EventKind::kRead, this);
+  e.pool.addEvent(EventKind::kRead, client);
+  e.pool.addEvent(EventKind::kWrite, client);
 }
 
 int ClientConn::handle(Event e) {
@@ -156,3 +160,7 @@ ssize_t ClientConn::recv(size_t length) {
 ParserResult::e ClientConn::parse() { return parser_.parse(buffer_); }
 
 const Message &ClientConn::getMessage() { return parser_.getMessage(); }
+
+UserIdent *ClientConn::moveIdent() {
+  return util::moveptr(ident_);
+}
