@@ -10,14 +10,18 @@
 #include <string>
 #include <vector>
 
+#include "client/Client.hpp"
+#include "command/returncode.hpp"
+#include "command/returnformat.hpp"
 #include "event/event.hpp"
 #include "server/Server.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/LazyString/LazyString.hpp"
+#include "util/algorithm/algorithm.hpp"
+#include "util/config/config.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/strutil.hpp"
-#include "client/Client.hpp"
 
 const MPMap ClientConn::map_ = ClientConn::getMPMap();
 
@@ -38,99 +42,231 @@ const MPMap ClientConn::getMPMap() {
 
   map.insert(MPMap::value_type("PASS", &ClientConn::processPass));
   map.insert(MPMap::value_type("USER", &ClientConn::processUser));
-  // map.insert(MPMap::value_type("NICK", &ClientConn::processNick));
+  map.insert(MPMap::value_type("NICK", &ClientConn::processNick));
 
   return map;
 }
 
-// void ClientConn::processNick(const Message &m) {
-//   if (m.params().empty())
+result_t::e ClientConn::handleWriteEvent(Event &e) {
+  StringBuffer &buffer = send_queue_.front();
 
-//     return NUMERIC_REPLY(ERR_NONICKNAMEGIVEN, ());
+  if (e.flags.test(EventFlag::kEOF)) {
+    return result_t::kError;
+  }
 
-//   string new_nickname = args[0];
+  std::size_t write_size =
+      std::min(buffer.size(), static_cast<std::size_t>(e.data));
 
-//   if (user.nickname == new_nickname)
-//     return "";
+  ssize_t send_length = util::send(getFd(), buffer.data(), write_size);
+  if (send_length == -1) {
+    return result_t::kError;
+  } else {
+    buffer.advance(send_length);
+  }
 
-//   if (not(nick_is_valid(new_nickname)))
-//     return NUMERIC_REPLY(ERR_ERRONEUSNICKNAME, (new_nickname));
+  if (buffer.empty()) {
+    send_queue_.pop();
+    if (send_queue_.empty()) {
+      e.pool.removeEvent(EventKind::kWrite, this);
+    }
+  }
+  return result_t::kOK;
+}
 
-//   if (false /* if nickname in use */)
-//     REPLY(ERR_NICKNAMEINUSE, (new_nickname));
+bool isValidFirstNickChar(char c) {
+  return util::isLetter(c) || util::isSpecial(c);
+}
 
-//   user.nickname = new_nickname;
-//   return FMT("NICK {nick}", (new_nickname));
-//   state_ |= ConnState::kNick;
-  
-// }
+bool isValidNickChar(char c) {
+  return util::isLetter(c) || util::isDigit(c) || util::isSpecial(c) ||
+         c == '-';
+}
+
+bool isValidNick(const std::string &nick) {
+  if (nick.size() > 9)
+    return false;
+  if (!isValidFirstNickChar(nick[0]))
+    return false;
+  for (std::string::const_iterator it = util::next(nick.begin()),
+                                   end = nick.end();
+       it != end; ++it) {
+    if (!isValidNickChar(*it)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void ClientConn::processNick(const Message &m) {
+  Message reply;
+  reply.prefix = config.name;
+
+  if (m.params.empty()) {
+    reply.command = util::to_string(util::ERR_NONICKNAMEGIVEN);
+    reply.params.push_back("No nickname given");
+
+    send(reply);
+    return;
+  }
+
+  const std::string &nick = m.params[0];
+  if (!isValidNick(nick)) {
+    reply.command = util::to_string(util::ERR_ERRONEUSNICKNAME);
+    reply.params.push_back(nick);
+    reply.params.push_back("Erroneous nickname");
+
+    send(reply);
+    return;
+  }
+
+  if (server.getClients().find(nick) != server.getClients().end()) {
+    reply.command = util::to_string(util::ERR_NICKNAMEINUSE);
+    reply.params.push_back(nick);
+    reply.params.push_back("Nickname is already in use");
+
+    send(reply);
+    return;
+  }
+  ident_->nickname_ = nick;
+  state_ |= ConnState::kNick;
+}
+
+bool isValidUser(const std::string &s) {
+  for (std::string::const_iterator it = s.begin(), end = s.end(); it != end;
+       ++it) {
+    if (*it == '@') {
+      return false;
+    }
+  }
+  return true;
+}
 
 void ClientConn::processUser(const Message &m) {
-  ident_->user_ = m.params[0];
+  Message reply;
+  reply.prefix = config.name;
 
-  // XXX 매우매우매우 위험함
-  int k = atoi(m.params[1].c_str());
-  ident_->mode_ = (k & UserMode::w) | (k & UserMode::i);
+  if (m.params.size() != 4) {
+    reply.command = util::to_string(util::ERR_NEEDMOREPARAMS);
+    reply.params.push_back(m.command);
+    reply.params.push_back("Not enough parameters");
+
+    send(reply);
+    return;
+  }
+
+  // XXX ERR_ALREADYREGISTERED
+
+  ident_->username_ = m.params[0];
+  ident_->hostname_ = m.params[1];
+  ident_->servername_ = m.params[2];
   ident_->realname_ = m.params[3];
-  std::cout << "USER" << std::endl;
+
   state_ |= ConnState::kUser;
 }
 
 void ClientConn::processPass(const Message &m) {
+  Message reply;
+  reply.prefix = config.name;
+
+  if (m.params.size() != 1) {
+    reply.command = util::to_string(util::ERR_NEEDMOREPARAMS);
+    reply.params.push_back(m.command);
+    reply.params.push_back("Not enough parameters");
+
+    send(reply);
+    return;
+  }
+
   ident_->password_ = m.params[0];
-  std::cout << "PASS" << std::endl;
   state_ |= ConnState::kPass;
 }
 
-#include <functional>
 void ClientConn::processMessage(const Message &m) {
-  std::cout << "CMD: <" << m.command << ">" << std::endl;
+  std::cout << "CMD: <" << m.command << ">";
   MPMap::const_iterator it = map_.find(m.command);
-  if (it == map_.end())
+  if (it == map_.end()) {
+    std::cout << ": Not found" << std::endl;
     return;
-  std::cout << "found!" << std::endl;
+  }
+  std::cout << ":Found" << std::endl;
   (this->*(it->second))(m);
 }
 
 int ClientConn::getFd() const { return sock_; }
 
 void ClientConn::handleReadEvent(Event &e) {
-  if (e.data != 0) {
-    ssize_t len = recv(e.data);
-
-    if (len > 0) {
-      ParserResult::e result;
-      while ((result = parser_.parse(buffer_)) == ParserResult::kSuccess) {
-        processMessage(parser_.getMessage());
-        parser_.clear();
-        std::cout << "Parse Success" << std::endl;
-      }
-      if (result == ParserResult::kFailure) {
-        parser_.clear();
-        std::cout << "Failed to parse message" << std::endl;
-      }
-    }
-  } else if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
-    std::cout << "Connection closed." << std::endl;
+  if (handleReceive(e) == result_t::kError) {
+    server.removeClientConn(this_position_);
+  }
+  ParserResult::e result;
+  while ((result = parse()) == ParserResult::kSuccess) {
+    processMessage(getMessage());
+  }
+  if (result == ParserResult::kFailure) {
     server.removeClientConn(this_position_);
   }
   if (state_ == ConnState::kComplate) {
     registerClient(e);
-    //client->send ...
+    state_ = ConnState::kConnected;
   }
 }
 
+result_t::e ClientConn::handleReceive(Event &e) {
+  ssize_t len = e.data;
+
+  if (e.data != 0)
+    len = recvBuffer(e.data);
+
+  if (len <= 0 || e.flags.test(EventFlag::kEOF))
+    return result_t::kError;
+
+  return result_t::kOK;
+}
+
+void ClientConn::send(const std::string &str) {
+  send_queue_.push(StringBuffer(str));
+  server.getPool().addEvent(EventKind::kWrite, this);
+}
+
+void ClientConn::send(const Message &msg) {
+  std::string str = ":" + msg.prefix;
+
+  str += " ";
+  str += msg.command;
+  if (not msg.prefix.empty()) {
+    for (std::vector<util::LazyString>::const_iterator
+             it = msg.params.begin(),
+             end = util::prev(msg.params.end());
+         it != end; ++it) {
+      str += " " + *it;
+    }
+    str += " :" + *msg.params.rbegin();
+  }
+  str += "\r\n";
+  send(str);
+}
+
 void ClientConn::registerClient(const Event &e) {
+  Message reply;
+  reply.prefix = config.name;
+
+  char __buf[4]; __buf[3] = '\0'; sprintf(__buf, "%03d", util::RPL_WELCOME);
+  reply.command = util::to_string(__buf);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back("Welcome to the Internet Relay Network!");
+
   const std::string &nick = ident_->nickname_;
   Client *client = new Client(this);
-  client->setMessageBuffer("aaaaaa");
 
   server.moveClientConn(this_position_);
   server.addClient(nick, client);
 
   e.pool.removeEvent(EventKind::kRead, this);
   e.pool.addEvent(EventKind::kRead, client);
-  e.pool.addEvent(EventKind::kWrite, client);
+
+  std::cout << "Register" << std::endl;
+
+  send(reply);
 }
 
 int ClientConn::handle(Event e) {
@@ -139,8 +275,11 @@ int ClientConn::handle(Event e) {
       handleReadEvent(e);
       break;
 
+    case EventKind::kWrite:
+      handleWriteEvent(e);
+      break;
     default:
-      // XXX throw invalid_argument, logging
+      abort(/* XXX Unknown event*/);
       break;
   }
   return 0;
@@ -148,19 +287,22 @@ int ClientConn::handle(Event e) {
 
 int ClientConn::close() { return ::close(sock_); }
 
-ssize_t ClientConn::recv(size_t length) {
-  ssize_t ret = util::recv(sock_, buffer_.begin(), length);
+ssize_t ClientConn::recvBuffer(size_t length) {
+  ssize_t ret = util::recv(sock_, recv_buffer_.begin(), length);
+  write(1, recv_buffer_.data(), ret);
   if (ret == -1)
     return ret;
-  buffer_.seekg(0);
-  buffer_.seekp(ret);
+  recv_buffer_.seekg(0);
+  recv_buffer_.seekp(ret);
   return ret;
 }
 
-ParserResult::e ClientConn::parse() { return parser_.parse(buffer_); }
+ParserResult::e ClientConn::parse() { return parser_.parse(recv_buffer_); }
 
-const Message &ClientConn::getMessage() { return parser_.getMessage(); }
-
-UserIdent *ClientConn::moveIdent() {
-  return util::moveptr(ident_);
+Message ClientConn::getMessage() { 
+  Message msg = parser_.getMessage();
+  parser_.clear();
+  return msg;
 }
+
+UserIdent *ClientConn::moveIdent() { return util::moveptr(ident_); }

@@ -89,6 +89,8 @@ void Server::addClient(const std::string &nick, Client *client) {
   clients_.insert(ClientMap::value_type(nick, client));
 }
 
+const ClientMap &Server::getClients() { return clients_; }
+
 EventPool &Server::getPool() {
   return pool_;
 }

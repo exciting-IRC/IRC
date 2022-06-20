@@ -1,7 +1,9 @@
+#ifndef CLIENT_CLIENT_HPP
+#define CLIENT_CLIENT_HPP
+
 #include <algorithm>
 #include <string>
 
-#include "ClientConn.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 
@@ -41,6 +43,10 @@ class StringBuffer {
   std::size_t cursor_;
 };
 
+class ClientConn;
+struct UserIdent;
+struct Message;
+
 class Client : public IEventHandler {
  public:
   Client(ClientConn *conn);
@@ -51,6 +57,7 @@ class Client : public IEventHandler {
   Client(const Client &);             // = delete;
   Client &operator=(const Client &);  // = delete;
 
+ 
  public:
   int getFd() const;
 
@@ -60,14 +67,15 @@ class Client : public IEventHandler {
 
   int handle(Event e);
 
-  void setMessageBuffer(const std::string &msg);
-
   void pong();
-
-  void send(const std::string &msg);
+ 
+  void processMessage(const Message &m);
 
  private:
   ClientConn *conn_;
   UserIdent *ident_;
-  StringBuffer buffer_;
+  
 };
+
+
+#endif  // CLIENT_CLIENT_HPP

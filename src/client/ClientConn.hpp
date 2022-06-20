@@ -1,14 +1,17 @@
 #ifndef CLIENT_CONN_HPP
 #define CLIENT_CONN_HPP
 
+#include <algorithm>
 #include <list>
 #include <map>
+#include <queue>
 
 #include "IRCParser.hpp"
+#include "client/Client.hpp"
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/moveptr.hpp"
-#include "client/Client.hpp"
+#include "util/algorithm/algorithm.hpp"
 
 class Server;
 class ClientConn;
@@ -31,9 +34,12 @@ struct UserMode {
 
 struct UserIdent {
   std::string password_;
-  std::string user_;
+  std::string username_;
   std::string realname_;
   std::string nickname_;
+  std::string hostname_;
+  std::string servername_;
+  struct sockaddr_in addr_;
   unsigned int mode_;
 };
 
@@ -43,7 +49,8 @@ struct ConnState {
     kPass = (1 << 0),
     kUser = (1 << 1),
     kNick = (1 << 3),
-    kComplate = (kPass | kUser | kNick)
+    kComplate = (kPass | kUser | kNick),
+    kConnected = (1 << 4)
   };
 };
 
@@ -64,17 +71,23 @@ class ClientConn : public IEventHandler {
 
   int close();
 
-  ssize_t recv(size_t length);
+  ssize_t recvBuffer(size_t length);
 
   ParserResult::e parse();
 
-  const Message &getMessage();
+  Message getMessage();
 
   UserIdent *moveIdent();
 
+  result_t::e handleReceive(Event &e);
+
+  void send(const std::string &str);
+
+  void send(const Message &msg);
 
  private:
   static const MPMap getMPMap();
+  result_t::e handleWriteEvent(Event &e);
   void handleReadEvent(Event &e);
   void registerClient(const Event &e);
   void processMessage(const Message &m);
@@ -84,7 +97,8 @@ class ClientConn : public IEventHandler {
 
  private:
   static const MPMap map_;
-  util::Buffer buffer_;
+  util::Buffer recv_buffer_;
+  std::queue<StringBuffer> send_queue_;
   IRCParser parser_;
   int sock_;
   CCList::iterator this_position_;

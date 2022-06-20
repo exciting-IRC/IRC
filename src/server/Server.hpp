@@ -36,6 +36,8 @@ class Server : public IEventHandler {
 
   void addClient(const std::string &nick, Client *client);
 
+  const ClientMap &getClients();
+
   EventPool &getPool();
 
  private:
