@@ -40,7 +40,8 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   memset(&addr, 0, sizeof(addr));
   in_addr_t in_addr = inet_addr(listen_addr);
   if (in_addr == INADDR_NONE)
-    return;
+    return result_t::kError;
+
   addr.sin_addr.s_addr = in_addr;
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
@@ -68,7 +69,7 @@ int Server::handle(Event e) {
               << addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL)
               << std::endl;
     CCList::iterator entry = client_conn_.insert(client_conn_.end(), NULL);
-    *entry = new ClientConn(client_socket, *this, entry);
+    *entry = new ClientConn(client_socket, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
   }
   return 0;

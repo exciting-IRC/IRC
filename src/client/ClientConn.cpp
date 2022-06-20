@@ -21,9 +21,8 @@
 
 const MPMap ClientConn::map_ = ClientConn::getMPMap();
 
-ClientConn::ClientConn(int sock, Server &server, CCList::iterator this_position)
+ClientConn::ClientConn(int sock, CCList::iterator this_position)
     : sock_(sock),
-      server_(server),
       this_position_(this_position),
       ident_(new UserIdent()),
       state_(ConnState::kClear) {}
@@ -97,15 +96,15 @@ void ClientConn::handleReadEvent(Event &e) {
     }
   } else if ((e.flags.test(EventFlag::kEOF)) || e.data == 0) {
     std::cout << "Connection closed." << std::endl;
-    server_.removeClientConn(this_position_);
+    server.removeClientConn(this_position_);
   }
   if (state_ == ConnState::kComplate) {
     const std::string &nick = ident_->nickname_;
-    Client *client = new Client(server_, this);
+    Client *client = new Client(this);
     client->setMessageBuffer("aaaaaa");
 
-    server_.moveClientConn(this_position_);
-    server_.addClient(nick, client);
+    server.moveClientConn(this_position_);
+    server.addClient(nick, client);
 
     e.pool.removeEvent(EventKind::kRead, this);
     e.pool.addEvent(EventKind::kRead, client);

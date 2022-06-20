@@ -40,6 +40,8 @@ class Server : public IEventHandler {
   CCList client_conn_;
   ClientMap clients_;
   int sock_;
-} server;
+};
+
+extern Server server;
 
 #endif

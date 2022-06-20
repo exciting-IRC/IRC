@@ -28,8 +28,8 @@ void StringBuffer::advance(std::size_t len) { cursor_ += len; }
 
 /*CLIENT===============================*/
 
-Client::Client(Server &server, ClientConn *conn)
-    : server_(server), conn_(conn), ident_(conn->moveIdent()) {}
+Client::Client(ClientConn *conn)
+    : conn_(conn), ident_(conn->moveIdent()) {}
 
 int Client::getFd() const { return conn_->getFd(); }
 

@@ -43,7 +43,7 @@ class StringBuffer {
 
 class Client : public IEventHandler {
  public:
-  Client(Server &server, ClientConn *conn);
+  Client(ClientConn *conn);
 
   //~Client(); = default;  // ClientConn을 지우면 안됨.
 

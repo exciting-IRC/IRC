@@ -48,7 +48,7 @@ struct ConnState {
 
 class ClientConn : public IEventHandler {
  public:
-  ClientConn(int sock, Server &server, CCList::iterator this_position);
+  ClientConn(int sock, CCList::iterator this_position);
 
   virtual ~ClientConn();
 

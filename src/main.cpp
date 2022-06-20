@@ -26,41 +26,36 @@ static sig_atomic_t recived_sig;
 
 void server_close_handler(int sig) { recived_sig = sig; }
 
-// int main() {
-//   using namespace util;
-//   using namespace std;
-
-//   signal(SIGINT, server_close_handler);
-//   signal(SIGTERM, server_close_handler);
-
-//   Config config = Config::from("config.yml");
-//   cout << config << endl;
-
-//   Server srv(bind_addr, port, 64);
-//   if (!srv.ok())
-//     err(1, "server_init");
-
-//   std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
-
-//   EventPool pool(64);
-//   if (!pool.ok())
-//     err(1, "event_pool_init");
-
-//   pool.addEvent(EventKind::kRead, &srv);
-
-//   while (true) {
-//     int k = pool.dispatchEvent(1);
-//     (void)k;
-//     if (recived_sig) {
-//       printf("shutdown... %s\n", strsignal(recived_sig));
-//       return 0;
-//     }
-//   }
-//   return 0;
-// }
-
 Server server;
 
 int main() {
-  if (server.init(bind_addr, port, 64) == result_t::kError);
+  using namespace util;
+  using namespace std;
+
+  signal(SIGINT, server_close_handler);
+  signal(SIGTERM, server_close_handler);
+
+  Config config = Config::from("config.yml");
+  cout << config << endl;
+
+  if (server.init(bind_addr, port, 64) == result_t::kError)
+    err(1, "Server init");
+
+  std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
+
+  EventPool pool(64);
+  if (!pool.ok())
+    err(1, "event_pool_init");
+
+  pool.addEvent(EventKind::kRead, &server);
+
+  while (true) {
+    int k = pool.dispatchEvent(1);
+    (void)k;
+    if (recived_sig) {
+      printf("shutdown... %s\n", strsignal(recived_sig));
+      return 0;
+    }
+  }
+  return 0;
 }
