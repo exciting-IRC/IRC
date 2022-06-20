@@ -132,13 +132,7 @@ void ClientConn::processNick(const Message &m) {
 }
 
 bool isValidUser(const std::string &s) {
-  for (std::string::const_iterator it = s.begin(), end = s.end(); it != end;
-       ++it) {
-    if (*it == '@') {
-      return false;
-    }
-  }
-  return true;
+  return  s.find("@") != std::string::npos;
 }
 
 void ClientConn::processUser(const Message &m) {
