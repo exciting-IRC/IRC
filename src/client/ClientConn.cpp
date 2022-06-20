@@ -22,9 +22,16 @@
 #include "util/config/config.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/strutil.hpp"
+#include "util/strutil/conversion.hpp"
 
-const MPMap ClientConn::map_ = ClientConn::getMPMap();
+using util::p;
 
+const MPMap ClientConn::map_ = container_of<MPMap, MPMap::value_type>(
+  p("PASS", &ClientConn::processPass),
+  p("USER", &ClientConn::processUser),
+  p("NICK", &ClientConn::processNick)
+);
+ 
 ClientConn::ClientConn(int sock, CCList::iterator this_position)
     : sock_(sock),
       this_position_(this_position),
@@ -97,12 +104,19 @@ bool isValidNick(const std::string &nick) {
   return true;
 }
 
+// std::string numeric_reply( std::string prefix, util::returnCode code, std::vector<std::string> params) {
+//   Message reply;
+
+//   reply.prefix = prefix;
+//   reply.params = params;
+// }
+
 void ClientConn::processNick(const Message &m) {
   Message reply;
   reply.prefix = config.name;
 
   if (m.params.empty()) {
-    reply.command = util::to_string(util::ERR_NONICKNAMEGIVEN);
+    reply.command = util::pad_num(util::ERR_NONICKNAMEGIVEN);
     reply.params.push_back("No nickname given");
 
     send(reply);
@@ -111,7 +125,7 @@ void ClientConn::processNick(const Message &m) {
 
   const std::string &nick = m.params[0];
   if (!isValidNick(nick)) {
-    reply.command = util::to_string(util::ERR_ERRONEUSNICKNAME);
+    reply.command = util::pad_num(util::ERR_ERRONEUSNICKNAME);
     reply.params.push_back(nick);
     reply.params.push_back("Erroneous nickname");
 
@@ -120,7 +134,7 @@ void ClientConn::processNick(const Message &m) {
   }
 
   if (server.getClients().find(nick) != server.getClients().end()) {
-    reply.command = util::to_string(util::ERR_NICKNAMEINUSE);
+    reply.command = util::pad_num(util::ERR_NICKNAMEINUSE);
     reply.params.push_back(nick);
     reply.params.push_back("Nickname is already in use");
 
@@ -163,7 +177,7 @@ void ClientConn::processPass(const Message &m) {
   reply.prefix = config.name;
 
   if (m.params.size() != 1) {
-    reply.command = util::to_string(util::ERR_NEEDMOREPARAMS);
+    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
     reply.params.push_back(m.command);
     reply.params.push_back("Not enough parameters");
 
@@ -242,8 +256,7 @@ void ClientConn::registerClient(const Event &e) {
   Message reply;
   reply.prefix = config.name;
 
-  char __buf[4]; __buf[3] = '\0'; sprintf(__buf, "%03d", util::RPL_WELCOME);
-  reply.command = util::to_string(__buf);
+  reply.command = util::pad_num(util::RPL_WELCOME);
   reply.params.push_back(ident_->nickname_);
   reply.params.push_back("Welcome to the Internet Relay Network!");
 
