@@ -6,6 +6,7 @@
 
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/general/result.hpp"
 
 class Server;
 class Client;
@@ -16,7 +17,7 @@ typedef std::map<std::string, Client *> ClientMap;
 
 class Server : public IEventHandler {
  public:
-  Server(const char *listen_addr, int port, int backlog);
+  Server();
   ~Server();
 
  private:
@@ -24,7 +25,7 @@ class Server : public IEventHandler {
   Server &operator=(const Server &);  // = delete
 
  public:
-  bool ok();
+  return_t::e init(const char *listen_addr, int port, int backlog);
 
   int getFd() const;  // override, final
 
@@ -39,7 +40,6 @@ class Server : public IEventHandler {
   CCList client_conn_;
   ClientMap clients_;
   int sock_;
-  bool ok_;
-};
+} server;
 
 #endif

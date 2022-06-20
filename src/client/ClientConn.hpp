@@ -86,7 +86,6 @@ class ClientConn : public IEventHandler {
   util::Buffer buffer_;
   IRCParser parser_;
   int sock_;
-  Server &server_;
   CCList::iterator this_position_;
   UserIdent *ident_;
   unsigned char state_;

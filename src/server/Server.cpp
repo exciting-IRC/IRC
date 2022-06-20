@@ -13,16 +13,26 @@
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
-Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
+Server::Server() : sock_(-1) {}
+
+Server::~Server() {
+  for (CCList::iterator it = client_conn_.begin(); it != client_conn_.end();
+       ++it) {
+    delete *it;
+  }
+  close(sock_);
+}
+
+return_t::e Server::init(const char *listen_addr, int port, int backlog) {
   sock_ = util::socket(PF_INET, SOCK_STREAM);
   if (sock_ == -1) {
-    return;
+    return return_t::kError;
   }
 
   int option = true;
   if (util::setsockopt(sock_, SOL_SOCKET, SO_REUSEADDR, &option,
                        sizeof(option)) == -1) {
-    return;
+    return return_t::kError;
   }
 
   struct sockaddr_in addr;
@@ -36,22 +46,13 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
   addr.sin_port = htons(port);
 
   if (util::bind_in(sock_, &addr) == return_t::kError)
-    return;
+    return return_t::kError;
 
   if (util::listen(sock_, backlog) == return_t::kError)
-    return;
-  ok_ = true;
+    return return_t::kError;
+  
+  return return_t::kOK;
 }
-
-Server::~Server() {
-  for (CCList::iterator it = client_conn_.begin(); it != client_conn_.end();
-       ++it) {
-    delete *it;
-  }
-  close(sock_);
-}
-
-bool Server::ok() { return ok_; }
 
 int Server::getFd() const { return sock_; }
 
@@ -73,9 +74,7 @@ int Server::handle(Event e) {
   return 0;
 }
 
-void Server::moveClientConn(CCList::iterator pos) {
-  client_conn_.erase(pos);
-}
+void Server::moveClientConn(CCList::iterator pos) { client_conn_.erase(pos); }
 
 void Server::removeClientConn(CCList::iterator pos) {
   delete *pos;

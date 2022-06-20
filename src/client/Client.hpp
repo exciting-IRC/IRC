@@ -63,7 +63,6 @@ class Client : public IEventHandler {
   void setMessageBuffer(const std::string &msg);
 
  private:
-  Server &server_;
   ClientConn *conn_;
   UserIdent *ident_;
   StringBuffer buffer_;
