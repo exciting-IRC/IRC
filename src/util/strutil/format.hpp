@@ -1,12 +1,15 @@
 #ifndef UTIL_STRUTIL_FORMAT_HPP
 #define UTIL_STRUTIL_FORMAT_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include "util/vargs/vec_of_any.hpp"
 
 #define FMT(fmt, param) util::format(fmt, VA(param))
+#define COUT_FMT(fmt, param) std::cout << FMT(fmt, param) << "\n"
+#define CERR_FMT(fmt, param) std::cerr << FMT(fmt, param) << "\n"
 
 namespace util {
 using std::string;
@@ -44,6 +47,8 @@ class format {
 
   string str() const;
   operator string() const;
+  bool operator==(const std::string& other) const;
+  bool operator!=(const std::string& other) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const format& f);
