@@ -48,9 +48,9 @@ struct ConnState {
     kClear = 0,
     kPass = (1 << 0),
     kUser = (1 << 1),
-    kNick = (1 << 3),
+    kNick = (1 << 2),
     kComplate = (kPass | kUser | kNick),
-    kConnected = (1 << 4)
+    kConnected = (1 << 3)
   };
 };
 
