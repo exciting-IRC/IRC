@@ -2,18 +2,22 @@
 #define SERVER_HPP
 
 #include <list>
+#include <map>
 
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/general/result.hpp"
 
 class Server;
+class Client;
 class ClientConn;
 
 typedef std::list<ClientConn *> CCList;
+typedef std::map<std::string, Client *> ClientMap;
 
 class Server : public IEventHandler {
  public:
-  Server(const char *listen_addr, int port, int backlog);
+  Server();
   ~Server();
 
  private:
@@ -21,18 +25,28 @@ class Server : public IEventHandler {
   Server &operator=(const Server &);  // = delete
 
  public:
-  bool ok();
+  result_t::e init(const char *listen_addr, int port, int backlog);
 
   int getFd() const;  // override, final
 
   int handle(Event e);  // override, final
 
-  void removeClient(CCList::iterator pos);
+  void moveClientConn(CCList::iterator pos);
+  void removeClientConn(CCList::iterator pos);
+
+  void addClient(const std::string &nick, Client *client);
+
+  const ClientMap &getClients();
+
+  EventPool &getPool();
 
  private:
-  CCList client_list_;
+  EventPool pool_;
+  CCList client_conn_;
+  ClientMap clients_;
   int sock_;
-  bool ok_;
 };
+
+extern Server server;
 
 #endif

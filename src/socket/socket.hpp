@@ -47,7 +47,7 @@ socket_t socket(int domain, int type, int protocol = SockProtocol_t::kDefult);
  * @param backlog 최대 연결 개수. 연결 가능한 개수보다 더 큰 값이나 0 이하의
  * 값이 들어오면 함수에서 적절한 값을 알아서 설정해준다.
  */
-return_t::e listen(socket_t socket, int backlog);
+result_t::e listen(socket_t socket, int backlog);
 
 /**
  * @brief 소켓을 실제 (ip|domain):port에 바인딩해서 외부에서 바인딩한 주소로
@@ -55,7 +55,7 @@ return_t::e listen(socket_t socket, int backlog);
  *
  * @param addr 바인딩할 주소
  */
-return_t::e bind_in(socket_t socket, const struct sockaddr_in *addr);
+result_t::e bind_in(socket_t socket, const struct sockaddr_in *addr);
 
 /**
  * @brief 소켓 socket을 사용하여 addr에 연결을 시도한다
@@ -64,7 +64,7 @@ return_t::e bind_in(socket_t socket, const struct sockaddr_in *addr);
  * @param addr 접속할 주소
  * @return return_t::e
  */
-return_t::e connect_in(socket_t socket, const struct sockaddr_in &addr);
+result_t::e connect_in(socket_t socket, const struct sockaddr_in &addr);
 
 /**
  * @brief 소켓에서 데이터 읽기를 시도한다
@@ -97,7 +97,7 @@ ssize_t send(socket_t socket, const void *buffer, size_t length,
  * @param option_len   option_value 의 크기(byte 단위)
  * @return return_t::e
  */
-return_t::e setsockopt(socket_t socket, int level, int option_name,
+result_t::e setsockopt(socket_t socket, int level, int option_name,
                        const void *option_value, socklen_t option_len);
 
 }  // namespace util

@@ -25,28 +25,32 @@ void Event::setWriteEvent(const struct kevent &kev) {
     this->flags.set(EventFlag::kEOF);
 }
 
-return_t::e EventPool::initKqueue() {
+result_t::e EventPool::initKqueue() {
   fd_ = util::kqueue();
   if (fd_ == -1)
-    return return_t::kError;
+    return result_t::kError;
   is_fd_open_ = true;
-  return return_t::kOK;
+  return result_t::kOK;
 }
 
-return_t::e EventPool::initEventList() {
+result_t::e EventPool::initEventList() {
   event_list_ = new (std::nothrow) struct kevent[max_event_];
   if (event_list_ == NULL)
-    return return_t::kError;
-  return return_t::kOK;
+    return result_t::kError;
+  return result_t::kOK;
 }
 
-EventPool::EventPool(int max_event)
-    : event_list_(NULL), ok_(false), max_event_(max_event), is_fd_open_(false) {
-  if (initKqueue() == return_t::kError)
-    return;
-  if (initEventList() == return_t::kError)
-    return;
-  ok_ = true;
+result_t::e EventPool::init(int max_event) {
+  max_event_ = max_event;
+  if (initKqueue() == result_t::kError)
+    return result_t::kError;
+  if (initEventList() == result_t::kError)
+    return result_t::kError;
+  return result_t::kOK;
+}
+
+EventPool::EventPool()
+    : event_list_(NULL), max_event_(0), is_fd_open_(false) {
 }
 
 EventPool::~EventPool() {
@@ -62,8 +66,6 @@ int EventPool::close() {
     is_fd_open_ = false;
   return ret;
 }
-
-bool EventPool::ok() { return ok_; }
 
 struct kevent create_kevent(EventKind::e kind, IEventHandler *eh, uint16_t flag) {
   struct kevent ev = {eh->getFd(), kind, flag, 0, 0, static_cast<void *>(eh)};

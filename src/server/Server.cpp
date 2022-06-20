@@ -8,21 +8,31 @@
 #include <iostream>
 #include <list>
 
-#include "ClientConn.hpp"
+#include "client/ClientConn.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 
-Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
+Server::Server() : sock_(-1) {}
+
+Server::~Server() {
+  for (CCList::iterator it = client_conn_.begin(); it != client_conn_.end();
+       ++it) {
+    delete *it;
+  }
+  close(sock_);
+}
+
+result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   sock_ = util::socket(PF_INET, SOCK_STREAM);
   if (sock_ == -1) {
-    return;
+    return result_t::kError;
   }
 
   int option = true;
   if (util::setsockopt(sock_, SOL_SOCKET, SO_REUSEADDR, &option,
                        sizeof(option)) == -1) {
-    return;
+    return result_t::kError;
   }
 
   struct sockaddr_in addr;
@@ -30,28 +40,23 @@ Server::Server(const char *listen_addr, int port, int backlog) : ok_(false) {
   memset(&addr, 0, sizeof(addr));
   in_addr_t in_addr = inet_addr(listen_addr);
   if (in_addr == INADDR_NONE)
-    return;
+    return result_t::kError;
+
   addr.sin_addr.s_addr = in_addr;
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
 
-  if (util::bind_in(sock_, &addr) == return_t::kError)
-    return;
+  if (util::bind_in(sock_, &addr) == result_t::kError)
+    return result_t::kError;
 
-  if (util::listen(sock_, backlog) == return_t::kError)
-    return;
-  ok_ = true;
+  if (util::listen(sock_, backlog) == result_t::kError)
+    return result_t::kError;
+  
+  if (pool_.init(backlog) == result_t::kError)
+    return result_t::kError;
+
+  return result_t::kOK;
 }
-
-Server::~Server() {
-  for (CCList::iterator it = client_list_.begin(); it != client_list_.end();
-       ++it) {
-    delete *it;
-  }
-  close(sock_);
-}
-
-bool Server::ok() { return ok_; }
 
 int Server::getFd() const { return sock_; }
 
@@ -66,14 +71,26 @@ int Server::handle(Event e) {
     std::cout << "Accept connection: "
               << addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL)
               << std::endl;
-    CCList::iterator entry = client_list_.insert(client_list_.end(), NULL);
-    *entry = new ClientConn(client_socket, *this, entry);
+    CCList::iterator entry = client_conn_.insert(client_conn_.end(), NULL);
+    *entry = new ClientConn(client_socket, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
   }
   return 0;
 }
 
-void Server::removeClient(CCList::iterator pos) {
+void Server::moveClientConn(CCList::iterator pos) { client_conn_.erase(pos); }
+
+void Server::removeClientConn(CCList::iterator pos) {
   delete *pos;
-  client_list_.erase(pos);
+  client_conn_.erase(pos);
+}
+
+void Server::addClient(const std::string &nick, Client *client) {
+  clients_.insert(ClientMap::value_type(nick, client));
+}
+
+const ClientMap &Server::getClients() { return clients_; }
+
+EventPool &Server::getPool() {
+  return pool_;
 }

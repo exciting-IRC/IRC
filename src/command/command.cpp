@@ -38,24 +38,24 @@ bool nick_is_valid(const string& nick) {
     return util::all_of(nick.begin() + 1, nick.end(), nick_other_char_valid);
 }
 // TODO: #51에서 추가된 Handler로 옮기기
-string Nick(User& user, const vector<LazyString>& args) {
-  if (args.empty())
-    return NUMERIC_REPLY(ERR_NONICKNAMEGIVEN, ());
+// string Nick(User& user, const vector<LazyString>& args) {
+//   if (args.empty())
+//     return NUMERIC_REPLY(ERR_NONICKNAMEGIVEN, ());
 
-  string new_nickname = args[0];
+//   string new_nickname = args[0];
 
-  if (user.nickname == new_nickname)
-    return "";
+//   if (user.nickname == new_nickname)
+//     return "";
 
-  if (not(nick_is_valid(new_nickname)))
-    return NUMERIC_REPLY(ERR_ERRONEUSNICKNAME, (new_nickname));
+//   if (not(nick_is_valid(new_nickname)))
+//     return NUMERIC_REPLY(ERR_ERRONEUSNICKNAME, (new_nickname));
 
-  if (false /* if nickname in use */)
-    REPLY(ERR_NICKNAMEINUSE, (new_nickname));
+//   if (false /* if nickname in use */)
+//     REPLY(ERR_NICKNAMEINUSE, (new_nickname));
 
-  user.nickname = new_nickname;
-  return FMT("NICK {nick}", (new_nickname));
-}
+//   user.nickname = new_nickname;
+//   return FMT("NICK {nick}", (new_nickname));
+// }
 
 // string Pass(User& user, const vector<LazyString>& args) {
 //   if (args.empty())
@@ -64,8 +64,8 @@ string Nick(User& user, const vector<LazyString>& args) {
 //     return retfmt[ERR_ALREADYREGISTRED];
 // }
 
-const command_map commandsMap =
-    container_of<command_map, command_pair>(p("NICK", &Nick));
+// const command_map commandsMap =
+//     container_of<command_map, command_pair>(p("NICK", &Nick));
 // p("PASS", "pass"), p("NICK", "nick"), p("USER", "user"), p("JOIN", "join"),
 // p("PART", "part"), p("PRIVMSG", "privmsg"), p("ADMIN", "admin"),
 // p("KILL", "kill"), p("QUIT", "quit"));

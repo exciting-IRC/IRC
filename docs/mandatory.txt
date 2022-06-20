@@ -1,0 +1,28 @@
+OPER <name> <password>
+
+KILL <nickname> <comment>
+
+QUIT [ <Quit Message> ]
+
+JOIN ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] ) | "0"
+
+PART <channel> *( "," <channel> ) [ <Part Message> ]
+
+PRIVMSG <msgtarget> <text to be sent>
+
+PING <server1> [ <server2> ]
+
+PONG <server> [ <server2> ]
+
+
+? CONNECT <target server> <port> [ <remote server> ]
+
+? ERROR <error message>
+
+PASS <password>
+
+NICK <nickname>
+
+USER <user> <mode> <unused> <realname>
+
+MODE <nickname> *( ( "+" | "-" ) *( "i" | "w" | "o" | "O" | "r" ) )

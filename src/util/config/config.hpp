@@ -2,7 +2,7 @@
 #define CONFIG_HPP
 
 #include <stddef.h>
-
+#include <fstream>
 #include <map>
 #include <string>
 
@@ -15,14 +15,7 @@ namespace util {
 using std::map;
 using std::pair;
 
-pair<string, string> getkv(string line) {
-  using namespace util;
-
-  vector<string> kv = split(line, ":");
-  if (kv.size() != 2)
-    throw std::invalid_argument("invalid line: " + line);
-  return make_pair(trim(kv[0]), trim(kv[1]));
-}
+pair<string, string> getkv(string line);
 
 struct Config {
   const string name;
@@ -66,15 +59,10 @@ struct Config {
   }
 };
 
-std::ostream &operator<<(std::ostream &os, const Config &config) {
-  os << "name: " << config.name << "\n";
-  os << "info: " << config.info << "\n";
-  os << "motd: " << config.motd << "\n";
-  os << "oper_user: " << config.oper_user << "\n";
-  os << "oper_password: " << config.oper_password << "\n";
-  os << "max_clients: " << config.max_clients << "\n";
-  return os;
-}
+std::ostream &operator<<(std::ostream &os, const Config &config);
 
 }  // namespace util
+
+extern util::Config config;
+
 #endif  // CONFIG_HPP
