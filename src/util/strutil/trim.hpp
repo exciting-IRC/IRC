@@ -7,7 +7,7 @@ namespace util {
 
 using std::string;
 
-extern const string white_space;
+#define white_space " \t\n\r\f\v"
 
 /**
  * @brief 발견한 토큰과 그 이후를 지우기

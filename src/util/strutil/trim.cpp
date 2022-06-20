@@ -2,8 +2,6 @@
 
 namespace util {
 
-const string white_space = " \t\n\r\f\v";
-
 string& rtrim(string& s, const string& match) {
   s.erase(s.find_last_not_of(match) + 1);
   return s;
