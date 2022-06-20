@@ -62,7 +62,7 @@ class Client : public IEventHandler {
 
   void setMessageBuffer(const std::string &msg);
 
-  void ping();
+  void pong();
 
  private:
   ClientConn *conn_;

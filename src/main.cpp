@@ -38,6 +38,7 @@ int main() {
   signal(SIGTERM, server_close_handler);
 
   cout << config << endl;
+  cout << FMT(":{0} PONG {0} {0}", (config.name)) << "\n";
 
   if (server.init(bind_addr, port, 64) == result_t::kError)
     err(1, "Server init");

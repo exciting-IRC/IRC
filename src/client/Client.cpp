@@ -1,7 +1,7 @@
 #include "Client.hpp"
 
 #include "ClientConn.hpp"
-
+#include "util/config/config.hpp"
 #include <iostream>
 #include <unistd.h>
 
@@ -70,8 +70,9 @@ int Client::handle(Event e) {
   return 0;
 }
 
-// void Client::pong() {
-//   std::string reply = FMT(":{} PONG",())
-// }
+void Client::pong() {
+  std::string reply = FMT(":{0} PONG {0} {0}", (config.name));
+  std::cout << reply << "\n";
+}
 
 void Client::setMessageBuffer(const std::string &msg) { buffer_.reset(msg); }
