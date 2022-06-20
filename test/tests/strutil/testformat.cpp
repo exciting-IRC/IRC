@@ -12,6 +12,8 @@ TEST(FormatTest, edgeCases) {
   for (auto fmt : strvec{"{", "}", "{}"})
     RC_ASSERT_THROWS_AS(FMT(fmt, ()), std::invalid_argument);
   RC_ASSERT(FMT("hello {0} {0} {0}", ("world")) == "hello world world world");
+  RC_ASSERT(FMT("{0} {} {1} {}", ("hello", "world")) ==
+            "hello hello world world");
 }
 
 auto create_fmtbrace() -> std::string {
