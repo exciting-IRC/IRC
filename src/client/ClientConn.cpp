@@ -223,14 +223,12 @@ void ClientConn::send(const std::string &str) {
 }
 
 void ClientConn::send(const Message &msg) {
-  std::string str = ":" + msg.prefix;
+  typedef std::vector<util::LazyString>::const_iterator const_it;
+  
+  std::string str = FMT(":{prefix} {command}", (msg.prefix, msg.command));
 
-  str += " ";
-  str += msg.command;
   if (not msg.prefix.empty()) {
-    for (std::vector<util::LazyString>::const_iterator
-             it = msg.params.begin(),
-             end = util::prev(msg.params.end());
+    for (const_it it = msg.params.begin(), end = util::prev(msg.params.end());
          it != end; ++it) {
       str += " " + *it;
     }
