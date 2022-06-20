@@ -37,10 +37,6 @@ ssize_t send(socket_t socket, const void *buffer, size_t length, int flags) {
   return ::send(socket, buffer, length, flags);
 }
 
-ssize_t send(socket_t socket, const std::string &string, int flags) {
-  return ::send(socket, string.c_str(), string.size(), flags);
-}
-
 return_t::e setsockopt(socket_t socket, int level, int option_name,
                        const void *option_value, socklen_t option_len) {
   return static_cast<return_t::e>(

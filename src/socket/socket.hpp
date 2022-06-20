@@ -88,9 +88,6 @@ ssize_t recv(socket_t socket, void *buffer, size_t length,
 ssize_t send(socket_t socket, const void *buffer, size_t length,
              int flags = SendFlag_t::kDefult);
 
-ssize_t send(socket_t socket, const std::string &string,
-             int flags = SendFlag_t::kDefult);
-
 /**
  * @brief 소켓의 특성을 변경한다 (fcntl(2) 함수와 비슷함)
  *
