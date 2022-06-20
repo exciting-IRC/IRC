@@ -1,6 +1,7 @@
-#include <util/strutil/strutil.hpp>
 #include <vector>
 
+#include "util/algorithm/algorithm.hpp"
+#include "util/strutil/strutil.hpp"
 namespace util {
 using std::string;
 using std::vector;
@@ -50,13 +51,20 @@ void format::insert_arg(size_t index) {
 }
 
 void format::advance_to_closing_bracket() {
-  for (size_t i = curs + 1; i < fmt.size(); i++) {
+  const size_t begin = curs + 1;
+  for (size_t i = begin; i < fmt.size(); i++) {
     if (fmt[i] == '{') {
       throw std::invalid_argument("unmatched opening brace '{' at " +
                                   to_string(i));
     } else if (fmt[i] == '}') {
+      size_t len = i - begin;
       curs = i;
-      insert_arg();
+      string word = fmt.substr(begin, len);
+      if (len > 0 and util::all_of(word.begin(), word.end(), ::isdigit)) {
+        insert_arg(convert_to<size_t>(word));
+      } else {
+        insert_arg();
+      }
       return;
     }
   }
@@ -66,6 +74,12 @@ void format::advance_to_closing_bracket() {
 
 string format::str() const { return result; }
 format::operator string() const { return result; }
+bool format::operator==(const std::string& other) const {
+  return result == other;
+}
+bool format::operator!=(const std::string& other) const {
+  return result != other;
+}
 
 std::ostream& operator<<(std::ostream& os, const format& f) {
   return os << static_cast<string>(f);
