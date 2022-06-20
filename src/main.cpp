@@ -6,6 +6,9 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <util/FixedBuffer/FixedBuffer.hpp>
+#include <util/config/config.hpp>
+#include <util/strutil/strutil.hpp>
 #include <utility>
 #include <vector>
 
@@ -16,7 +19,7 @@
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/vargs/container_of.hpp"
 
-const static char* bind_addr = "127.0.0.1";
+const static char *bind_addr = "127.0.0.1";
 const static int port = 6667;
 
 static sig_atomic_t recived_sig;
@@ -38,7 +41,7 @@ int main() {
   if (!srv.ok())
     err(1, "server_init");
 
-  COUT_FMT("Listen at {bind_addr}:{port}", (bind_addr, port));
+  std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
 
   EventPool pool(64);
   if (!pool.ok())
