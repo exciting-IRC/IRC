@@ -40,13 +40,17 @@ result_t::e EventPool::initEventList() {
   return result_t::kOK;
 }
 
-EventPool::EventPool(int max_event)
-    : event_list_(NULL), ok_(false), max_event_(max_event), is_fd_open_(false) {
+result_t::e EventPool::init(int max_event) {
+  max_event_ = max_event;
   if (initKqueue() == result_t::kError)
-    return;
+    return result_t::kError;
   if (initEventList() == result_t::kError)
-    return;
-  ok_ = true;
+    return result_t::kError;
+  return result_t::kOK;
+}
+
+EventPool::EventPool()
+    : event_list_(NULL), max_event_(0), is_fd_open_(false) {
 }
 
 EventPool::~EventPool() {
@@ -62,8 +66,6 @@ int EventPool::close() {
     is_fd_open_ = false;
   return ret;
 }
-
-bool EventPool::ok() { return ok_; }
 
 struct kevent create_kevent(EventKind::e kind, IEventHandler *eh, uint16_t flag) {
   struct kevent ev = {eh->getFd(), kind, flag, 0, 0, static_cast<void *>(eh)};

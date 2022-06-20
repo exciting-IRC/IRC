@@ -36,7 +36,10 @@ class Server : public IEventHandler {
 
   void addClient(const std::string &nick, Client *client);
 
+  EventPool &getPool();
+
  private:
+  EventPool pool_;
   CCList client_conn_;
   ClientMap clients_;
   int sock_;

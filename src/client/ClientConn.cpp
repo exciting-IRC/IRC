@@ -44,9 +44,25 @@ const MPMap ClientConn::getMPMap() {
 }
 
 void ClientConn::processNick(const Message &m) {
-  ident_->nickname_ = m.params[0];
-  std::cout << "NICK" << std::endl;
+  
+  if (args.empty())
+    return NUMERIC_REPLY(ERR_NONICKNAMEGIVEN, ());
+
+  string new_nickname = args[0];
+
+  if (user.nickname == new_nickname)
+    return "";
+
+  if (not(nick_is_valid(new_nickname)))
+    return NUMERIC_REPLY(ERR_ERRONEUSNICKNAME, (new_nickname));
+
+  if (false /* if nickname in use */)
+    REPLY(ERR_NICKNAMEINUSE, (new_nickname));
+
+  user.nickname = new_nickname;
+  return FMT("NICK {nick}", (new_nickname));
   state_ |= ConnState::kNick;
+  
 }
 
 void ClientConn::processUser(const Message &m) {

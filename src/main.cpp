@@ -43,14 +43,10 @@ int main() {
 
   std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
 
-  EventPool pool(64);
-  if (!pool.ok())
-    err(1, "event_pool_init");
-
-  pool.addEvent(EventKind::kRead, &server);
+  server.getPool().addEvent(EventKind::kRead, &server);
 
   while (true) {
-    int k = pool.dispatchEvent(1);
+    int k = server.getPool().dispatchEvent(1);
     (void)k;
     if (recived_sig) {
       printf("shutdown... %s\n", strsignal(recived_sig));

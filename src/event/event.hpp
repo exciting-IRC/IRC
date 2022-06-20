@@ -40,7 +40,7 @@ class IEventHandler {
 
 class EventPool {
  public:
-  EventPool(int max_event);
+  EventPool();
   ~EventPool();
 
  private:
@@ -48,9 +48,9 @@ class EventPool {
   EventPool &operator=(const EventPool &);  // = delete;
 
  public:
-  int close();
+  result_t::e init(int max_event);
 
-  bool ok();
+  int close();
 
   int addEvent(EventKind::e kind, IEventHandler *eh);
 
@@ -70,7 +70,6 @@ class EventPool {
  private:
   struct kevent *event_list_;
   int fd_;
-  bool ok_;
   int max_event_;
   bool is_fd_open_;
 };

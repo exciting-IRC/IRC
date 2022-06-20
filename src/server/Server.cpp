@@ -52,6 +52,9 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   if (util::listen(sock_, backlog) == result_t::kError)
     return result_t::kError;
   
+  if (pool_.init(backlog) == result_t::kError)
+    return result_t::kError;
+
   return result_t::kOK;
 }
 
@@ -84,4 +87,8 @@ void Server::removeClientConn(CCList::iterator pos) {
 
 void Server::addClient(const std::string &nick, Client *client) {
   clients_.insert(ClientMap::value_type(nick, client));
+}
+
+EventPool &Server::getPool() {
+  return pool_;
 }
