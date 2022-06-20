@@ -4,9 +4,18 @@
 
 #include <iostream>
 
+#include "command/returncode.hpp"
+
 #include "ClientConn.hpp"
 #include "server/Server.hpp"
 #include "util/config/config.hpp"
+#include "util/vargs/container_of.hpp"
+#include "util/strutil/conversion.hpp"
+
+using util::p;
+const MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
+  p("PING", &Client::ping)
+);
 
 /*STRING_BUFFER===============================*/
 
@@ -56,6 +65,13 @@ int Client::getFd() const { return conn_->getFd(); }
 
 void Client::processMessage(const Message &m) {
   std::cout << "CMD: <" << m.command << ">";
+  MPClientMap::const_iterator it = map_.find(m.command);
+  if (it == map_.end()) {
+    std::cout << ": Not found" << std::endl;
+    return;
+  }
+  std::cout << ":Found" << std::endl;
+  (this->*(it->second))(m);
 }
 
 void Client::handleReadEvent(Event &e) {
@@ -81,8 +97,14 @@ int Client::handle(Event e) {
   }
   return 0;
 }
-
-void Client::pong() {
-  std::string reply = FMT(":{0} PONG {0} {0}", (config.name));
-  std::cout << reply << "\n";
+ 
+void Client::ping(const Message &m) {
+  if (m.params.size() != 1) {
+    Message reply;
+    reply.prefix = config.name;
+    reply.command = util::pad_num(util::ERR_NOORIGIN);
+    reply.params.push_back(":No origin specified");
+    conn_->send(reply);
+  }
+  conn_->send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
 }

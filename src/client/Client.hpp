@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <string>
+#include <map>
 
 #include "event/event.hpp"
 #include "socket/socket.hpp"
@@ -46,6 +47,9 @@ class StringBuffer {
 class ClientConn;
 struct UserIdent;
 struct Message;
+class Client;
+typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
+
 
 class Client : public IEventHandler {
  public:
@@ -67,14 +71,14 @@ class Client : public IEventHandler {
 
   int handle(Event e);
 
-  void pong();
+  void ping(const Message &m);
  
   void processMessage(const Message &m);
 
  private:
   ClientConn *conn_;
   UserIdent *ident_;
-  
+  static const MPClientMap map_;
 };
 
 
