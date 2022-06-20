@@ -26,7 +26,9 @@ static sig_atomic_t recived_sig;
 
 void server_close_handler(int sig) { recived_sig = sig; }
 
+
 Server server;
+util::Config config =  util::Config::from("config.yml");
 
 int main() {
   using namespace util;
@@ -35,7 +37,6 @@ int main() {
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
 
-  Config config = Config::from("config.yml");
   cout << config << endl;
 
   if (server.init(bind_addr, port, 64) == result_t::kError)

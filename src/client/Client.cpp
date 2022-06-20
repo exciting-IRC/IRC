@@ -70,4 +70,8 @@ int Client::handle(Event e) {
   return 0;
 }
 
+// void Client::pong() {
+//   std::string reply = FMT(":{} PONG",())
+// }
+
 void Client::setMessageBuffer(const std::string &msg) { buffer_.reset(msg); }

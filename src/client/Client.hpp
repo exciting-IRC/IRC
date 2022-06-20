@@ -62,6 +62,8 @@ class Client : public IEventHandler {
 
   void setMessageBuffer(const std::string &msg);
 
+  void ping();
+
  private:
   ClientConn *conn_;
   UserIdent *ident_;
