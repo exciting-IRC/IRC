@@ -111,19 +111,28 @@ Server에 대한 협력 다이어그램:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:a175785a51cb6d0accacdff5c18e4c13f"><td class="memItemLeft" align="right" valign="top"><a id="a175785a51cb6d0accacdff5c18e4c13f" name="a175785a51cb6d0accacdff5c18e4c13f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Server</b> (const char *listen_addr, int port, int backlog)</td></tr>
-<tr class="separator:a175785a51cb6d0accacdff5c18e4c13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59de7ae9295d788376c3b16a36eebcc6"><td class="memItemLeft" align="right" valign="top"><a id="a59de7ae9295d788376c3b16a36eebcc6" name="a59de7ae9295d788376c3b16a36eebcc6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ok</b> ()</td></tr>
-<tr class="separator:a59de7ae9295d788376c3b16a36eebcc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c3ae6bd4906efafc597b9d130751a45"><td class="memItemLeft" align="right" valign="top"><a id="a7c3ae6bd4906efafc597b9d130751a45" name="a7c3ae6bd4906efafc597b9d130751a45"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (const char *listen_addr, int port, int backlog)</td></tr>
+<tr class="separator:a7c3ae6bd4906efafc597b9d130751a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a327ed5d0e43176e36b4be9ef30914908"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a327ed5d0e43176e36b4be9ef30914908">getFd</a> () const</td></tr>
 <tr class="separator:a327ed5d0e43176e36b4be9ef30914908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35c772609a1a0834f7a55fc72367d390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a35c772609a1a0834f7a55fc72367d390">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
 <tr class="separator:a35c772609a1a0834f7a55fc72367d390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac444c6747b096d695d413bf358d5f9c3"><td class="memItemLeft" align="right" valign="top"><a id="ac444c6747b096d695d413bf358d5f9c3" name="ac444c6747b096d695d413bf358d5f9c3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClient</b> (CCList::iterator pos)</td></tr>
-<tr class="separator:ac444c6747b096d695d413bf358d5f9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7beb5a12e5f1572b8f503e6cc20f55e"><td class="memItemLeft" align="right" valign="top"><a id="aa7beb5a12e5f1572b8f503e6cc20f55e" name="aa7beb5a12e5f1572b8f503e6cc20f55e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>moveClientConn</b> (CCList::iterator pos)</td></tr>
+<tr class="separator:aa7beb5a12e5f1572b8f503e6cc20f55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2766b00b3828471e4e9e0340346bfd3"><td class="memItemLeft" align="right" valign="top"><a id="ab2766b00b3828471e4e9e0340346bfd3" name="ab2766b00b3828471e4e9e0340346bfd3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClientConn</b> (CCList::iterator pos)</td></tr>
+<tr class="separator:ab2766b00b3828471e4e9e0340346bfd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf3945fd1ba9b495654f0b0e7d227605"><td class="memItemLeft" align="right" valign="top"><a id="adf3945fd1ba9b495654f0b0e7d227605" name="adf3945fd1ba9b495654f0b0e7d227605"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addClient</b> (const std::string &amp;nick, <a class="el" href="classClient.html">Client</a> *client)</td></tr>
+<tr class="separator:adf3945fd1ba9b495654f0b0e7d227605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a418ae99bce33e7bf5a9d22aebe8addbe"><td class="memItemLeft" align="right" valign="top"><a id="a418ae99bce33e7bf5a9d22aebe8addbe" name="a418ae99bce33e7bf5a9d22aebe8addbe"></a>
+const ClientMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getClients</b> ()</td></tr>
+<tr class="separator:a418ae99bce33e7bf5a9d22aebe8addbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fad30fa46b9be6693716a1a3ebfba83"><td class="memItemLeft" align="right" valign="top"><a id="a6fad30fa46b9be6693716a1a3ebfba83" name="a6fad30fa46b9be6693716a1a3ebfba83"></a>
+<a class="el" href="classEventPool.html">EventPool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getPool</b> ()</td></tr>
+<tr class="separator:a6fad30fa46b9be6693716a1a3ebfba83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">멤버 함수 문서화</h2>
 <a id="a327ed5d0e43176e36b4be9ef30914908" name="a327ed5d0e43176e36b4be9ef30914908"></a>
@@ -182,8 +191,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClient</b> (CCL
 </div>
 </div>
 <hr/>이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.:<ul>
-<li>src/<a class="el" href="Server_8hpp_source.html">Server.hpp</a></li>
-<li>src/Server.cpp</li>
+<li>src/server/<a class="el" href="Server_8hpp_source.html">Server.hpp</a></li>
+<li>src/server/Server.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

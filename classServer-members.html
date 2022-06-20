@@ -90,11 +90,15 @@ $(document).ready(function(){initNavTree('classServer.html',''); initResizable()
 
 <p>다음에 대한 모든 멤버의 목록입니다 : <a class="el" href="classServer.html">Server</a> (모든 상속된 멤버들도 포함합니다.)</p>
 <table class="directory">
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>addClient</b>(const std::string &amp;nick, Client *client) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getClients</b>() (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getFd</b>() const (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>handle</b>(Event e) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ok</b>() (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>removeClient</b>(CCList::iterator pos) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Server</b>(const char *listen_addr, int port, int backlog) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getPool</b>() (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>handle</b>(Event e) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>init</b>(const char *listen_addr, int port, int backlog) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>moveClientConn</b>(CCList::iterator pos) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>removeClientConn</b>(CCList::iterator pos) (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Server</b>() (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~Server</b>() (다음에서 정의됨 : <a class="el" href="classServer.html">Server</a>)</td><td class="entry"><a class="el" href="classServer.html">Server</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

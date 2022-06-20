@@ -111,9 +111,9 @@ ClientConn에 대한 협력 다이어그램:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:a76360d5f79cdfb6c3f659887d8a2d138"><td class="memItemLeft" align="right" valign="top"><a id="a76360d5f79cdfb6c3f659887d8a2d138" name="a76360d5f79cdfb6c3f659887d8a2d138"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ClientConn</b> (int sock, <a class="el" href="classServer.html">Server</a> &amp;server, CCList::iterator this_position)</td></tr>
-<tr class="separator:a76360d5f79cdfb6c3f659887d8a2d138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab83c616a2e8e8c9c53476a7485cc3991"><td class="memItemLeft" align="right" valign="top"><a id="ab83c616a2e8e8c9c53476a7485cc3991" name="ab83c616a2e8e8c9c53476a7485cc3991"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ClientConn</b> (int sock, CCList::iterator this_position)</td></tr>
+<tr class="separator:ab83c616a2e8e8c9c53476a7485cc3991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab02b3d56cf1a7625608e3416fbc9cd5b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClientConn.html#ab02b3d56cf1a7625608e3416fbc9cd5b">getFd</a> () const</td></tr>
 <tr class="separator:ab02b3d56cf1a7625608e3416fbc9cd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe466007efd28287dc46c60a10b6511b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClientConn.html#abe466007efd28287dc46c60a10b6511b">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
@@ -121,9 +121,27 @@ Public 멤버 함수</h2></td></tr>
 <tr class="memitem:aa1f6d50f765ebef00fb48150c57a9616"><td class="memItemLeft" align="right" valign="top"><a id="aa1f6d50f765ebef00fb48150c57a9616" name="aa1f6d50f765ebef00fb48150c57a9616"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> ()</td></tr>
 <tr class="separator:aa1f6d50f765ebef00fb48150c57a9616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a491187ab96820a45b9e91320b1015659"><td class="memItemLeft" align="right" valign="top"><a id="a491187ab96820a45b9e91320b1015659" name="a491187ab96820a45b9e91320b1015659"></a>
-ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>recv</b> (size_t length)</td></tr>
-<tr class="separator:a491187ab96820a45b9e91320b1015659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e82ee9156dc21eda5c022e25136a11c"><td class="memItemLeft" align="right" valign="top"><a id="a9e82ee9156dc21eda5c022e25136a11c" name="a9e82ee9156dc21eda5c022e25136a11c"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>recvBuffer</b> (size_t length)</td></tr>
+<tr class="separator:a9e82ee9156dc21eda5c022e25136a11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7aa9564b63aee4dcc150ae05237abac"><td class="memItemLeft" align="right" valign="top"><a id="ab7aa9564b63aee4dcc150ae05237abac" name="ab7aa9564b63aee4dcc150ae05237abac"></a>
+ParserResult::e&#160;</td><td class="memItemRight" valign="bottom"><b>parse</b> ()</td></tr>
+<tr class="separator:ab7aa9564b63aee4dcc150ae05237abac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78c3a80245d71a43359c21936d3fc5e8"><td class="memItemLeft" align="right" valign="top"><a id="a78c3a80245d71a43359c21936d3fc5e8" name="a78c3a80245d71a43359c21936d3fc5e8"></a>
+<a class="el" href="structMessage.html">Message</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getMessage</b> ()</td></tr>
+<tr class="separator:a78c3a80245d71a43359c21936d3fc5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a595a30f41d80135ec90e7b64856aa"><td class="memItemLeft" align="right" valign="top"><a id="a77a595a30f41d80135ec90e7b64856aa" name="a77a595a30f41d80135ec90e7b64856aa"></a>
+<a class="el" href="structUserIdent.html">UserIdent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>moveIdent</b> ()</td></tr>
+<tr class="separator:a77a595a30f41d80135ec90e7b64856aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a2485515ca16233a20b1f9789951e3f"><td class="memItemLeft" align="right" valign="top"><a id="a6a2485515ca16233a20b1f9789951e3f" name="a6a2485515ca16233a20b1f9789951e3f"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>handleReceive</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
+<tr class="separator:a6a2485515ca16233a20b1f9789951e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56943b06f79e33f815ced3e40ca38274"><td class="memItemLeft" align="right" valign="top"><a id="a56943b06f79e33f815ced3e40ca38274" name="a56943b06f79e33f815ced3e40ca38274"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>send</b> (const std::string &amp;str)</td></tr>
+<tr class="separator:a56943b06f79e33f815ced3e40ca38274"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea07beaaeca977a94f5cc5ee15f2306"><td class="memItemLeft" align="right" valign="top"><a id="a6ea07beaaeca977a94f5cc5ee15f2306" name="a6ea07beaaeca977a94f5cc5ee15f2306"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>send</b> (const <a class="el" href="structMessage.html">Message</a> &amp;msg)</td></tr>
+<tr class="separator:a6ea07beaaeca977a94f5cc5ee15f2306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">멤버 함수 문서화</h2>
 <a id="ab02b3d56cf1a7625608e3416fbc9cd5b" name="ab02b3d56cf1a7625608e3416fbc9cd5b"></a>
@@ -182,8 +200,8 @@ ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>recv</b> (size_t l
 </div>
 </div>
 <hr/>이 클래스에 대한 문서화 페이지는 다음의 파일들로부터 생성되었습니다.:<ul>
-<li>src/<a class="el" href="ClientConn_8hpp_source.html">ClientConn.hpp</a></li>
-<li>src/ClientConn.cpp</li>
+<li>src/client/<a class="el" href="ClientConn_8hpp_source.html">ClientConn.hpp</a></li>
+<li>src/client/ClientConn.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

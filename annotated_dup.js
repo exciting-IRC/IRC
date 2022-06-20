@@ -22,6 +22,7 @@ var annotated_dup =
     [ "Client", "classClient.html", null ],
     [ "ClientConn", "classClientConn.html", null ],
     [ "color_t", "structcolor__t.html", null ],
+    [ "ConnState", "structConnState.html", null ],
     [ "Event", "structEvent.html", null ],
     [ "EventFlag", "structEventFlag.html", null ],
     [ "EventKind", "structEventKind.html", null ],
@@ -31,8 +32,9 @@ var annotated_dup =
     [ "Message", "structMessage.html", null ],
     [ "ParserResult", "structParserResult.html", null ],
     [ "ParserState", "structParserState.html", null ],
-    [ "return_t", "structreturn__t.html", null ],
+    [ "result_t", "structresult__t.html", null ],
     [ "Server", "classServer.html", null ],
-    [ "UserInfo", "structUserInfo.html", null ],
+    [ "StringBuffer", "classStringBuffer.html", null ],
+    [ "UserIdent", "structUserIdent.html", null ],
     [ "UserMode", "structUserMode.html", null ]
 ];
