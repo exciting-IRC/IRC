@@ -35,6 +35,9 @@ struct UserMode {
 };
 
 struct UserIdent {
+  std::string toString() {
+    return nickname_ + "!" + username_ + "@" + hostname_;
+  }
   std::string password_;
   std::string username_;
   std::string realname_;

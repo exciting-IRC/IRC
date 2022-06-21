@@ -31,7 +31,6 @@ class ClientConn;
 struct UserIdent;
 struct Message;
 class Client;
-typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
 
 class Client : public IEventHandler {
  public:
@@ -43,47 +42,19 @@ class Client : public IEventHandler {
   Client(const Client &);             // = delete;
   Client &operator=(const Client &);  // = delete;
 
+ private:
+  typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
+  typedef std::map<std::string, Channel *> ChannelMap;
+
  public:
   int getFd() const;
 
   template <typename T>
   void send(const T &msg);
 
-  void sendRegisterMessage() {
-    Message reply;
-    reply.prefix = config.name;
+  void sendRegisterMessage();
 
-    reply.command = util::pad_num(util::RPL_WELCOME);
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back("Welcome to the Internet Relay Network!");
-    send(reply);
-    reply.params.clear();
-
-    reply.command = util::pad_num(util::RPL_YOURHOST);
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back(
-        FMT("Your host is {servername}, running version {version}",
-            (config.name, EIRC_VERSION)));
-    send(reply);
-    reply.params.clear();
-
-    reply.command = util::pad_num(util::RPL_CREATED);
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back(
-        FMT("This server was crated {datetime}", (config.create_time)));
-    send(reply);
-    reply.params.clear();
-
-    reply.command = util::pad_num(util::RPL_MYINFO);
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back(config.name);
-    reply.params.push_back(EIRC_VERSION);
-    reply.params.push_back("o");
-    reply.params.push_back("o");
-    reply.params.push_back("");
-    send(reply);
-    reply.params.clear();
-  }
+  void sendMOTD();
 
   std::string &getNick();
 
@@ -116,7 +87,7 @@ class Client : public IEventHandler {
   void processMessage(const Message &m);
 
  private:
-  std::map<std::string, Channel *> joined_channels_;
+  ChannelMap joined_channels_;
   ClientConn *conn_;
   UserIdent *ident_;
   static const MPClientMap map_;

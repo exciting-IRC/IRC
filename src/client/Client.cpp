@@ -13,13 +13,14 @@
 #include "util/irctype/irctype.hpp"
 
 using util::p;
-const MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
+const Client::MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
   p("PING", &Client::ping),
   p("QUIT", &Client::quit),
   p("JOIN", &Client::join),
   p("PRIVMSG", &Client::privmsg),
   p("KILL", &Client::kill),
-  p("OPER", &Client::oper)
+  p("OPER", &Client::oper),
+  p("MODE", &Client::mode)
 );
 
 /*CLIENT===============================*/
@@ -27,11 +28,79 @@ const MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_ty
 Client::Client(ClientConn *conn) : conn_(conn), ident_(conn->moveIdent()) {}
 
 Client::~Client() {
+  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+    it->second->removeUser(ident_->nickname_);
+  }
   delete conn_;
   delete ident_;
 }
 
 int Client::getFd() const { return conn_->getFd(); }
+
+void Client::sendRegisterMessage() {
+  Message reply;
+  reply.prefix = config.name;
+
+  reply.command = util::pad_num(util::RPL_WELCOME);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back("Welcome to the Internet Relay Network!");
+  send(reply);
+  reply.params.clear();
+
+  reply.command = util::pad_num(util::RPL_YOURHOST);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back(
+      FMT("Your host is {servername}, running version {version}",
+          (config.name, EIRC_VERSION)));
+  send(reply);
+  reply.params.clear();
+
+  reply.command = util::pad_num(util::RPL_CREATED);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back(
+      FMT("This server was crated {datetime}", (config.create_time)));
+  send(reply);
+  reply.params.clear();
+
+  reply.command = util::pad_num(util::RPL_MYINFO);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back(config.name);
+  reply.params.push_back(EIRC_VERSION);
+  reply.params.push_back("o");
+  reply.params.push_back("o");
+  reply.params.push_back("");
+  send(reply);
+  reply.params.clear();
+
+  reply.command = util::pad_num(5);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back("NETWORK=Localnet");
+  reply.params.push_back("are supported by this server");
+  send(reply);
+  reply.params.clear();
+
+  sendMOTD();
+}
+
+void Client::sendMOTD() {
+  std::stringstream ss(config.motd);
+
+  std::string line;
+  Message reply;
+
+  reply.prefix = config.name;
+  reply.command = util::pad_num(util::RPL_MOTD);
+  while (std::getline(ss, line)) {
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back(line);
+    send(reply);
+    reply.params.clear();
+  }
+  reply.command = util::pad_num(util::RPL_ENDOFMOTD);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back("END of MOTD.");
+  send(reply);
+}
 
 std::string &Client::getNick(){
   return ident_->nickname_;
@@ -74,7 +143,10 @@ void Client::handleReadEvent(Event &e) {
   } else {
     ParserResult::e result;
     while ((result = conn_->parse()) == ParserResult::kSuccess) {
-      processMessage(conn_->getMessage());
+      Message msg = conn_->getMessage();
+      processMessage(msg);
+      if (util::to_upper(msg.command) == "QUIT")
+        return;
     }
   }
 }
@@ -166,8 +238,12 @@ void Client::kill(const Message &m) {
 }
 
 void Client::quit(const Message &m) {
-  // XXX display quit message?
-  (void)m;
+  Message reply = m;
+
+  reply.prefix = ident_->toString();
+  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+    it->second->sendAll(reply, this);
+  }
   server.removeClient(ident_->nickname_);
 }
 
@@ -218,15 +294,25 @@ void Client::userMode(const Message &m) {
 }
 
 void Client::mode(const Message &m) {
-  if (m.params.size() < 1) {
-    sendNeedMoreParam(m.command);
-    return;
-  }
-  if (util::isChannelPrefix(m.params[0][0])) {
-    userMode(m);
-  } else {
-    channelMode(m);
-  }
+  // XXX mode is currently not supported.
+  (void)m;
+  Message reply;
+
+  reply.prefix = config.name;
+  reply.command = util::pad_num(501);
+  reply.params.push_back(ident_->nickname_);
+  reply.params.push_back("Unknown MODE flag");
+  send(reply);
+
+  // if (m.params.size() < 1) {
+  //   sendNeedMoreParam(m.command);
+  //   return;
+  // }
+  // if (util::isChannelPrefix(m.params[0][0])) {
+  //   userMode(m);
+  // } else {
+  //   channelMode(m);
+  // }
 }
 
 void Client::sendNeedMoreParam(const std::string &command) {
@@ -243,9 +329,9 @@ void Client::sendNeedMoreParam(const std::string &command) {
 void Client::privmsg(const Message &m) {
   Message reply(m);
 
-  reply.prefix = FMT("{nick}!{user}@{host}", (ident_->nickname_, ident_->username_, ident_->hostname_));
-  if (reply.params[0][0] == '#') {
-    joined_channels_.find(reply.params[0])->second->sendAll(reply);
+  reply.prefix = ident_->toString();
+  if (util::isChannelPrefix(reply.params[0][0])) {
+    joined_channels_.find(reply.params[0])->second->sendAll(reply, this);
   } else {
     send(reply);
   }

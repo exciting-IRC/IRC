@@ -4,10 +4,10 @@
 #include <list>
 #include <map>
 
+#include "client/Client.hpp"
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/general/result.hpp"
-#include "client/Client.hpp"
 class Server;
 class Client;
 class ClientConn;
@@ -40,9 +40,11 @@ class Channel {
   }
 
   template <typename T>
-  void sendAll(const T &msg) {
-    for (ClientMap::iterator it = users_.begin(), end = users_.end(); it != end; ++it) {
-      it->second->send(msg);
+  void sendAll(const T &msg, Client *exclude) {
+    for (ClientMap::iterator it = users_.begin(), end = users_.end(); it != end;
+         ++it) {
+      if (it->second != exclude)
+        it->second->send(msg);
     }
   }
 
@@ -57,8 +59,6 @@ class Channel {
   std::string name_;
 };
 
-typedef std::map<std::string, Channel> ChannelMap;
-
 class Server : public IEventHandler {
  public:
   Server();
@@ -67,6 +67,9 @@ class Server : public IEventHandler {
  private:
   Server(const Server &);             // = delete
   Server &operator=(const Server &);  // = delete
+
+ private:
+  typedef std::map<std::string, Channel> ChannelMap;
 
  public:
   result_t::e init(const char *listen_addr, int port, int backlog);
