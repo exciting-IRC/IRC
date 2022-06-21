@@ -10,6 +10,7 @@
 #include "util/config/config.hpp"
 #include "util/strutil/conversion.hpp"
 #include "util/vargs/container_of.hpp"
+#include "util/irctype/irctype.hpp"
 
 using util::p;
 const MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
@@ -193,6 +194,50 @@ void Client::join(const Message &m) {
     Channel *new_channel = &server.addUserToChannel(*it, this);
     joined_channels_.insert(std::make_pair(*it, new_channel));
   }
+}
+
+void Client::channelMode(const Message &m) {
+  (void)m;
+}
+  /* XXX handle MODE commands*/
+
+void Client::userMode(const Message &m) {
+  Message reply;
+
+  reply.prefix = config.name;
+  if (m.params[0] != ident_->nickname_) {
+    reply.command = util::pad_num(util::ERR_USERSDONTMATCH);
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back("Cant change mode for other users");
+
+    send(reply);
+    return;
+  }
+
+  /* XXX handle MODE commands*/
+}
+
+void Client::mode(const Message &m) {
+  if (m.params.size() < 1) {
+    sendNeedMoreParam(m.command);
+    return;
+  }
+  if (util::isChannelPrefix(m.params[0][0])) {
+    userMode(m);
+  } else {
+    channelMode(m);
+  }
+}
+
+void Client::sendNeedMoreParam(const std::string &command) {
+  Message reply;
+
+  reply.prefix = config.name;
+  reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
+  reply.params.push_back(command);
+  reply.params.push_back("Not enough parameters");
+  send(reply);
+
 }
 
 void Client::privmsg(const Message &m) {

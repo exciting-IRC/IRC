@@ -2,17 +2,18 @@
 #define CLIENT_CLIENT_HPP
 
 #include <algorithm>
-#include <string>
 #include <map>
+#include <string>
 
+#include "client/ClientConn.hpp"
+#include "command/returncode.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
-#include "util/vargs/container_of.hpp"
+#include "util/config/config.hpp"
 #include "util/strutil/strutil.hpp"
-#include "client/ClientConn.hpp"
+#include "util/vargs/container_of.hpp"
 
 class Channel;
-
 
 #define VL(param) container_of<std::vector<util::LazyString> > param
 
@@ -32,7 +33,6 @@ struct Message;
 class Client;
 typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
 
-
 class Client : public IEventHandler {
  public:
   Client(ClientConn *conn);
@@ -43,12 +43,47 @@ class Client : public IEventHandler {
   Client(const Client &);             // = delete;
   Client &operator=(const Client &);  // = delete;
 
- 
  public:
   int getFd() const;
 
   template <typename T>
   void send(const T &msg);
+
+  void sendRegisterMessage() {
+    Message reply;
+    reply.prefix = config.name;
+
+    reply.command = util::pad_num(util::RPL_WELCOME);
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back("Welcome to the Internet Relay Network!");
+    send(reply);
+    reply.params.clear();
+
+    reply.command = util::pad_num(util::RPL_YOURHOST);
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back(
+        FMT("Your host is {servername}, running version {version}",
+            (config.name, EIRC_VERSION)));
+    send(reply);
+    reply.params.clear();
+
+    reply.command = util::pad_num(util::RPL_CREATED);
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back(
+        FMT("This server was crated {datetime}", (config.create_time)));
+    send(reply);
+    reply.params.clear();
+
+    reply.command = util::pad_num(util::RPL_MYINFO);
+    reply.params.push_back(ident_->nickname_);
+    reply.params.push_back(config.name);
+    reply.params.push_back(EIRC_VERSION);
+    reply.params.push_back("o");
+    reply.params.push_back("o");
+    reply.params.push_back("");
+    send(reply);
+    reply.params.clear();
+  }
 
   std::string &getNick();
 
@@ -67,6 +102,14 @@ class Client : public IEventHandler {
   void quit(const Message &m);
 
   void join(const Message &m);
+
+  void userMode(const Message &m);
+
+  void channelMode(const Message &m);
+
+  void mode(const Message &m);
+
+  void sendNeedMoreParam(const std::string &command);
 
   void privmsg(const Message &m);
 

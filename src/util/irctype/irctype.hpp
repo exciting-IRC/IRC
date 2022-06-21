@@ -38,6 +38,8 @@ bool isSpecial(const char c);
  */
 bool isRegular(char c);
 
+bool isChannelPrefix(char c);
+
 }  // namespace util
 
 #endif  // UTIL_IRCTYPE_HPP

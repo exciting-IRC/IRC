@@ -253,12 +253,6 @@ void ClientConn::send(const Message &msg) {
 }
 
 void ClientConn::registerClient(const Event &e) {
-  Message reply;
-  reply.prefix = config.name;
-
-  reply.command = util::pad_num(util::RPL_WELCOME);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("Welcome to the Internet Relay Network!");
 
   const std::string &nick = ident_->nickname_;
   Client *client = new Client(this);
@@ -271,7 +265,7 @@ void ClientConn::registerClient(const Event &e) {
 
   std::cout << "Register" << std::endl;
 
-  send(reply);
+  client->sendRegisterMessage();
 }
 
 int ClientConn::handle(Event e) {
