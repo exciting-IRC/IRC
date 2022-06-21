@@ -204,14 +204,14 @@ int ClientConn::getFd() const { return sock_; }
 
 void ClientConn::handleReadEvent(Event &e) {
   if (handleReceive(e) == result_t::kError) {
-    server.removeClientConn(this_position_);
+    server.removeClient(this_position_);
   }
   ParserResult::e result;
   while ((result = parse()) == ParserResult::kSuccess) {
     processMessage(getMessage());
   }
   if (result == ParserResult::kFailure) {
-    server.removeClientConn(this_position_);
+    server.removeClient(this_position_);
   }
   if (state_ == ConnState::kComplate) {
     registerClient(e);

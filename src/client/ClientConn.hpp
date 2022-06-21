@@ -1,17 +1,19 @@
 #ifndef CLIENT_CONN_HPP
 #define CLIENT_CONN_HPP
 
+#include <arpa/inet.h>
+
 #include <algorithm>
 #include <list>
 #include <map>
 #include <queue>
 
 #include "IRCParser.hpp"
-#include "client/Client.hpp"
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/moveptr.hpp"
+#include "util/StringBuffer.hpp"
 #include "util/algorithm/algorithm.hpp"
+#include "util/moveptr.hpp"
 
 class Server;
 class ClientConn;

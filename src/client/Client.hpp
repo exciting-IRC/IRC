@@ -7,6 +7,14 @@
 
 #include "event/event.hpp"
 #include "socket/socket.hpp"
+#include "util/vargs/container_of.hpp"
+#include "util/strutil/strutil.hpp"
+#include "client/ClientConn.hpp"
+
+class Channel;
+
+
+#define VL(param) container_of<std::vector<util::LazyString> > param
 
 /**
  *a - user is flagged as away;
@@ -17,32 +25,6 @@
  *O - local operator flag;
  *s - marks a user for receipt of server notices. (deprecated)
  */
-
-class StringBuffer {
- public:
-  StringBuffer();
-  StringBuffer(const std::string &str);
-  // StringBuffer(const StringBuffer &) = default;
-  // StringBuffer &operator=(const StringBuffer &other) = default;
-  // ~StringBuffer() = default;
-
- public:
-  void reset();
-
-  void reset(const std::string &str);
-
-  bool empty() const;
-
-  const char *data() const;
-
-  std::size_t size() const;
-
-  void advance(std::size_t len);
-
- private:
-  std::string data_;
-  std::size_t cursor_;
-};
 
 class ClientConn;
 struct UserIdent;
@@ -55,7 +37,7 @@ class Client : public IEventHandler {
  public:
   Client(ClientConn *conn);
 
-  //~Client(); = default;  // ClientConn을 지우면 안됨.
+  virtual ~Client();
 
  private:
   Client(const Client &);             // = delete;
@@ -65,6 +47,11 @@ class Client : public IEventHandler {
  public:
   int getFd() const;
 
+  template <typename T>
+  void send(const T &msg);
+
+  std::string &getNick();
+
   void handleWriteEvent(Event &e);
 
   void handleReadEvent(Event &e);
@@ -72,14 +59,26 @@ class Client : public IEventHandler {
   int handle(Event e);
 
   void ping(const Message &m);
- 
+
+  void oper(const Message &m);
+
+  void kill(const Message &m);
+
+  void quit(const Message &m);
+
+  void join(const Message &m);
+
+  void privmsg(const Message &m);
+
   void processMessage(const Message &m);
 
  private:
+  std::map<std::string, Channel *> joined_channels_;
   ClientConn *conn_;
   UserIdent *ident_;
   static const MPClientMap map_;
 };
 
+#include "client/Client.tpp"
 
 #endif  // CLIENT_CLIENT_HPP

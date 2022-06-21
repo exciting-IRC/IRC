@@ -4,45 +4,37 @@
 
 #include <iostream>
 
-#include "command/returncode.hpp"
-
 #include "ClientConn.hpp"
+#include "command/returncode.hpp"
 #include "server/Server.hpp"
 #include "util/config/config.hpp"
-#include "util/vargs/container_of.hpp"
 #include "util/strutil/conversion.hpp"
+#include "util/vargs/container_of.hpp"
 
 using util::p;
 const MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
-  p("PING", &Client::ping)
+  p("PING", &Client::ping),
+  p("QUIT", &Client::quit),
+  p("JOIN", &Client::join),
+  p("PRIVMSG", &Client::privmsg),
+  p("KILL", &Client::kill),
+  p("OPER", &Client::oper)
 );
-
-/*STRING_BUFFER===============================*/
-
-StringBuffer::StringBuffer() : data_(), cursor_() {}
-
-StringBuffer::StringBuffer(const std::string &str) : data_(str), cursor_(0) {}
-
-void StringBuffer::reset() { cursor_ = 0; }
-
-void StringBuffer::reset(const std::string &str) {
-  data_ = str;
-  reset();
-}
-
-bool StringBuffer::empty() const { return data_.size() == cursor_; }
-
-const char *StringBuffer::data() const { return data_.data() + cursor_; }
-
-std::size_t StringBuffer::size() const { return data_.size() - cursor_; }
-
-void StringBuffer::advance(std::size_t len) { cursor_ += len; }
 
 /*CLIENT===============================*/
 
 Client::Client(ClientConn *conn) : conn_(conn), ident_(conn->moveIdent()) {}
 
+Client::~Client() {
+  delete conn_;
+  delete ident_;
+}
+
 int Client::getFd() const { return conn_->getFd(); }
+
+std::string &Client::getNick(){
+  return ident_->nickname_;
+}
 
 // void Client::handleWriteEvent(Event &e) {
 //   if (e.flags.test(EventFlag::kEOF)) {
@@ -65,7 +57,7 @@ int Client::getFd() const { return conn_->getFd(); }
 
 void Client::processMessage(const Message &m) {
   std::cout << "CMD: <" << m.command << ">";
-  MPClientMap::const_iterator it = map_.find(m.command);
+  MPClientMap::const_iterator it = map_.find(util::to_upper(m.command));
   if (it == map_.end()) {
     std::cout << ": Not found" << std::endl;
     return;
@@ -97,7 +89,7 @@ int Client::handle(Event e) {
   }
   return 0;
 }
- 
+
 void Client::ping(const Message &m) {
   if (m.params.size() != 1) {
     Message reply;
@@ -107,4 +99,110 @@ void Client::ping(const Message &m) {
     conn_->send(reply);
   }
   conn_->send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
+}
+
+void Client::oper(const Message &m) {
+  Message reply;
+
+  reply.prefix = config.name;
+
+  if (m.params.size() < 2) {
+    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
+    reply.params.push_back(m.command);
+    reply.params.push_back("Not enough parameters");
+    conn_->send(reply);
+    return;
+  }
+
+  bool is_ok =
+      config.oper_user == m.params[0] && config.oper_password == m.params[1];
+
+  if (is_ok) {
+    ident_->mode_ |= UserMode::o;
+    reply.command = util::pad_num(util::RPL_YOUAREOPER);
+    reply.params.push_back("You are now an IRC operator");
+    conn_->send(reply);
+    return;
+  } else {  // 보안적인 이유로 비밀번호가 틀렸을 때, 유저네임이 틀렸을 때 모두
+            // 같은 에러로 응답함.
+    reply.command = util::pad_num(util::ERR_NOOPERHOST);
+    reply.params.push_back("No O-lines for your host");
+    conn_->send(reply);
+    return;
+  }
+}
+
+void Client::kill(const Message &m) {
+  Message reply;
+
+  reply.prefix = "";
+  if (m.params.size() < 2) {
+    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
+    reply.params.push_back(m.command);
+    reply.params.push_back("Not enough parameters");
+    conn_->send(reply);
+    return;
+  }
+
+  const ClientMap &clients = server.getClients();
+  if (clients.find(m.params[0]) == clients.end()) {
+    reply.command = util::pad_num(util::ERR_NOSUCHNICK);
+    reply.params.push_back(m.params[0]);
+    reply.params.push_back("No such nick/channel");
+    conn_->send(reply);
+    return;
+  }
+
+  bool has_privilege = (ident_->mode_ & UserMode::o);
+  if (not has_privilege) {
+    reply.command = util::pad_num(util::ERR_NOPRIVILEGES);
+    reply.params.push_back("Permission Denied- You're not an IRC operator");
+    conn_->send(reply);
+    return;
+  } else {
+    server.removeClient(m.params[0]);
+  }
+}
+
+void Client::quit(const Message &m) {
+  // XXX display quit message?
+  (void)m;
+  server.removeClient(ident_->nickname_);
+}
+
+void Client::join(const Message &m) {
+  Message reply;
+
+  reply.prefix = config.name;
+  if (m.params.size() < 1) {
+    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
+    reply.params.push_back(m.command);
+    reply.params.push_back("Not enough parameters");
+
+    send(reply);
+    return;
+  }
+
+  if (m.params[0] == "0") {
+    // XXX part all
+    return;
+  }
+
+  std::vector<std::string> channels = util::split(m.params[0], ",");
+  for (std::vector<std::string>::iterator it = channels.begin(), end = channels.end(); it != end; ++it) {
+    Channel *new_channel = &server.addUserToChannel(*it, this);
+    joined_channels_.insert(std::make_pair(*it, new_channel));
+  }
+}
+
+void Client::privmsg(const Message &m) {
+  Message reply(m);
+
+  reply.prefix = FMT("{nick}!{user}@{host}", (ident_->nickname_, ident_->username_, ident_->hostname_));
+  if (reply.params[0][0] == '#') {
+    joined_channels_.find(reply.params[0])->second->sendAll(reply);
+  } else {
+    send(reply);
+  }
+  return;
 }
