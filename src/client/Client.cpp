@@ -150,7 +150,7 @@ void Client::ping(const Message &m) {
 
 void Client::oper(const Message &m) {
   if (m.params.size() < 2) {
-    return sendNeedMoreParam(m.command);
+    return send(Message::as_not_enough_params_reply(m.command));
   }
 
   const bool is_ok =
@@ -171,7 +171,7 @@ void Client::oper(const Message &m) {
 
 void Client::kill(const Message &m) {
   if (m.params.size() < 2) {
-    return sendNeedMoreParam(m.command);
+    return send(Message::as_not_enough_params_reply(m.command));
   }
   Message reply;
 
@@ -210,7 +210,7 @@ void Client::quit(const Message &m) {
 
 void Client::join(const Message &m) {
   if (m.params.size() < 1) {
-    return sendNeedMoreParam(m.command);
+    return send(Message::as_not_enough_params_reply(m.command));
   }
 
   if (m.params[0] == "0") {
@@ -231,9 +231,7 @@ void Client::channelMode(const Message &m) { (void)m; }
 /* XXX handle MODE commands*/
 
 void Client::userMode(const Message &m) {
-
   if (m.params[0] != ident_->nickname_) {
-
     send(Message::as_numeric_reply(
         util::ERR_USERSDONTMATCH,
         VA((ident_->nickname_, "Cant change mode for other users"))));
@@ -249,7 +247,7 @@ void Client::mode(const Message &m) {
   send(Message::as_numeric_reply(util::ERR_UMODEUNKNOWNFLAG,
                                  VA((ident_->nickname_, "Unknown MODE flag"))));
   // if (m.params.size() < 1) {
-  //   sendNeedMoreParam(m.command);
+  // return send(Message::as_not_enough_params_reply(m.command));
   //   return;
   // }
   // if (util::isChannelPrefix(m.params[0][0])) {
@@ -257,11 +255,6 @@ void Client::mode(const Message &m) {
   // } else {
   //   channelMode(m);
   // }
-}
-
-void Client::sendNeedMoreParam(const std::string &command) {
-  send(Message::as_numeric_reply(util::ERR_NEEDMOREPARAMS,
-                                 VA((command, "Not enough parameters"))));
 }
 
 void Client::privmsg(const Message &m) {

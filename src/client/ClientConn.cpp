@@ -128,8 +128,7 @@ bool isValidUser(const std::string &s) {
 
 void ClientConn::processUser(const Message &m) {
   if (m.params.size() != 4) {
-    return send(Message::as_numeric_reply(
-        util::ERR_NEEDMOREPARAMS, VA((m.command, "Not enough parameters"))));
+    return send(Message::as_not_enough_params_reply(m.command));
   }
 
   // XXX ERR_ALREADYREGISTERED
@@ -144,8 +143,7 @@ void ClientConn::processUser(const Message &m) {
 
 void ClientConn::processPass(const Message &m) {
   if (m.params.size() != 1) {
-    return send(Message::as_numeric_reply(
-        util::ERR_NEEDMOREPARAMS, VA((m.command, "Not enough parameters"))));
+    return send(Message::as_not_enough_params_reply(m.command));
   }
 
   ident_->password_ = m.params[0];

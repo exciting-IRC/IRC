@@ -46,6 +46,10 @@ struct Message {
     Message reply = {config.name, util::pad_num(code), lazy_params};
     return reply;
   }
+  static Message as_not_enough_params_reply(std::string command) {
+    return as_numeric_reply(util::ERR_NEEDMOREPARAMS,
+                            VA((command, "Not enough parameters")));
+  }
 };
 
 class IRCParser {
