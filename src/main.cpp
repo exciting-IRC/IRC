@@ -19,7 +19,7 @@
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/vargs/container_of.hpp"
 
-const static char *bind_addr = "127.0.0.1";
+const static char *bind_addr = "0.0.0.0";
 const static int port = 6667;
 
 static sig_atomic_t recived_sig;
