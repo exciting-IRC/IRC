@@ -10,17 +10,19 @@
 
 #include "util/FixedBuffer/array.hpp"
 #include "util/strutil/strutil.hpp"
-using std::string;
+#include "util/general/time.hpp"
 
 namespace util {
 using std::map;
 using std::pair;
+using std::string;
 
 pair<string, string> getkv(string line);
 
 struct Config {
   const string name;
   const string version;
+  const string create_time;
   const string info;
   const string motd;
 
@@ -30,24 +32,20 @@ struct Config {
   const uint32_t max_clients;
   const uint32_t ping;
   const uint32_t timeout;
-  char create_time[32];
 
   Config(string name, string version, string info, string motd,
          string oper_user, string oper_password, string max_clients,
          string ping, string timeout)
       : name(name),
         version(version),
+        create_time(get_current_time()),
         info(read_text(info)),
         motd(read_text(motd)),
         oper_user(oper_user),
         oper_password(oper_password),
         max_clients(convert_to<uint32_t>(max_clients)),
         ping(convert_to<uint32_t>(ping)),
-        timeout(convert_to<uint32_t>(timeout)) {
-    time_t now;
-    time(&now);
-    strftime(create_time, sizeof(create_time), "%FT%TZ", gmtime(&now));
-  }
+        timeout(convert_to<uint32_t>(timeout)) {}
 
   static Config from(const string &filename) {
     std::ifstream configfile(filename.c_str());
