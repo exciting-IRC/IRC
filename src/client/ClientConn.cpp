@@ -251,8 +251,6 @@ void ClientConn::send(const Message &msg) {
     str += " :" + *msg.params.rbegin();
   }
   send(str);
-  COUT_FMT("{0} <- \"{1}\"", (util::get_current_time("[%H:%M:%S]"),
-                              str));  // FIXME: 직렬화 함수와 로그 함수 분리하기
 }
 
 void ClientConn::registerClient(const Event &e) {
