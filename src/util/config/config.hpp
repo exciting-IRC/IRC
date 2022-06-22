@@ -18,10 +18,9 @@ using std::pair;
 
 pair<string, string> getkv(string line);
 
-#define EIRC_VERSION "0.0.1"
-
 struct Config {
   const string name;
+  const string version;
   const string info;
   const string motd;
 
@@ -33,9 +32,11 @@ struct Config {
   const uint32_t timeout;
   char create_time[32];
 
-  Config(string name, string info, string motd, string oper_user,
-         string oper_password, string max_clients, string ping, string timeout)
+  Config(string name, string version, string info, string motd,
+         string oper_user, string oper_password, string max_clients,
+         string ping, string timeout)
       : name(name),
+        version(version),
         info(read_text(info)),
         motd(read_text(motd)),
         oper_user(oper_user),
@@ -61,9 +62,9 @@ struct Config {
         continue;
       m.insert(getkv(line));
     }
-    return Config(m.at("name"), m["info"], m["motd"], m["oper_user"],
-                  m["oper_password"], m.at("max_clients"), m.at("ping"),
-                  m.at("timeout"));
+    return Config(m.at("name"), m.at("version"), m["info"], m["motd"],
+                  m["oper_user"], m["oper_password"], m.at("max_clients"),
+                  m.at("ping"), m.at("timeout"));
   }
 };
 

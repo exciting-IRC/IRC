@@ -1,5 +1,6 @@
 # 서버 정보
 name: exictingirc
+version: 0.0.1 # 서버 버전
 info: asset/info.txt # 서버 정보
 motd: asset/motd.txt # 오늘의 문구 (Message Of The Day)
 

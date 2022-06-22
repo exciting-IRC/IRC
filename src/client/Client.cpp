@@ -51,7 +51,7 @@ void Client::sendRegisterMessage() {
   reply.params.push_back(ident_->nickname_);
   reply.params.push_back(
       FMT("Your host is {servername}, running version {version}",
-          (config.name, EIRC_VERSION)));
+          (config.name, config.version)));
   send(reply);
   reply.params.clear();
 
@@ -65,7 +65,7 @@ void Client::sendRegisterMessage() {
   reply.command = util::pad_num(util::RPL_MYINFO);
   reply.params.push_back(ident_->nickname_);
   reply.params.push_back(config.name);
-  reply.params.push_back(EIRC_VERSION);
+  reply.params.push_back(config.version);
   reply.params.push_back("o");
   reply.params.push_back("o");
   reply.params.push_back("");
