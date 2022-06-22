@@ -80,13 +80,32 @@ int Server::handle(Event e) {
 
 void Server::moveClientConn(CCList::iterator pos) { client_conn_.erase(pos); }
 
-void Server::removeClientConn(CCList::iterator pos) {
+void Server::removeClient(CCList::iterator pos) {
   delete *pos;
   client_conn_.erase(pos);
 }
 
+void Server::removeClient(const std::string &nickname) {
+  ClientMap::iterator target = clients_.find(nickname);
+  if (target == clients_.end())
+    return;
+  delete target->second;
+  clients_.erase(target);
+}
+
 void Server::addClient(const std::string &nick, Client *client) {
   clients_.insert(ClientMap::value_type(nick, client));
+}
+
+Channel &Server::addUserToChannel(const std::string &channel_name, Client *user) {
+  ChannelMap::iterator channel_iter = channels_.find(channel_name);
+
+  if (channel_iter == channels_.end()) {
+    return (channels_[channel_name] = Channel(channel_name, user));
+  } else {
+    channel_iter->second.addUser(user->getNick(), user);
+    return channel_iter->second;
+  }
 }
 
 const ClientMap &Server::getClients() { return clients_; }

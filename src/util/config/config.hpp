@@ -2,13 +2,14 @@
 #define CONFIG_HPP
 
 #include <stddef.h>
+
+#include <ctime>
 #include <fstream>
 #include <map>
 #include <string>
 
 #include "util/FixedBuffer/array.hpp"
 #include "util/strutil/strutil.hpp"
-
 using std::string;
 
 namespace util {
@@ -16,6 +17,8 @@ using std::map;
 using std::pair;
 
 pair<string, string> getkv(string line);
+
+#define EIRC_VERSION "0.0.1"
 
 struct Config {
   const string name;
@@ -28,6 +31,7 @@ struct Config {
   const uint32_t max_clients;
   const uint32_t ping;
   const uint32_t timeout;
+  char create_time[32];
 
   Config(string name, string info, string motd, string oper_user,
          string oper_password, string max_clients, string ping, string timeout)
@@ -38,7 +42,11 @@ struct Config {
         oper_password(oper_password),
         max_clients(convert_to<uint32_t>(max_clients)),
         ping(convert_to<uint32_t>(ping)),
-        timeout(convert_to<uint32_t>(timeout)) {}
+        timeout(convert_to<uint32_t>(timeout)) {
+    time_t now;
+    time(&now);
+    strftime(create_time, sizeof(create_time), "%FT%TZ", gmtime(&now));
+  }
 
   static Config from(const string &filename) {
     std::ifstream configfile(filename.c_str());

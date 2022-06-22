@@ -25,4 +25,9 @@ bool isSpecial(const char c) {
 
 bool isRegular(const char c) { return not isSeprator(c) and not isEol(c); }
 
+/**
+ * @brief '#' (공식 채널) 또는 '&' (사설 채널)
+ */
+bool isChannelPrefix(char c) { return c == '#' || c == '&'; }
+
 }  // namespace util

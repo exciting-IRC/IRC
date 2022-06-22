@@ -2,6 +2,7 @@
 #define UTIL_STRUTIL_CONVERSION_HPP
 
 #include <string>
+
 namespace util {
 
 using std::string;
@@ -22,6 +23,9 @@ string to_upper(string str);
 
 /// 문자열을 소문자로 변경
 string to_lower(string str);
+
+template <typename T>
+string pad_num(const T& t, size_t width = 3, char fill = '0');
 
 }  // namespace util
 

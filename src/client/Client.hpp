@@ -2,10 +2,20 @@
 #define CLIENT_CLIENT_HPP
 
 #include <algorithm>
+#include <map>
 #include <string>
 
+#include "client/ClientConn.hpp"
+#include "command/returncode.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
+#include "util/config/config.hpp"
+#include "util/strutil/strutil.hpp"
+#include "util/vargs/container_of.hpp"
+
+class Channel;
+
+#define VL(param) container_of<std::vector<util::LazyString> > param
 
 /**
  *a - user is flagged as away;
@@ -17,49 +27,36 @@
  *s - marks a user for receipt of server notices. (deprecated)
  */
 
-class StringBuffer {
- public:
-  StringBuffer();
-  StringBuffer(const std::string &str);
-  // StringBuffer(const StringBuffer &) = default;
-  // StringBuffer &operator=(const StringBuffer &other) = default;
-  // ~StringBuffer() = default;
-
- public:
-  void reset();
-
-  void reset(const std::string &str);
-
-  bool empty() const;
-
-  const char *data() const;
-
-  std::size_t size() const;
-
-  void advance(std::size_t len);
-
- private:
-  std::string data_;
-  std::size_t cursor_;
-};
-
 class ClientConn;
 struct UserIdent;
 struct Message;
+class Client;
 
 class Client : public IEventHandler {
  public:
   Client(ClientConn *conn);
 
-  //~Client(); = default;  // ClientConn을 지우면 안됨.
+  virtual ~Client();
 
  private:
   Client(const Client &);             // = delete;
   Client &operator=(const Client &);  // = delete;
 
- 
+ private:
+  typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
+  typedef std::map<std::string, Channel *> ChannelMap;
+
  public:
   int getFd() const;
+
+  template <typename T>
+  void send(const T &msg);
+
+  void sendRegisterMessage();
+
+  void sendMOTD();
+
+  std::string &getNick();
 
   void handleWriteEvent(Event &e);
 
@@ -67,15 +64,35 @@ class Client : public IEventHandler {
 
   int handle(Event e);
 
-  void pong();
- 
+  void ping(const Message &m);
+
+  void oper(const Message &m);
+
+  void kill(const Message &m);
+
+  void quit(const Message &m);
+
+  void join(const Message &m);
+
+  void userMode(const Message &m);
+
+  void channelMode(const Message &m);
+
+  void mode(const Message &m);
+
+  void sendNeedMoreParam(const std::string &command);
+
+  void privmsg(const Message &m);
+
   void processMessage(const Message &m);
 
  private:
+  ChannelMap joined_channels_;
   ClientConn *conn_;
   UserIdent *ident_;
-  
+  static const MPClientMap map_;
 };
 
+#include "client/Client.tpp"
 
 #endif  // CLIENT_CLIENT_HPP
