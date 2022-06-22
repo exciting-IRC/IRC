@@ -102,43 +102,21 @@ bool isValidNick(const std::string &nick) {
   return true;
 }
 
-// std::string numeric_reply( std::string prefix, util::returnCode code,
-// std::vector<std::string> params) {
-//   Message reply;
-
-//   reply.prefix = prefix;
-//   reply.params = params;
-// }
-
 void ClientConn::processNick(const Message &m) {
-  Message reply;
-  reply.prefix = config.name;
-
   if (m.params.empty()) {
-    reply.command = util::pad_num(util::ERR_NONICKNAMEGIVEN);
-    reply.params.push_back("No nickname given");
-
-    send(reply);
-    return;
+    return send(Message::as_numeric_reply(util::ERR_NONICKNAMEGIVEN,
+                                          VA(("No nickname given"))));
   }
 
   const std::string &nick = m.params[0];
   if (!isValidNick(nick)) {
-    reply.command = util::pad_num(util::ERR_ERRONEUSNICKNAME);
-    reply.params.push_back(nick);
-    reply.params.push_back("Erroneous nickname");
-
-    send(reply);
-    return;
+    return send(Message::as_numeric_reply(util::ERR_ERRONEUSNICKNAME,
+                                          VA((nick, "Erroneous nickname"))));
   }
 
   if (server.getClients().find(nick) != server.getClients().end()) {
-    reply.command = util::pad_num(util::ERR_NICKNAMEINUSE);
-    reply.params.push_back(nick);
-    reply.params.push_back("Nickname is already in use");
-
-    send(reply);
-    return;
+    return send(Message::as_numeric_reply(
+        util::ERR_NICKNAMEINUSE, VA((nick, "Nickname is already in use"))));
   }
   ident_->nickname_ = nick;
   state_ |= ConnState::kNick;
@@ -149,16 +127,9 @@ bool isValidUser(const std::string &s) {
 }
 
 void ClientConn::processUser(const Message &m) {
-  Message reply;
-  reply.prefix = config.name;
-
   if (m.params.size() != 4) {
-    reply.command = util::to_string(util::ERR_NEEDMOREPARAMS);
-    reply.params.push_back(m.command);
-    reply.params.push_back("Not enough parameters");
-
-    send(reply);
-    return;
+    return send(Message::as_numeric_reply(
+        util::ERR_NEEDMOREPARAMS, VA((m.command, "Not enough parameters"))));
   }
 
   // XXX ERR_ALREADYREGISTERED
@@ -172,16 +143,9 @@ void ClientConn::processUser(const Message &m) {
 }
 
 void ClientConn::processPass(const Message &m) {
-  Message reply;
-  reply.prefix = config.name;
-
   if (m.params.size() != 1) {
-    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
-    reply.params.push_back(m.command);
-    reply.params.push_back("Not enough parameters");
-
-    send(reply);
-    return;
+    return send(Message::as_numeric_reply(
+        util::ERR_NEEDMOREPARAMS, VA((m.command, "Not enough parameters"))));
   }
 
   ident_->password_ = m.params[0];
