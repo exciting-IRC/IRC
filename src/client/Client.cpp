@@ -11,6 +11,7 @@
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
 #include "util/vargs/container_of.hpp"
+#include "version.hpp"
 
 using util::p;
 const Client::MPClientMap Client::map_ =
@@ -45,14 +46,14 @@ void Client::sendRegisterMessage() {
       util::RPL_YOURHOST,
       VA((ident_->nickname_,
           FMT("Your host is {servername}, running version {version}",
-              (config.name, config.version))))));
+              (config.name, VERSION_STRING))))));
   send(Message::as_numeric_reply(
       util::RPL_CREATED,
       VA((ident_->nickname_, FMT("This server was created {create_time}",
                                  (config.create_time))))));
   send(Message::as_numeric_reply(
       util::RPL_MYINFO,
-      VA((ident_->nickname_, config.name, config.version, "o", "o", ""))));
+      VA((ident_->nickname_, config.name, VERSION_STRING, "o", "o", ""))));
   send(Message::as_numeric_reply((util::returnCode)5,  // FIXME: 추가하기
                                  VA((ident_->nickname_, "NETWORK=Localnet",
                                      "are supported by this server"))));

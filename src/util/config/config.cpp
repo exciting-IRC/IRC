@@ -19,7 +19,6 @@ pair<string, string> getkv(string line) {
 std::ostream &util::operator<<(std::ostream &os, const Config &config) {
   // TODO: use format
   os << "name: " << config.name << "\n";
-  os << "version: " << config.version << "\n";
   os << "info: " << config.info << "\n";
   os << "motd: " << config.motd << "\n";
   os << "oper_user: " << config.oper_user << "\n";

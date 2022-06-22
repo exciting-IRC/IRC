@@ -9,8 +9,8 @@
 #include <string>
 
 #include "util/FixedBuffer/array.hpp"
-#include "util/strutil/strutil.hpp"
 #include "util/general/time.hpp"
+#include "util/strutil/strutil.hpp"
 
 namespace util {
 using std::map;
@@ -21,7 +21,6 @@ pair<string, string> getkv(string line);
 
 struct Config {
   const string name;
-  const string version;
   const string create_time;
   const string info;
   const string motd;
@@ -33,11 +32,9 @@ struct Config {
   const uint32_t ping;
   const uint32_t timeout;
 
-  Config(string name, string version, string info, string motd,
-         string oper_user, string oper_password, string max_clients,
-         string ping, string timeout)
+  Config(string name, string info, string motd, string oper_user,
+         string oper_password, string max_clients, string ping, string timeout)
       : name(name),
-        version(version),
         create_time(get_current_time()),
         info(read_text(info)),
         motd(read_text(motd)),
@@ -60,9 +57,9 @@ struct Config {
         continue;
       m.insert(getkv(line));
     }
-    return Config(m.at("name"), m.at("version"), m["info"], m["motd"],
-                  m["oper_user"], m["oper_password"], m.at("max_clients"),
-                  m.at("ping"), m.at("timeout"));
+    return Config(m.at("name"), m["info"], m["motd"], m["oper_user"],
+                  m["oper_password"], m.at("max_clients"), m.at("ping"),
+                  m.at("timeout"));
   }
 };
 
