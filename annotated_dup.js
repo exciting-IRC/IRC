@@ -19,6 +19,8 @@ var annotated_dup =
       [ "Template", "classvec__of__any_1_1Template.html", null ],
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
+    [ "Channel", "classChannel.html", null ],
+    [ "ChannelMode", "structChannelMode.html", null ],
     [ "Client", "classClient.html", null ],
     [ "ClientConn", "classClientConn.html", null ],
     [ "color_t", "structcolor__t.html", null ],

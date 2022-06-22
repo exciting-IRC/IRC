@@ -1,3 +1,6 @@
 <map id="그래픽컬한 클래스 계통도" name="그래픽컬한 클래스 계통도">
-<area shape="rect" id="node1" href="$structMessage.html" title=" " alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node1" href="$classIEventHandler.html" title=" " alt="" coords="5,56,109,83"/>
+<area shape="rect" id="node2" href="$classClient.html" title=" " alt="" coords="173,5,227,32"/>
+<area shape="rect" id="node3" href="$classClientConn.html" title=" " alt="" coords="157,56,243,83"/>
+<area shape="rect" id="node4" href="$classServer.html" title=" " alt="" coords="170,107,230,133"/>
 </map>

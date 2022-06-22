@@ -9,5 +9,6 @@ var dir_b7878ad5ecbf2506f4125b9d34c97e45 =
     [ "LazyString", "dir_92a800c6d6deeee007db63067563daac.html", "dir_92a800c6d6deeee007db63067563daac" ],
     [ "strutil", "dir_ec37d05805a9a3328a9ae94bc69851e9.html", "dir_ec37d05805a9a3328a9ae94bc69851e9" ],
     [ "vargs", "dir_06a2ab581b8b276cde83e9b85da12ba8.html", "dir_06a2ab581b8b276cde83e9b85da12ba8" ],
-    [ "moveptr.hpp", "moveptr_8hpp_source.html", null ]
+    [ "moveptr.hpp", "moveptr_8hpp_source.html", null ],
+    [ "StringBuffer.hpp", "StringBuffer_8hpp_source.html", null ]
 ];
