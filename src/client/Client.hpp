@@ -80,8 +80,6 @@ class Client : public IEventHandler {
 
   void mode(const Message &m);
 
-  void sendNeedMoreParam(const std::string &command);
-
   void privmsg(const Message &m);
 
   void processMessage(const Message &m);

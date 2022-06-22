@@ -19,7 +19,7 @@
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/vargs/container_of.hpp"
 
-const static char *bind_addr = "10.11.1.5";
+const static char *bind_addr = "127.0.0.1";
 const static int port = 6667;
 
 static sig_atomic_t recived_sig;
@@ -36,9 +36,11 @@ int main() {
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
 
-  cout << config << endl;
+  // cout << config << endl;
+  cout << FMT("create time: {datetime}", (config.create_time)) << endl;
   //  cout << FMT(":{0} PONG {0} {0}", (config.name)) << "\n";
 
+  cout << FMT("bind_addr: {0}", (bind_addr)) << "\n";
   if (server.init(bind_addr, port, 64) == result_t::kError)
     err(1, "Server init");
 

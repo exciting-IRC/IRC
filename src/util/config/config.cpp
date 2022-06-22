@@ -14,9 +14,10 @@ pair<string, string> getkv(string line) {
   return make_pair(trim(kv[0]), trim(kv[1]));
 }
 
-}
+}  // namespace util
 
 std::ostream &util::operator<<(std::ostream &os, const Config &config) {
+  // TODO: use format
   os << "name: " << config.name << "\n";
   os << "info: " << config.info << "\n";
   os << "motd: " << config.motd << "\n";
