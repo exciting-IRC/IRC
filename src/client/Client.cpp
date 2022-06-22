@@ -37,47 +37,25 @@ Client::~Client() {
 int Client::getFd() const { return conn_->getFd(); }
 
 void Client::sendRegisterMessage() {
-  Message reply;
-  reply.prefix = config.name;
-
-  reply.command = util::pad_num(util::RPL_WELCOME);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("Welcome to the Internet Relay Network!");
-  send(reply);
-  reply.params.clear();
-
-  reply.command = util::pad_num(util::RPL_YOURHOST);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back(
-      FMT("Your host is {servername}, running version {version}",
-          (config.name, config.version)));
-  send(reply);
-  reply.params.clear();
-
-  reply.command = util::pad_num(util::RPL_CREATED);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back(
-      FMT("This server was crated {datetime}", (config.create_time)));
-  send(reply);
-  reply.params.clear();
-
-  reply.command = util::pad_num(util::RPL_MYINFO);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back(config.name);
-  reply.params.push_back(config.version);
-  reply.params.push_back("o");
-  reply.params.push_back("o");
-  reply.params.push_back("");
-  send(reply);
-  reply.params.clear();
-
-  reply.command = util::pad_num(5);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("NETWORK=Localnet");
-  reply.params.push_back("are supported by this server");
-  send(reply);
-  reply.params.clear();
-
+  std::cout << "sending register message\n";
+  send(Message::as_numeric_reply(
+      util::RPL_WELCOME,
+      VA((ident_->nickname_, "Welcome to the Internet Relay Network!"))));
+  send(Message::as_numeric_reply(
+      util::RPL_YOURHOST,
+      VA((ident_->nickname_,
+          FMT("Your host is {servername}, running version {version}",
+              (config.name, config.version))))));
+  send(Message::as_numeric_reply(
+      util::RPL_CREATED,
+      VA((ident_->nickname_, FMT("This server was created {create_time}",
+                                 (config.create_time))))));
+  send(Message::as_numeric_reply(
+      util::RPL_MYINFO,
+      VA((ident_->nickname_, config.name, config.version, "o", "o", ""))));
+  send(Message::as_numeric_reply((util::returnCode)5,  // FIXME: 추가하기
+                                 VA((ident_->nickname_, "NETWORK=Localnet",
+                                     "are supported by this server"))));
   sendMOTD();
 }
 
@@ -103,6 +81,7 @@ void Client::sendMOTD() {
 
 std::string &Client::getNick() { return ident_->nickname_; }
 
+// XXX 여기 어케할까용
 // void Client::handleWriteEvent(Event &e) {
 //   if (e.flags.test(EventFlag::kEOF)) {
 //     delete conn_;
@@ -163,64 +142,46 @@ int Client::handle(Event e) {
 
 void Client::ping(const Message &m) {
   if (m.params.size() != 1) {
-    Message reply;
-    reply.prefix = config.name;
-    reply.command = util::pad_num(util::ERR_NOORIGIN);
-    reply.params.push_back(":No origin specified");
-    send(reply);
+    send(Message::as_numeric_reply(util::ERR_NOORIGIN,
+                                   VA(("No origin specified"))));
   }
   send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
 }
 
 void Client::oper(const Message &m) {
-  Message reply;
-
-  reply.prefix = config.name;
-
   if (m.params.size() < 2) {
-    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
-    reply.params.push_back(m.command);
-    reply.params.push_back("Not enough parameters");
-    conn_->send(reply);
-    return;
+    return sendNeedMoreParam(m.command);
   }
 
-  bool is_ok =
+  const bool is_ok =
       config.oper_user == m.params[0] && config.oper_password == m.params[1];
 
   if (is_ok) {
     ident_->mode_ |= UserMode::o;
-    reply.command = util::pad_num(util::RPL_YOUAREOPER);
-    reply.params.push_back("You are now an IRC operator");
-    conn_->send(reply);
+    send(Message::as_numeric_reply(util::RPL_YOUAREOPER,
+                                   VA(("You are now an IRC operator"))));
     return;
   } else {  // 보안적인 이유로 비밀번호가 틀렸을 때, 유저네임이 틀렸을 때 모두
             // 같은 에러로 응답함.
-    reply.command = util::pad_num(util::ERR_NOOPERHOST);
-    reply.params.push_back("No O-lines for your host");
-    conn_->send(reply);
+    send(Message::as_numeric_reply(util::ERR_NOOPERHOST,
+                                   VA(("No O-lines for your host"))));
     return;
   }
 }
 
 void Client::kill(const Message &m) {
+  if (m.params.size() < 2) {
+    return sendNeedMoreParam(m.command);
+  }
   Message reply;
 
   reply.prefix = "";
-  if (m.params.size() < 2) {
-    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
-    reply.params.push_back(m.command);
-    reply.params.push_back("Not enough parameters");
-    conn_->send(reply);
-    return;
-  }
-
   const ClientMap &clients = server.getClients();
   if (clients.find(m.params[0]) == clients.end()) {
     reply.command = util::pad_num(util::ERR_NOSUCHNICK);
     reply.params.push_back(m.params[0]);
     reply.params.push_back("No such nick/channel");
-    conn_->send(reply);
+    send(reply);
     return;
   }
 
@@ -228,7 +189,7 @@ void Client::kill(const Message &m) {
   if (not has_privilege) {
     reply.command = util::pad_num(util::ERR_NOPRIVILEGES);
     reply.params.push_back("Permission Denied- You're not an IRC operator");
-    conn_->send(reply);
+    send(reply);
     return;
   } else {
     server.removeClient(m.params[0]);
@@ -248,16 +209,8 @@ void Client::quit(const Message &m) {
 }
 
 void Client::join(const Message &m) {
-  Message reply;
-
-  reply.prefix = config.name;
   if (m.params.size() < 1) {
-    reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
-    reply.params.push_back(m.command);
-    reply.params.push_back("Not enough parameters");
-
-    send(reply);
-    return;
+    return sendNeedMoreParam(m.command);
   }
 
   if (m.params[0] == "0") {
@@ -278,15 +231,12 @@ void Client::channelMode(const Message &m) { (void)m; }
 /* XXX handle MODE commands*/
 
 void Client::userMode(const Message &m) {
-  Message reply;
 
-  reply.prefix = config.name;
   if (m.params[0] != ident_->nickname_) {
-    reply.command = util::pad_num(util::ERR_USERSDONTMATCH);
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back("Cant change mode for other users");
 
-    send(reply);
+    send(Message::as_numeric_reply(
+        util::ERR_USERSDONTMATCH,
+        VA((ident_->nickname_, "Cant change mode for other users"))));
     return;
   }
 
@@ -296,14 +246,8 @@ void Client::userMode(const Message &m) {
 void Client::mode(const Message &m) {
   // XXX mode is currently not supported.
   (void)m;
-  Message reply;
-
-  reply.prefix = config.name;
-  reply.command = util::pad_num(501);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("Unknown MODE flag");
-  send(reply);
-
+  send(Message::as_numeric_reply(util::ERR_UMODEUNKNOWNFLAG,
+                                 VA((ident_->nickname_, "Unknown MODE flag"))));
   // if (m.params.size() < 1) {
   //   sendNeedMoreParam(m.command);
   //   return;
@@ -316,13 +260,8 @@ void Client::mode(const Message &m) {
 }
 
 void Client::sendNeedMoreParam(const std::string &command) {
-  Message reply;
-
-  reply.prefix = config.name;
-  reply.command = util::pad_num(util::ERR_NEEDMOREPARAMS);
-  reply.params.push_back(command);
-  reply.params.push_back("Not enough parameters");
-  send(reply);
+  send(Message::as_numeric_reply(util::ERR_NEEDMOREPARAMS,
+                                 VA((command, "Not enough parameters"))));
 }
 
 void Client::privmsg(const Message &m) {
