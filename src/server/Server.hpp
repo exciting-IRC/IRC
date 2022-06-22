@@ -36,7 +36,7 @@ class Channel {
  public:
   Channel() {}
   Channel(const std::string &name, Client *client) : name_(name) {
-    users_.insert(std::make_pair(name, client));
+    users_.insert(std::make_pair(client->getNick(), client));
   }
 
   template <typename T>
@@ -54,8 +54,10 @@ class Channel {
 
   void removeUser(const std::string &name) { users_.erase(name); }
 
+  const ClientMap getUsers();
+
  private:
-  std::map<std::string, Client *> users_;
+  ClientMap users_;
   std::string name_;
 };
 

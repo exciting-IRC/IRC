@@ -8,27 +8,26 @@
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
 #include "util/config/config.hpp"
+#include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
 #include "util/vargs/container_of.hpp"
-#include "util/irctype/irctype.hpp"
 
 using util::p;
-const Client::MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
-  p("PING", &Client::ping),
-  p("QUIT", &Client::quit),
-  p("JOIN", &Client::join),
-  p("PRIVMSG", &Client::privmsg),
-  p("KILL", &Client::kill),
-  p("OPER", &Client::oper),
-  p("MODE", &Client::mode)
-);
+const Client::MPClientMap Client::map_ =
+    container_of<MPClientMap, MPClientMap::value_type>(
+        p("PING", &Client::ping), p("QUIT", &Client::quit),
+        p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
+        p("KILL", &Client::kill), p("OPER", &Client::oper),
+        p("MODE", &Client::mode));
 
 /*CLIENT===============================*/
 
 Client::Client(ClientConn *conn) : conn_(conn), ident_(conn->moveIdent()) {}
 
 Client::~Client() {
-  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+  for (ChannelMap::iterator it = joined_channels_.begin(),
+                            end = joined_channels_.end();
+       it != end; ++it) {
     it->second->removeUser(ident_->nickname_);
   }
   delete conn_;
@@ -72,13 +71,6 @@ void Client::sendRegisterMessage() {
   send(reply);
   reply.params.clear();
 
-  reply.command = util::pad_num(5);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("NETWORK=Localnet");
-  reply.params.push_back("are supported by this server");
-  send(reply);
-  reply.params.clear();
-
   sendMOTD();
 }
 
@@ -102,9 +94,7 @@ void Client::sendMOTD() {
   send(reply);
 }
 
-std::string &Client::getNick(){
-  return ident_->nickname_;
-}
+std::string &Client::getNick() { return ident_->nickname_; }
 
 // void Client::handleWriteEvent(Event &e) {
 //   if (e.flags.test(EventFlag::kEOF)) {
@@ -241,7 +231,9 @@ void Client::quit(const Message &m) {
   Message reply = m;
 
   reply.prefix = ident_->toString();
-  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+  for (ChannelMap::iterator it = joined_channels_.begin(),
+                            end = joined_channels_.end();
+       it != end; ++it) {
     it->second->sendAll(reply, this);
   }
   server.removeClient(ident_->nickname_);
@@ -266,16 +258,42 @@ void Client::join(const Message &m) {
   }
 
   std::vector<std::string> channels = util::split(m.params[0], ",");
-  for (std::vector<std::string>::iterator it = channels.begin(), end = channels.end(); it != end; ++it) {
+  for (std::vector<std::string>::iterator it = channels.begin(),
+                                          end = channels.end();
+       it != end; ++it) {
     Channel *new_channel = &server.addUserToChannel(*it, this);
-    joined_channels_.insert(std::make_pair(*it, new_channel));
+    if (new_channel) {
+      joined_channels_.insert(std::make_pair(*it, new_channel));
+      reply.command = util::pad_num(util::RPL_TOPIC);
+      reply.params.push_back(*it);
+      reply.params.push_back("");
+      send(reply);
+      reply.params.clear();
+
+      reply.command = util::pad_num(util::RPL_NAMREPLY);
+      reply.params.push_back(*it);
+      reply.params.push_back("");
+      const ClientMap users = new_channel->getUsers();
+      for (ClientMap::const_iterator user = users.begin(),
+                                     end = util::prev(users.end());
+           user != end; ++user) {
+        reply.params[1] += user->first + " ";
+      }
+      reply.params[1] += util::prev(users.end())->first;
+      send(reply);
+      reply.params.clear();
+    } else {
+      reply.command = util::pad_num(util::ERR_NOSUCHCHANNEL);
+      reply.params.push_back(*it);
+      reply.params.push_back("No such Channel");
+      send(reply);
+      reply.params.clear();
+    }
   }
 }
 
-void Client::channelMode(const Message &m) {
-  (void)m;
-}
-  /* XXX handle MODE commands*/
+void Client::channelMode(const Message &m) { (void)m; }
+/* XXX handle MODE commands*/
 
 void Client::userMode(const Message &m) {
   Message reply;
@@ -323,7 +341,6 @@ void Client::sendNeedMoreParam(const std::string &command) {
   reply.params.push_back(command);
   reply.params.push_back("Not enough parameters");
   send(reply);
-
 }
 
 void Client::privmsg(const Message &m) {

@@ -113,3 +113,7 @@ const ClientMap &Server::getClients() { return clients_; }
 EventPool &Server::getPool() {
   return pool_;
 }
+
+const ClientMap Channel::getUsers() {
+  return users_;
+}
