@@ -1,8 +1,8 @@
 #include "IRCParser.hpp"
 
-#include "util/irctype/irctype.hpp"
-
 #include <iostream>
+
+#include "util/irctype/irctype.hpp"
 
 IRCParser::IRCParser() : state_(ParserState::kBegin), length_(0) {}
 
@@ -175,16 +175,11 @@ ParserResult::e IRCParser::parse(util::Buffer &buffer) {
         return ParserResult::kFailure;
     }
   }
-  msg_.prefix.apply();
-  msg_.command.apply();
-  if (!msg_.params.empty())
-    msg_.params.back().apply();
+  applyAll(buffer.data(), buffer.data() + buffer.tellp());
   return ParserResult::kContinue;
 }
 
-void IRCParser::clearMessage() {
-  msg_.clear();
-}
+void IRCParser::clearMessage() { msg_.clear(); }
 
 void IRCParser::clearState() {
   state_ = ParserState::kBegin;
@@ -196,6 +191,20 @@ void IRCParser::clear() {
   clearState();
 }
 
-const Message &IRCParser::getMessage() {
-  return msg_;
+const Message &IRCParser::getMessage() { return msg_; }
+
+void IRCParser::applyAll(const char *start, const char *end) {
+  if (state_ == ParserState::kPrefix) {
+    msg_.prefix.setEnd(end);
+    msg_.prefix.apply();
+    msg_.prefix.setStart(start);
+  } else if (state_ == ParserState::kCommand) {
+    msg_.command.setEnd(end);
+    msg_.command.apply();
+    msg_.command.setStart(start);
+  } else if (state_ == ParserState::kParam || state_ == ParserState::kTrailing) {
+    msg_.params.back().setEnd(end);
+    msg_.params.back().apply();
+    msg_.params.back().setStart(start);
+  }
 }

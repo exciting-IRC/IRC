@@ -69,6 +69,7 @@ class IRCParser {
   const Message &getMessage();
 
  private:
+  void applyAll(const char *start, const char *end);
   ParserResult::e parseBegin(const char *cursor);
   ParserResult::e parsePrefix(const char *cursor);
   ParserResult::e parseCommand(const char *cursor);
