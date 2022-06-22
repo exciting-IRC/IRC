@@ -131,7 +131,8 @@ bool isValidUser(const std::string &s) {
 
 void ClientConn::processUser(const Message &m) {
   if (m.params.size() != 4) {
-    send(Message::as_not_enough_params_reply(m.command)) return;
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
   }
 
   // XXX ERR_ALREADYREGISTERED
@@ -146,7 +147,8 @@ void ClientConn::processUser(const Message &m) {
 
 void ClientConn::processPass(const Message &m) {
   if (m.params.size() != 1) {
-    send(Message::as_not_enough_params_reply(m.command)) return;
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
   }
 
   ident_->password_ = m.params[0];
@@ -154,7 +156,7 @@ void ClientConn::processPass(const Message &m) {
 }
 
 void ClientConn::processMessage(const Message &m) {
-  MPMap::const_iterator it = map_.find(m.command);
+  MPMap::const_iterator it = map_.find(util::to_upper(m.command));
   const bool found = it != map_.end();
   const std::string status =
       found ? "ClientConn: KNOWN " : "ClientConn: UNKNOWN";
