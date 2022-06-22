@@ -191,7 +191,8 @@ void ClientConn::processPass(const Message &m) {
 void ClientConn::processMessage(const Message &m) {
   MPMap::const_iterator it = map_.find(m.command);
   const bool found = it != map_.end();
-  const std::string status = found ? "UNKNOWN " : "";
+  const std::string status =
+      found ? "ClientConn: KNOWN " : "ClientConn: UNKNOWN";
   // FIXME: log 함수로 빼기
   COUT_FMT("{0} {1}-> \"{2}\"",
            (util::get_current_time("[%H:%M:%S]"), status, m.command));
@@ -231,7 +232,9 @@ result_t::e ClientConn::handleReceive(Event &e) {
 }
 
 void ClientConn::send(const std::string &str) {
-  send_queue_.push(StringBuffer(str));
+  COUT_FMT("{0} <- \"{1}\"", (util::get_current_time("[%H:%M:%S]"),
+                              str));  // FIXME: 직렬화 함수와 로그 함수 분리하기
+  send_queue_.push(StringBuffer(str + "\r\n"));
   server.getPool().addEvent(EventKind::kWrite, this);
 }
 
@@ -247,10 +250,9 @@ void ClientConn::send(const Message &msg) {
     }
     str += " :" + *msg.params.rbegin();
   }
+  send(str);
   COUT_FMT("{0} <- \"{1}\"", (util::get_current_time("[%H:%M:%S]"),
                               str));  // FIXME: 직렬화 함수와 로그 함수 분리하기
-  str += "\r\n";
-  send(str);
 }
 
 void ClientConn::registerClient(const Event &e) {

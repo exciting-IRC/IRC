@@ -126,7 +126,7 @@ std::string &Client::getNick() { return ident_->nickname_; }
 void Client::processMessage(const Message &m) {
   MPClientMap::const_iterator it = map_.find(m.command);
   const bool found = it != map_.end();
-  const std::string status = found ? "UNKNOWN " : "";
+  const std::string status = found ? "" : "UNKNOWN";
   // FIXME: log 함수로 빼기
   COUT_FMT("{0} {1}-> \"{2}\"",
            (util::get_current_time("[%H:%M:%S]"), status, m.command));
@@ -167,9 +167,9 @@ void Client::ping(const Message &m) {
     reply.prefix = config.name;
     reply.command = util::pad_num(util::ERR_NOORIGIN);
     reply.params.push_back(":No origin specified");
-    conn_->send(reply);
+    send(reply);
   }
-  conn_->send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
+  send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
 }
 
 void Client::oper(const Message &m) {
