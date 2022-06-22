@@ -17,6 +17,8 @@
 #include "server/Server.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/color.hpp"
+#include "util/general/logging.hpp"
 #include "util/vargs/container_of.hpp"
 
 const static char *bind_addr = "0.0.0.0";
@@ -36,15 +38,15 @@ int main() {
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
 
-  // cout << config << endl;
-  cout << FMT("create time: {datetime}", (config.create_time)) << endl;
-  //  cout << FMT(":{0} PONG {0} {0}", (config.name)) << "\n";
+  cout << config << endl;
+  debug(FMT("create time: {datetime}", (config.create_time)));
+  debug(FMT("name: {name}", (config.name)));
 
-  cout << FMT("bind_addr: {0}", (bind_addr)) << "\n";
+  debug(FMT("bind_addr: {bind_addr}", (bind_addr)));
   if (server.init(bind_addr, port, 64) == result_t::kError)
     err(1, "Server init");
 
-  std::cout << "Listen at " << bind_addr << ":" << port << std::endl;
+  debug(FMT("Listen at {bind_addr}:{port}", (bind_addr, port)));
 
   server.getPool().addEvent(EventKind::kRead, &server);
 
@@ -53,7 +55,7 @@ int main() {
       int k = server.getPool().dispatchEvent(1);
       (void)k;
       if (recived_sig) {
-        printf("shutdown... %s\n", strsignal(recived_sig));
+        debug(FMT("{red}shutdown... {}", (BHRED, strsignal(recived_sig))));
         return 0;
       }
     }

@@ -8,6 +8,7 @@
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
 #include "util/config/config.hpp"
+#include "util/general/logging.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
 #include "util/vargs/container_of.hpp"
@@ -87,10 +88,7 @@ void Client::processMessage(const Message &m) {
   MPClientMap::const_iterator it = map_.find(util::to_upper(m.command));
 
   const bool found = it != map_.end();
-  const std::string status = found ? "" : "UNKNOWN";
-  // FIXME: log 함수로 빼기
-  COUT_FMT("{0} {1}-> \"{2}\"",
-           (util::get_current_time("[%H:%M:%S]"), status, m.command));
+  util::debug_input(m.command, found);
   if (found)
     (this->*(it->second))(m);
 }
