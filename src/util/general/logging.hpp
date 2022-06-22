@@ -9,7 +9,7 @@ namespace util {
 using std::string;
 using std::vector;
 
-void debug(const string& fmt, const vector<string>& args, bool ok = true);
+void debug(const string& msg, bool ok = true);
 
 void debug_input(const string& command, bool ok = true);
 
