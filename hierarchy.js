@@ -8,7 +8,6 @@ var hierarchy =
     ] ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
-    [ "color_t", "structcolor__t.html", null ],
     [ "util::Config", "structutil_1_1Config.html", null ],
     [ "ConnState", "structConnState.html", null ],
     [ "container_of.ContainerOfArgs", "classcontainer__of_1_1ContainerOfArgs.html", null ],
