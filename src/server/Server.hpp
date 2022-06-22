@@ -36,7 +36,7 @@ class Channel {
  public:
   Channel() {}
   Channel(const std::string &name, Client *client) : name_(name) {
-    users_.insert(std::make_pair(name, client));
+    users_.insert(std::make_pair(client->getNick(), client));
   }
 
   template <typename T>
@@ -54,8 +54,10 @@ class Channel {
 
   void removeUser(const std::string &name) { users_.erase(name); }
 
+ ClientMap getUsers();
+
  private:
-  std::map<std::string, Client *> users_;
+  ClientMap users_;
   std::string name_;
 };
 
@@ -69,7 +71,7 @@ class Server : public IEventHandler {
   Server &operator=(const Server &);  // = delete
 
  private:
-  typedef std::map<std::string, Channel> ChannelMap;
+  typedef std::map<std::string, Channel *> ChannelMap;
 
  public:
   result_t::e init(const char *listen_addr, int port, int backlog);
@@ -84,15 +86,15 @@ class Server : public IEventHandler {
 
   void addClient(const std::string &nick, Client *client);
 
-  Channel &addUserToChannel(const std::string &channel_name, Client *user);
+  Channel *addUserToChannel(const std::string &channel_name, Client *user);
 
-  void removeChannel(const std::string &channel_name) {
-    channels_.erase(channel_name);
-  }
+  void removeChannel(const std::string &channel_name);
 
-  const ClientMap &getClients();
+  ClientMap &getClients();
 
   EventPool &getPool();
+
+  ChannelMap &getChannels();
 
  private:
   EventPool pool_;

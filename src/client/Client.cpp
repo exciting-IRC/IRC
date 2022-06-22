@@ -19,7 +19,7 @@ const Client::MPClientMap Client::map_ =
         p("PING", &Client::ping), p("QUIT", &Client::quit),
         p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
         p("KILL", &Client::kill), p("OPER", &Client::oper),
-        p("MODE", &Client::mode));
+        p("MODE", &Client::mode), p("PART", &Client::part));
 
 /*CLIENT===============================*/
 
@@ -82,29 +82,10 @@ void Client::sendMOTD() {
 
 std::string &Client::getNick() { return ident_->nickname_; }
 
-// XXX 여기 어케할까용
-// void Client::handleWriteEvent(Event &e) {
-//   if (e.flags.test(EventFlag::kEOF)) {
-//     delete conn_;
-//     conn_ = NULL;
-//   }
-//   std::size_t write_size =
-//       std::min(buffer_.size(), static_cast<std::size_t>(e.data));
-//   write(1, buffer_.data(), write_size);
-//   ssize_t send_length = util::send(getFd(), buffer_.data(), write_size);
-//   if (send_length == -1) {
-//     std::cerr << "failed to write" << std::endl;
-//     // XXX LOG ...
-//   } else {
-//     buffer_.advance(send_length);
-//   }
-//   if (buffer_.empty())
-//     e.pool.removeEvent(EventKind::kWrite, this);
-// }
-
 // FIXME: ClientConn::processMessage와 너무 겹침
 void Client::processMessage(const Message &m) {
-  MPClientMap::const_iterator it = map_.find(m.command);
+  MPClientMap::const_iterator it = map_.find(util::to_upper(m.command));
+
   const bool found = it != map_.end();
   const std::string status = found ? "" : "UNKNOWN";
   // FIXME: log 함수로 빼기
@@ -226,8 +207,70 @@ void Client::join(const Message &m) {
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();
        it != end; ++it) {
-    Channel *new_channel = &server.addUserToChannel(*it, this);
-    joined_channels_.insert(std::make_pair(*it, new_channel));
+    Message reply;
+
+    reply.prefix = config.name;
+
+    Channel *new_channel = server.addUserToChannel(*it, this);
+    if (new_channel) {
+      joined_channels_.insert(std::make_pair(*it, new_channel));
+      reply.command = util::pad_num(util::RPL_TOPIC);
+      reply.params.push_back(*it);
+      reply.params.push_back("");
+      send(reply);
+      reply.params.clear();
+
+      reply.command = util::pad_num(util::RPL_NAMREPLY);
+      reply.params.push_back(*it);
+      reply.params.push_back("");
+      const ClientMap users = new_channel->getUsers();
+      for (ClientMap::const_iterator user = users.begin(),
+                                     end = util::prev(users.end());
+           user != end; ++user) {
+        reply.params[1] += user->first + " ";
+      }
+      reply.params[1] += util::prev(users.end())->first;
+      send(reply);
+      reply.params.clear();
+    } else {
+      reply.command = util::pad_num(util::ERR_NOSUCHCHANNEL);
+      reply.params.push_back(*it);
+      reply.params.push_back("No such Channel");
+      send(reply);
+      reply.params.clear();
+    }
+  }
+}
+
+void Client::part(const Message &m) {
+  if (m.params.empty()) {
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
+  }
+
+  Message reply;
+
+  reply.prefix = config.name;
+  std::vector<std::string> channels = util::split(m.params[0], ",");
+  for (std::vector<std::string>::iterator it = channels.begin(),
+                                          end = channels.end();
+       it != end; ++it) {
+    ChannelMap::iterator channel = joined_channels_.find(*it);
+    if (channel == joined_channels_.end()) {
+      reply.command = util::pad_num(util::ERR_NOTONCHANNEL);
+      reply.params.push_back(*it);
+      reply.params.push_back("You're not on that channel");
+      send(reply);
+      reply.params.clear();
+    } else {
+      Channel *ch = channel->second;
+
+      ch->removeUser(ident_->nickname_);
+      joined_channels_.erase(channel);
+      if (ch->getUsers().empty()) {
+        server.removeChannel(*it);
+      }
+    }
   }
 }
 
@@ -267,9 +310,26 @@ void Client::privmsg(const Message &m) {
 
   reply.prefix = ident_->toString();
   if (util::isChannelPrefix(reply.params[0][0])) {
-    joined_channels_.find(reply.params[0])->second->sendAll(reply, this);
+    ChannelMap &cm = server.getChannels();
+
+    ChannelMap::iterator it = cm.find(reply.params[0]);
+    if (it == cm.end()) {
+      send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
+                                     VA(("No such channel"))));
+      return;
+    } else {
+      it->second->sendAll(reply, this);
+    }
   } else {
-    send(reply);
+    ClientMap &clients = server.getClients();
+    ClientMap::iterator it = clients.find(m.params[0]);
+    if (it == clients.end()) {
+      send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
+                                     VA(("No such nick"))));
+      return;
+    } else {
+      it->second->send(reply);
+    }
   }
   return;
 }
