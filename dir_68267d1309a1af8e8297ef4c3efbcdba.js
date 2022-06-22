@@ -5,5 +5,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "event", "dir_f278fbcf62338d746f20818c09b59427.html", "dir_f278fbcf62338d746f20818c09b59427" ],
     [ "server", "dir_075bb3ff235063c77951cd176d15a741.html", "dir_075bb3ff235063c77951cd176d15a741" ],
     [ "socket", "dir_9ad1227260954e346101f3844f0abb3d.html", "dir_9ad1227260954e346101f3844f0abb3d" ],
-    [ "util", "dir_b7878ad5ecbf2506f4125b9d34c97e45.html", "dir_b7878ad5ecbf2506f4125b9d34c97e45" ]
+    [ "util", "dir_b7878ad5ecbf2506f4125b9d34c97e45.html", "dir_b7878ad5ecbf2506f4125b9d34c97e45" ],
+    [ "version.hpp", "version_8hpp_source.html", null ]
 ];
