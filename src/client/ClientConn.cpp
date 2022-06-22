@@ -21,17 +21,15 @@
 #include "util/algorithm/algorithm.hpp"
 #include "util/config/config.hpp"
 #include "util/irctype/irctype.hpp"
-#include "util/strutil/strutil.hpp"
 #include "util/strutil/conversion.hpp"
+#include "util/strutil/strutil.hpp"
 
 using util::p;
 
 const MPMap ClientConn::map_ = container_of<MPMap, MPMap::value_type>(
-  p("PASS", &ClientConn::processPass),
-  p("USER", &ClientConn::processUser),
-  p("NICK", &ClientConn::processNick)
-);
- 
+    p("PASS", &ClientConn::processPass), p("USER", &ClientConn::processUser),
+    p("NICK", &ClientConn::processNick));
+
 ClientConn::ClientConn(int sock, CCList::iterator this_position)
     : sock_(sock),
       this_position_(this_position),
@@ -104,7 +102,8 @@ bool isValidNick(const std::string &nick) {
   return true;
 }
 
-// std::string numeric_reply( std::string prefix, util::returnCode code, std::vector<std::string> params) {
+// std::string numeric_reply( std::string prefix, util::returnCode code,
+// std::vector<std::string> params) {
 //   Message reply;
 
 //   reply.prefix = prefix;
@@ -146,7 +145,7 @@ void ClientConn::processNick(const Message &m) {
 }
 
 bool isValidUser(const std::string &s) {
-  return  s.find("@") != std::string::npos;
+  return s.find("@") != std::string::npos;
 }
 
 void ClientConn::processUser(const Message &m) {
@@ -190,14 +189,14 @@ void ClientConn::processPass(const Message &m) {
 }
 
 void ClientConn::processMessage(const Message &m) {
-  std::cout << "CMD: <" << m.command << ">";
   MPMap::const_iterator it = map_.find(m.command);
-  if (it == map_.end()) {
-    std::cout << ": Not found" << std::endl;
-    return;
-  }
-  std::cout << ":Found" << std::endl;
-  (this->*(it->second))(m);
+  const bool found = it != map_.end();
+  const std::string status = found ? "UNKNOWN " : "";
+  // FIXME: log 함수로 빼기
+  COUT_FMT("{0} {1}-> \"{2}\"",
+           (util::get_current_time("[%H:%M:%S]"), status, m.command));
+  if (found)
+    (this->*(it->second))(m);
 }
 
 int ClientConn::getFd() const { return sock_; }
@@ -238,7 +237,7 @@ void ClientConn::send(const std::string &str) {
 
 void ClientConn::send(const Message &msg) {
   typedef std::vector<util::LazyString>::const_iterator const_it;
-  
+
   std::string str = FMT(":{prefix} {command}", (msg.prefix, msg.command));
 
   if (not msg.prefix.empty()) {
@@ -248,12 +247,13 @@ void ClientConn::send(const Message &msg) {
     }
     str += " :" + *msg.params.rbegin();
   }
+  COUT_FMT("{0} <- \"{1}\"", (util::get_current_time("[%H:%M:%S]"),
+                              str));  // FIXME: 직렬화 함수와 로그 함수 분리하기
   str += "\r\n";
   send(str);
 }
 
 void ClientConn::registerClient(const Event &e) {
-
   const std::string &nick = ident_->nickname_;
   Client *client = new Client(this);
 
@@ -297,7 +297,7 @@ ssize_t ClientConn::recvBuffer(size_t length) {
 
 ParserResult::e ClientConn::parse() { return parser_.parse(recv_buffer_); }
 
-Message ClientConn::getMessage() { 
+Message ClientConn::getMessage() {
   Message msg = parser_.getMessage();
   parser_.clear();
   return msg;

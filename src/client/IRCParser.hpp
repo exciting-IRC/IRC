@@ -3,8 +3,11 @@
 
 #include <vector>
 
+#include "command/returncode.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/LazyString/LazyString.hpp"
+#include "util/config/config.hpp"
+#include "util/strutil/conversion.hpp"
 
 struct ParserResult {
   enum e { kContinue, kSuccess, kFailure };
@@ -33,6 +36,16 @@ struct Message {
   util::LazyString prefix;
   util::LazyString command;
   std::vector<util::LazyString> params;
+  /**
+   * @brief
+   *
+   */
+  static Message as_numeric_reply(util::returnCode code,
+                                  std::vector<std::string> params) {
+    std::vector<util::LazyString> lazy_params(params.begin(), params.end());
+    Message reply = {config.name, util::pad_num(code), lazy_params};
+    return reply;
+  }
 };
 
 class IRCParser {

@@ -8,27 +8,26 @@
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
 #include "util/config/config.hpp"
+#include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
 #include "util/vargs/container_of.hpp"
-#include "util/irctype/irctype.hpp"
 
 using util::p;
-const Client::MPClientMap Client::map_ = container_of<MPClientMap, MPClientMap::value_type>(
-  p("PING", &Client::ping),
-  p("QUIT", &Client::quit),
-  p("JOIN", &Client::join),
-  p("PRIVMSG", &Client::privmsg),
-  p("KILL", &Client::kill),
-  p("OPER", &Client::oper),
-  p("MODE", &Client::mode)
-);
+const Client::MPClientMap Client::map_ =
+    container_of<MPClientMap, MPClientMap::value_type>(
+        p("PING", &Client::ping), p("QUIT", &Client::quit),
+        p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
+        p("KILL", &Client::kill), p("OPER", &Client::oper),
+        p("MODE", &Client::mode));
 
 /*CLIENT===============================*/
 
 Client::Client(ClientConn *conn) : conn_(conn), ident_(conn->moveIdent()) {}
 
 Client::~Client() {
-  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+  for (ChannelMap::iterator it = joined_channels_.begin(),
+                            end = joined_channels_.end();
+       it != end; ++it) {
     it->second->removeUser(ident_->nickname_);
   }
   delete conn_;
@@ -102,9 +101,7 @@ void Client::sendMOTD() {
   send(reply);
 }
 
-std::string &Client::getNick(){
-  return ident_->nickname_;
-}
+std::string &Client::getNick() { return ident_->nickname_; }
 
 // void Client::handleWriteEvent(Event &e) {
 //   if (e.flags.test(EventFlag::kEOF)) {
@@ -125,15 +122,16 @@ std::string &Client::getNick(){
 //     e.pool.removeEvent(EventKind::kWrite, this);
 // }
 
+// FIXME: ClientConn::processMessage와 너무 겹침
 void Client::processMessage(const Message &m) {
-  std::cout << "CMD: <" << m.command << ">";
-  MPClientMap::const_iterator it = map_.find(util::to_upper(m.command));
-  if (it == map_.end()) {
-    std::cout << ": Not found" << std::endl;
-    return;
-  }
-  std::cout << ":Found" << std::endl;
-  (this->*(it->second))(m);
+  MPClientMap::const_iterator it = map_.find(m.command);
+  const bool found = it != map_.end();
+  const std::string status = found ? "UNKNOWN " : "";
+  // FIXME: log 함수로 빼기
+  COUT_FMT("{0} {1}-> \"{2}\"",
+           (util::get_current_time("[%H:%M:%S]"), status, m.command));
+  if (found)
+    (this->*(it->second))(m);
 }
 
 void Client::handleReadEvent(Event &e) {
@@ -241,7 +239,9 @@ void Client::quit(const Message &m) {
   Message reply = m;
 
   reply.prefix = ident_->toString();
-  for (ChannelMap::iterator it = joined_channels_.begin(), end = joined_channels_.end(); it != end; ++it) {
+  for (ChannelMap::iterator it = joined_channels_.begin(),
+                            end = joined_channels_.end();
+       it != end; ++it) {
     it->second->sendAll(reply, this);
   }
   server.removeClient(ident_->nickname_);
@@ -266,16 +266,16 @@ void Client::join(const Message &m) {
   }
 
   std::vector<std::string> channels = util::split(m.params[0], ",");
-  for (std::vector<std::string>::iterator it = channels.begin(), end = channels.end(); it != end; ++it) {
+  for (std::vector<std::string>::iterator it = channels.begin(),
+                                          end = channels.end();
+       it != end; ++it) {
     Channel *new_channel = &server.addUserToChannel(*it, this);
     joined_channels_.insert(std::make_pair(*it, new_channel));
   }
 }
 
-void Client::channelMode(const Message &m) {
-  (void)m;
-}
-  /* XXX handle MODE commands*/
+void Client::channelMode(const Message &m) { (void)m; }
+/* XXX handle MODE commands*/
 
 void Client::userMode(const Message &m) {
   Message reply;
@@ -323,7 +323,6 @@ void Client::sendNeedMoreParam(const std::string &command) {
   reply.params.push_back(command);
   reply.params.push_back("Not enough parameters");
   send(reply);
-
 }
 
 void Client::privmsg(const Message &m) {

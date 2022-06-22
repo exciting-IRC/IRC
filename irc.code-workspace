@@ -137,7 +137,9 @@
       "__tree": "cpp",
       "filesystem": "cpp",
       "format": "cpp",
-      "__functional_03": "cpp"
+      "__functional_03": "cpp",
+      "queue": "cpp",
+      "ranges": "cpp"
     }
   }
 }
