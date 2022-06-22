@@ -74,6 +74,8 @@ class Client : public IEventHandler {
 
   void join(const Message &m);
 
+  void part(const Message &m);
+
   void userMode(const Message &m);
 
   void channelMode(const Message &m);

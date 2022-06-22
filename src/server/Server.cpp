@@ -16,9 +16,17 @@
 Server::Server() : sock_(-1) {}
 
 Server::~Server() {
-  for (CCList::iterator it = client_conn_.begin(); it != client_conn_.end();
-       ++it) {
+  for (CCList::iterator it = client_conn_.begin(), end = client_conn_.end();
+       it != end; ++it) {
     delete *it;
+  }
+  for (ChannelMap::iterator it = channels_.begin(), end = channels_.end();
+       it != end; ++it) {
+    delete it->second;
+  }
+  for (ClientMap::iterator it = clients_.begin(), end = clients_.end();
+       it != end; ++it) {
+    delete it->second;
   }
   close(sock_);
 }
@@ -51,7 +59,7 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
 
   if (util::listen(sock_, backlog) == result_t::kError)
     return result_t::kError;
-  
+
   if (pool_.init(backlog) == result_t::kError)
     return result_t::kError;
 
@@ -97,23 +105,26 @@ void Server::addClient(const std::string &nick, Client *client) {
   clients_.insert(ClientMap::value_type(nick, client));
 }
 
-Channel &Server::addUserToChannel(const std::string &channel_name, Client *user) {
+Channel *Server::addUserToChannel(const std::string &channel_name,
+                                  Client *user) {
   ChannelMap::iterator channel_iter = channels_.find(channel_name);
 
   if (channel_iter == channels_.end()) {
-    return (channels_[channel_name] = Channel(channel_name, user));
+    return (channels_[channel_name] = new Channel(channel_name, user));
   } else {
-    channel_iter->second.addUser(user->getNick(), user);
+    channel_iter->second->addUser(user->getNick(), user);
     return channel_iter->second;
   }
 }
 
-const ClientMap &Server::getClients() { return clients_; }
-
-EventPool &Server::getPool() {
-  return pool_;
+void Server::removeChannel(const std::string &channel_name) {
+  channels_.erase(channel_name);
 }
 
-const ClientMap Channel::getUsers() {
-  return users_;
-}
+ClientMap &Server::getClients() { return clients_; }
+
+Server::ChannelMap &Server::getChannels() { return channels_; }
+
+EventPool &Server::getPool() { return pool_; }
+
+ClientMap Channel::getUsers() { return users_; }

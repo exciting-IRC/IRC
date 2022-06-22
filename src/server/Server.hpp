@@ -54,7 +54,7 @@ class Channel {
 
   void removeUser(const std::string &name) { users_.erase(name); }
 
-  const ClientMap getUsers();
+ ClientMap getUsers();
 
  private:
   ClientMap users_;
@@ -71,7 +71,7 @@ class Server : public IEventHandler {
   Server &operator=(const Server &);  // = delete
 
  private:
-  typedef std::map<std::string, Channel> ChannelMap;
+  typedef std::map<std::string, Channel *> ChannelMap;
 
  public:
   result_t::e init(const char *listen_addr, int port, int backlog);
@@ -86,15 +86,15 @@ class Server : public IEventHandler {
 
   void addClient(const std::string &nick, Client *client);
 
-  Channel &addUserToChannel(const std::string &channel_name, Client *user);
+  Channel *addUserToChannel(const std::string &channel_name, Client *user);
 
-  void removeChannel(const std::string &channel_name) {
-    channels_.erase(channel_name);
-  }
+  void removeChannel(const std::string &channel_name);
 
-  const ClientMap &getClients();
+  ClientMap &getClients();
 
   EventPool &getPool();
+
+  ChannelMap &getChannels();
 
  private:
   EventPool pool_;
