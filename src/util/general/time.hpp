@@ -3,14 +3,14 @@
 
 #include <ctime>
 
-namespace util {
-struct timespec create_timespec_in_sec(time_t sec) {
-  struct timespec ts;
+#include "util/strutil/format.hpp"
 
-  ts.tv_nsec = 0;
-  ts.tv_sec = sec;
-  return ts;
-}
+namespace util {
+using std::string;
+
+timespec create_timespec_in_sec(time_t sec);
+
+string get_current_time(const string &format = "%Y-%m-%d %H:%M:%S");
 
 }  // namespace util
 
