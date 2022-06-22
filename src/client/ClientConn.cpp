@@ -104,19 +104,22 @@ bool isValidNick(const std::string &nick) {
 
 void ClientConn::processNick(const Message &m) {
   if (m.params.empty()) {
-    return send(Message::as_numeric_reply(util::ERR_NONICKNAMEGIVEN,
-                                          VA(("No nickname given"))));
+    send(Message::as_numeric_reply(util::ERR_NONICKNAMEGIVEN,
+                                   VA(("No nickname given"))));
+    return;
   }
 
   const std::string &nick = m.params[0];
   if (!isValidNick(nick)) {
-    return send(Message::as_numeric_reply(util::ERR_ERRONEUSNICKNAME,
-                                          VA((nick, "Erroneous nickname"))));
+    send(Message::as_numeric_reply(util::ERR_ERRONEUSNICKNAME,
+                                   VA((nick, "Erroneous nickname"))));
+    return;
   }
 
   if (server.getClients().find(nick) != server.getClients().end()) {
-    return send(Message::as_numeric_reply(
-        util::ERR_NICKNAMEINUSE, VA((nick, "Nickname is already in use"))));
+    send(Message::as_numeric_reply(util::ERR_NICKNAMEINUSE,
+                                   VA((nick, "Nickname is already in use"))));
+    return;
   }
   ident_->nickname_ = nick;
   state_ |= ConnState::kNick;
@@ -128,7 +131,7 @@ bool isValidUser(const std::string &s) {
 
 void ClientConn::processUser(const Message &m) {
   if (m.params.size() != 4) {
-    return send(Message::as_not_enough_params_reply(m.command));
+    send(Message::as_not_enough_params_reply(m.command)) return;
   }
 
   // XXX ERR_ALREADYREGISTERED
@@ -143,7 +146,7 @@ void ClientConn::processUser(const Message &m) {
 
 void ClientConn::processPass(const Message &m) {
   if (m.params.size() != 1) {
-    return send(Message::as_not_enough_params_reply(m.command));
+    send(Message::as_not_enough_params_reply(m.command)) return;
   }
 
   ident_->password_ = m.params[0];

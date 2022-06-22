@@ -151,7 +151,8 @@ void Client::ping(const Message &m) {
 
 void Client::oper(const Message &m) {
   if (m.params.size() < 2) {
-    return send(Message::as_not_enough_params_reply(m.command));
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
   }
 
   const bool is_ok =
@@ -172,7 +173,8 @@ void Client::oper(const Message &m) {
 
 void Client::kill(const Message &m) {
   if (m.params.size() < 2) {
-    return send(Message::as_not_enough_params_reply(m.command));
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
   }
   Message reply;
 
@@ -211,7 +213,8 @@ void Client::quit(const Message &m) {
 
 void Client::join(const Message &m) {
   if (m.params.size() < 1) {
-    return send(Message::as_not_enough_params_reply(m.command));
+    send(Message::as_not_enough_params_reply(m.command));
+    return;
   }
 
   if (m.params[0] == "0") {
@@ -248,7 +251,8 @@ void Client::mode(const Message &m) {
   send(Message::as_numeric_reply(util::ERR_UMODEUNKNOWNFLAG,
                                  VA((ident_->nickname_, "Unknown MODE flag"))));
   // if (m.params.size() < 1) {
-  // return send(Message::as_not_enough_params_reply(m.command));
+  // send(Message::as_not_enough_params_reply(m.command))
+  return;
   //   return;
   // }
   // if (util::isChannelPrefix(m.params[0][0])) {
