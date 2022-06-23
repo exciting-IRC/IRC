@@ -12,6 +12,8 @@ struct Message {
   std::vector<util::LazyString> params;
 
   void clear();
+  static Message as_reply(const std::string& prefix, const std::string& command,
+                          const std::vector<std::string>& params);
   static Message as_numeric_reply(util::returnCode code,
                                   std::vector<std::string> params);
   static Message as_not_enough_params_reply(std::string command);

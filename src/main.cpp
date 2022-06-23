@@ -40,7 +40,7 @@ int main(const int argc, const char *argv[]) {
   if (argc != 3) {
     debug_info("warning:", "using defaults", false);
     config.port = 6667;
-    config.password = "1234";
+    config.password = "password";
   } else {
     config.port = convert_to<uint16_t>(argv[1]);
     config.password = argv[2];

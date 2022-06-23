@@ -17,10 +17,9 @@ pair<string, string> getkv(string line) {
 }  // namespace util
 
 std::ostream &util::operator<<(std::ostream &os, const Config &config) {
-  // TODO: use format
   os << "name: " << config.name << "\n";
   os << "info: " << config.info << "\n";
-  os << "motd: " << config.motd << "\n";
+  os << "motd:\n" << config.motd << "\n";
   os << "oper_user: " << config.oper_user << "\n";
   os << "oper_password: " << config.oper_password << "\n";
   os << "max_clients: " << config.max_clients << "\n";

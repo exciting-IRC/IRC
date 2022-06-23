@@ -64,20 +64,12 @@ void Client::sendMOTD() {
   std::stringstream ss(server.config_.motd);
 
   std::string line;
-  Message reply;
-
-  reply.prefix = server.config_.name;
-  reply.command = util::pad_num(util::RPL_MOTD);
   while (std::getline(ss, line)) {
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back(line);
-    send(reply);
-    reply.params.clear();
+    send(Message::as_numeric_reply(util::RPL_MOTD,
+                                   VA((ident_->nickname_, line))));
   }
-  reply.command = util::pad_num(util::RPL_ENDOFMOTD);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("END of MOTD.");
-  send(reply);
+  send(Message::as_numeric_reply(util::RPL_ENDOFMOTD,
+                                 VA((ident_->nickname_, "End of MOTD"))));
 }
 
 void Client::sendNotice(const std::string &msg) {
@@ -106,8 +98,7 @@ void Client::handleReadEvent(Event &e) {
     delete conn_;
     conn_ = NULL;
   } else {
-    ParserResult::e result;
-    while ((result = conn_->parse()) == ParserResult::kSuccess) {
+    while (conn_->parse() == ParserResult::kSuccess) {
       Message msg = conn_->getMessage();
       processMessage(msg);
       if (util::to_upper(msg.command) == "QUIT")
@@ -163,23 +154,18 @@ void Client::kill(const Message &m) {
     send(Message::as_not_enough_params_reply(m.command));
     return;
   }
-  Message reply;
-
-  reply.prefix = "";
   const ClientMap &clients = server.getClients();
   if (clients.find(m.params[0]) == clients.end()) {
-    reply.command = util::pad_num(util::ERR_NOSUCHNICK);
-    reply.params.push_back(m.params[0]);
-    reply.params.push_back("No such nick/channel");
-    send(reply);
+    send(Message::as_reply("", util::pad_num(util::ERR_NOSUCHNICK),
+                           VA((m.params[0], "No such nick/channel"))));
     return;
   }
 
   bool has_privilege = (ident_->mode_ & UserMode::o);
   if (not has_privilege) {
-    reply.command = util::pad_num(util::ERR_NOPRIVILEGES);
-    reply.params.push_back("Permission Denied- You're not an IRC operator");
-    send(reply);
+    send(Message::as_reply(
+        "", util::pad_num(util::ERR_NOPRIVILEGES),
+        VA(("Permission Denied- You're not an IRC operator"))));
     return;
   } else {
     server.removeClient(m.params[0]);
@@ -188,11 +174,15 @@ void Client::kill(const Message &m) {
 
 void Client::quit(const Message &m) {
   Message reply = m;
-
   reply.prefix = ident_->toString();
+
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
+    it->second->sendAll(
+        FMT("ERROR :Closing link: ({user}@{host}) [{msg}]",
+            (ident_->username_, ident_->hostname_, m.params[0])),
+        this);  // FIXME hostname이 아직 제대로 동작 안함
     it->second->sendAll(reply, this);
   }
   server.removeClient(ident_->nickname_);
@@ -213,37 +203,16 @@ void Client::join(const Message &m) {
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();
        it != end; ++it) {
-    Message reply;
-
-    reply.prefix = server.config_.name;
-
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
-      reply.command = util::pad_num(util::RPL_TOPIC);
-      reply.params.push_back(*it);
-      reply.params.push_back("");
-      send(reply);
-      reply.params.clear();
-
-      reply.command = util::pad_num(util::RPL_NAMREPLY);
-      reply.params.push_back(*it);
-      reply.params.push_back("");
-      const ClientMap users = new_channel->getUsers();
-      for (ClientMap::const_iterator user = users.begin(),
-                                     end = util::prev(users.end());
-           user != end; ++user) {
-        reply.params[1] += user->first + " ";
-      }
-      reply.params[1] += util::prev(users.end())->first;
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
+      send(Message::as_numeric_reply(
+          util::RPL_NAMREPLY,
+          VA((*it, util::join(util::keys(new_channel->getUsers()), " ")))));
     } else {
-      reply.command = util::pad_num(util::ERR_NOSUCHCHANNEL);
-      reply.params.push_back(*it);
-      reply.params.push_back("No such Channel");
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
+                                     VA((*it, "No such channel"))));
     }
   }
 }
@@ -254,20 +223,14 @@ void Client::part(const Message &m) {
     return;
   }
 
-  Message reply;
-
-  reply.prefix = server.config_.name;
   std::vector<std::string> channels = util::split(m.params[0], ",");
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();
        it != end; ++it) {
     ChannelMap::iterator channel = joined_channels_.find(*it);
     if (channel == joined_channels_.end()) {
-      reply.command = util::pad_num(util::ERR_NOTONCHANNEL);
-      reply.params.push_back(*it);
-      reply.params.push_back("You're not on that channel");
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::ERR_NOTONCHANNEL,
+                                     VA((*it, "You're not on that channel"))));
     } else {
       Channel *ch = channel->second;
 
@@ -294,21 +257,12 @@ void Client::userMode(const Message &m) {
   /* XXX handle MODE commands*/
 }
 
+/// mode is not supported.
 void Client::mode(const Message &m) {
-  // XXX mode is currently not supported.
   (void)m;
   send(Message::as_numeric_reply(util::ERR_UMODEUNKNOWNFLAG,
                                  VA((ident_->nickname_, "Unknown MODE flag"))));
-  // if (m.params.size() < 1) {
-  // send(Message::as_not_enough_params_reply(m.command))
   return;
-  //   return;
-  // }
-  // if (util::isChannelPrefix(m.params[0][0])) {
-  //   userMode(m);
-  // } else {
-  //   channelMode(m);
-  // }
 }
 
 void Client::privmsg(const Message &m) {

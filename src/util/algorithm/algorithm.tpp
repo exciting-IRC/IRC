@@ -46,6 +46,30 @@ bool any_of(InputIterator first, InputIterator last, UnaryPredicate pred) {
   return false;
 }
 
+template <typename C>
+std::vector<typename C::key_type> keys(const C &c) {
+  typedef typename C::key_type key_type;
+  typedef typename C::const_iterator const_it;
+
+  std::vector<key_type> ret;
+  ret.reserve(c.size());
+  for (const_it it = c.begin(); it != c.end(); ++it)
+    ret.push_back(it->first);
+  return ret;
+}
+
+template <typename C>
+std::vector<typename C::value_type> values(const C &c) {
+  typedef typename C::value_type value_type;
+  typedef typename C::const_iterator const_it;
+
+  std::vector<value_type> ret;
+  ret.reserve(c.size());
+  for (const_it it = c.begin(); it != c.end(); ++it)
+    ret.push_back(it->second);
+  return ret;
+}
+
 }  // namespace util
 
 #endif  // UTIL_ALGORITHM_ALGORITHM_TPP
