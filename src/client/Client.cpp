@@ -304,12 +304,20 @@ void Client::mode(const Message &m) {
 }
 
 void Client::privmsg(const Message &m) {
-  Message reply(m);
+  if (m.params.empty() or m.params[0].empty()) {
+    send(Message::as_numeric_reply(util::ERR_NORECIPIENT, VA((m.command))));
+    return;
+  }
+  if (m.params.size() < 2 or m.params[1].empty()) {
+    send(Message::as_numeric_reply(util::ERR_NOTEXTTOSEND,
+                                   VA(("No text to send"))));
+    return;
+  }
+  const Message reply = {ident_->toString(), m.command, m.params};
+  const std::string recipient = reply.params[0];
 
-  reply.prefix = ident_->toString();
-  if (util::isChannelPrefix(reply.params[0][0])) {
+  if (util::isChannelPrefix(recipient.front() == '#')) {
     ChannelMap &cm = server.getChannels();
-
     ChannelMap::iterator it = cm.find(reply.params[0]);
     if (it == cm.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
@@ -320,7 +328,7 @@ void Client::privmsg(const Message &m) {
     }
   } else {
     ClientMap &clients = server.getClients();
-    ClientMap::iterator it = clients.find(m.params[0]);
+    ClientMap::iterator it = clients.find(reply.params[0]);
     if (it == clients.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
                                      VA(("No such nick"))));
