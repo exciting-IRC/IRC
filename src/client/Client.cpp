@@ -98,8 +98,7 @@ void Client::handleReadEvent(Event &e) {
     delete conn_;
     conn_ = NULL;
   } else {
-    ParserResult::e result;  // TODO: 안 쓸거면 지우기
-    while ((result = conn_->parse()) == ParserResult::kSuccess) {
+    while (conn_->parse() == ParserResult::kSuccess) {
       Message msg = conn_->getMessage();
       processMessage(msg);
       if (util::to_upper(msg.command) == "QUIT")
