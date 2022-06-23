@@ -104,6 +104,10 @@ bool isValidNick(const std::string &nick) {
 }
 
 void ClientConn::processNick(const Message &m) {
+  if (!(state_ & ConnState::kPass)) {
+    sendError("PASS needed before NICK command.");
+    return;
+  }
   if (m.params.empty()) {
     send(Message::as_numeric_reply(util::ERR_NONICKNAMEGIVEN,
                                    VA(("No nickname given"))));
@@ -131,6 +135,11 @@ bool isValidUser(const std::string &s) {
 }
 
 void ClientConn::processUser(const Message &m) {
+  if (!(state_ & ConnState::kPass)) {
+    sendError("PASS needed before USER command.");
+    return;
+  }
+  
   if (m.params.size() != 4) {
     send(Message::as_not_enough_params_reply(m.command));
     return;
@@ -273,3 +282,12 @@ Message ClientConn::getMessage() {
 }
 
 UserIdent *ClientConn::moveIdent() { return util::moveptr(ident_); }
+
+void ClientConn::sendNotice(const std::string &msg) {
+  send(FMT(":{servername} NOTICE {nickname} :{message}",
+           (config.name, ident_->nickname_, msg)));
+}
+
+void ClientConn::sendError(const std::string &msg) {
+  send(FMT("ERROR :{message}", (msg)));
+}
