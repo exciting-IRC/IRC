@@ -156,8 +156,14 @@ void ClientConn::processUser(const Message &m) {
 }
 
 void ClientConn::processPass(const Message &m) {
-  if (m.params.size() != 1) {
+  if (m.params.empty()) {
     send(Message::as_not_enough_params_reply(m.command));
+    return;
+  }
+
+  if (m.params[0] != server.config_.password) {
+    send(Message::as_numeric_reply(util::ERR_PASSWDMISMATCH,
+                                   VA(("Password incorrect"))));
     return;
   }
 
