@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "util/color.hpp"
+#include "util/strutil/format.hpp"
 
 namespace util {
 using std::string;
