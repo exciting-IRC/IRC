@@ -2,19 +2,19 @@
 #define CLIENT_CLIENT_HPP
 
 #include <algorithm>
-#include <map>
 #include <list>
-#include <string>
+#include <map>
 #include <queue>
+#include <string>
 
+#include "client/IRCParser.hpp"
 #include "command/returncode.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
+#include "util/StringBuffer.hpp"
 #include "util/config/config.hpp"
 #include "util/strutil/strutil.hpp"
 #include "util/vargs/container_of.hpp"
-#include "client/IRCParser.hpp"
-#include "util/StringBuffer.hpp"
 class Channel;
 
 #define VL(param) container_of<std::vector<util::LazyString> > param
@@ -82,7 +82,8 @@ class Client : public IEventHandler {
   Client &operator=(const Client &);  // = delete;
 
  private:
-  typedef std::map<std::string, result_t::e (Client::*)(const Message &)> CmdMap;
+  typedef std::map<std::string, result_t::e (Client::*)(const Message &)>
+      CmdMap;
   typedef std::map<std::string, Channel *> ChannelMap;
 
  public:

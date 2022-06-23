@@ -92,13 +92,11 @@ result_t::e Server::handle(Event e) {
     e.pool.addEvent(EventKind::kRead, *entry);
     return result_t::kOK;
   } else {
-    return result_t::kError; // unknown event
+    return result_t::kError;  // unknown event
   }
 }
 
-void Server::handleError() {
-  
-}
+void Server::handleError() {}
 
 void Server::eraseFromClientList(ClientList::iterator pos) {
   unregistered_clients_.erase(pos);
