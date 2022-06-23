@@ -1,4 +1,4 @@
 var classClient =
 [
-    [ "mode", "classClient.html#a2658f57e9de313cc82ebfb408b9620df", null ]
+    [ "mode", "classClient.html#ad6c9ed8bce49f30c1e96677c85a12160", null ]
 ];

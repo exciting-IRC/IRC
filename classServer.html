@@ -119,14 +119,19 @@ result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (cons
 <tr class="separator:a7c3ae6bd4906efafc597b9d130751a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a327ed5d0e43176e36b4be9ef30914908"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a327ed5d0e43176e36b4be9ef30914908">getFd</a> () const</td></tr>
 <tr class="separator:a327ed5d0e43176e36b4be9ef30914908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c772609a1a0834f7a55fc72367d390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a35c772609a1a0834f7a55fc72367d390">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
-<tr class="separator:a35c772609a1a0834f7a55fc72367d390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7beb5a12e5f1572b8f503e6cc20f55e"><td class="memItemLeft" align="right" valign="top"><a id="aa7beb5a12e5f1572b8f503e6cc20f55e" name="aa7beb5a12e5f1572b8f503e6cc20f55e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>moveClientConn</b> (CCList::iterator pos)</td></tr>
-<tr class="separator:aa7beb5a12e5f1572b8f503e6cc20f55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac444c6747b096d695d413bf358d5f9c3"><td class="memItemLeft" align="right" valign="top"><a id="ac444c6747b096d695d413bf358d5f9c3" name="ac444c6747b096d695d413bf358d5f9c3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClient</b> (CCList::iterator pos)</td></tr>
-<tr class="separator:ac444c6747b096d695d413bf358d5f9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298ea930df63aa8a81e681ba0d4f1c0a"><td class="memItemLeft" align="right" valign="top">result_t::e&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a298ea930df63aa8a81e681ba0d4f1c0a">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
+<tr class="separator:a298ea930df63aa8a81e681ba0d4f1c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ddc5541479f317bb1d39c67fcfeb332"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classServer.html#a7ddc5541479f317bb1d39c67fcfeb332">handleError</a> ()</td></tr>
+<tr class="separator:a7ddc5541479f317bb1d39c67fcfeb332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96ebd7826fc352fbf0141c6fc806e4df"><td class="memItemLeft" align="right" valign="top"><a id="a96ebd7826fc352fbf0141c6fc806e4df" name="a96ebd7826fc352fbf0141c6fc806e4df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>eraseFromClientList</b> (ClientList::iterator pos)</td></tr>
+<tr class="separator:a96ebd7826fc352fbf0141c6fc806e4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac494acfa314c6c8d4fa7af8c23ecea60"><td class="memItemLeft" align="right" valign="top"><a id="ac494acfa314c6c8d4fa7af8c23ecea60" name="ac494acfa314c6c8d4fa7af8c23ecea60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>eraseFromClientMap</b> (const std::string &amp;nickname)</td></tr>
+<tr class="separator:ac494acfa314c6c8d4fa7af8c23ecea60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec737502d5d12ee4da8aa38d86555ff3"><td class="memItemLeft" align="right" valign="top"><a id="aec737502d5d12ee4da8aa38d86555ff3" name="aec737502d5d12ee4da8aa38d86555ff3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClient</b> (ClientList::iterator pos)</td></tr>
+<tr class="separator:aec737502d5d12ee4da8aa38d86555ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abea362f82b864e14514b17adf7aa9a93"><td class="memItemLeft" align="right" valign="top"><a id="abea362f82b864e14514b17adf7aa9a93" name="abea362f82b864e14514b17adf7aa9a93"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClient</b> (const std::string &amp;nickname)</td></tr>
 <tr class="separator:abea362f82b864e14514b17adf7aa9a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,8 +188,8 @@ Public 속성</h2></td></tr>
 
 </div>
 </div>
-<a id="a35c772609a1a0834f7a55fc72367d390" name="a35c772609a1a0834f7a55fc72367d390"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35c772609a1a0834f7a55fc72367d390">&#9670;&nbsp;</a></span>handle()</h2>
+<a id="a298ea930df63aa8a81e681ba0d4f1c0a" name="a298ea930df63aa8a81e681ba0d4f1c0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a298ea930df63aa8a81e681ba0d4f1c0a">&#9670;&nbsp;</a></span>handle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,10 +198,37 @@ Public 속성</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Server::handle </td>
+          <td class="memname">result_t::e Server::handle </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structEvent.html">Event</a>&#160;</td>
           <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classIEventHandler.html">IEventHandler</a>를 구현.</p>
+
+</div>
+</div>
+<a id="a7ddc5541479f317bb1d39c67fcfeb332" name="a7ddc5541479f317bb1d39c67fcfeb332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ddc5541479f317bb1d39c67fcfeb332">&#9670;&nbsp;</a></span>handleError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Server::handleError </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>

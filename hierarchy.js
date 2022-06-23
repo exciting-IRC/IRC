@@ -18,7 +18,6 @@ var hierarchy =
     [ "util::format", "classutil_1_1format.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
       [ "Client", "classClient.html", null ],
-      [ "ClientConn", "classClientConn.html", null ],
       [ "Server", "classServer.html", null ]
     ] ],
     [ "IRCParser", "classIRCParser.html", null ],

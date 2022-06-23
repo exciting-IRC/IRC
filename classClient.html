@@ -111,15 +111,17 @@ Client에 대한 협력 다이어그램:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:a2263fa87cbc41324ddef5bf1ef5d4c08"><td class="memItemLeft" align="right" valign="top"><a id="a2263fa87cbc41324ddef5bf1ef5d4c08" name="a2263fa87cbc41324ddef5bf1ef5d4c08"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Client</b> (<a class="el" href="classClientConn.html">ClientConn</a> *conn)</td></tr>
-<tr class="separator:a2263fa87cbc41324ddef5bf1ef5d4c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2cd8f753b323374ba8e821401626d9"><td class="memItemLeft" align="right" valign="top"><a id="a9f2cd8f753b323374ba8e821401626d9" name="a9f2cd8f753b323374ba8e821401626d9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Client</b> (int sock, ClientList::iterator pos)</td></tr>
+<tr class="separator:a9f2cd8f753b323374ba8e821401626d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af49b65f16ec709c6421a67107aadbd6e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#af49b65f16ec709c6421a67107aadbd6e">getFd</a> () const</td></tr>
 <tr class="separator:af49b65f16ec709c6421a67107aadbd6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5476b5b635f883f09c8926df3ca19c"><td class="memTemplParams" colspan="2"><a id="a2c5476b5b635f883f09c8926df3ca19c" name="a2c5476b5b635f883f09c8926df3ca19c"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2c5476b5b635f883f09c8926df3ca19c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>send</b> (const T &amp;msg)</td></tr>
-<tr class="separator:a2c5476b5b635f883f09c8926df3ca19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2d5a384bfc9cfc5fa196eb5a9a3ab21"><td class="memItemLeft" align="right" valign="top"><a id="af2d5a384bfc9cfc5fa196eb5a9a3ab21" name="af2d5a384bfc9cfc5fa196eb5a9a3ab21"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>send</b> (const <a class="el" href="structMessage.html">Message</a> &amp;msg)</td></tr>
+<tr class="separator:af2d5a384bfc9cfc5fa196eb5a9a3ab21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53bb984b68e33c8f3c223a621ce1928d"><td class="memItemLeft" align="right" valign="top"><a id="a53bb984b68e33c8f3c223a621ce1928d" name="a53bb984b68e33c8f3c223a621ce1928d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>send</b> (const std::string &amp;str)</td></tr>
+<tr class="separator:a53bb984b68e33c8f3c223a621ce1928d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94f90a9cc79dfcdfc71c7b03d7d1cf99"><td class="memItemLeft" align="right" valign="top"><a id="a94f90a9cc79dfcdfc71c7b03d7d1cf99" name="a94f90a9cc79dfcdfc71c7b03d7d1cf99"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>sendRegisterMessage</b> ()</td></tr>
 <tr class="separator:a94f90a9cc79dfcdfc71c7b03d7d1cf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,48 +137,74 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendError</b> (const 
 <tr class="memitem:ab77e8185cf2b9aa38afed6d76f25ee16"><td class="memItemLeft" align="right" valign="top"><a id="ab77e8185cf2b9aa38afed6d76f25ee16" name="ab77e8185cf2b9aa38afed6d76f25ee16"></a>
 std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getNick</b> ()</td></tr>
 <tr class="separator:ab77e8185cf2b9aa38afed6d76f25ee16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5441cd2beb294770a291000537420ddd"><td class="memItemLeft" align="right" valign="top"><a id="a5441cd2beb294770a291000537420ddd" name="a5441cd2beb294770a291000537420ddd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleWriteEvent</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
-<tr class="separator:a5441cd2beb294770a291000537420ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe7782cd8eb4d822b3abe6ccfa625fef"><td class="memItemLeft" align="right" valign="top"><a id="abe7782cd8eb4d822b3abe6ccfa625fef" name="abe7782cd8eb4d822b3abe6ccfa625fef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleReadEvent</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
-<tr class="separator:abe7782cd8eb4d822b3abe6ccfa625fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af79d9f380d4f22b8f07beeae64c77333"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#af79d9f380d4f22b8f07beeae64c77333">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
-<tr class="separator:af79d9f380d4f22b8f07beeae64c77333"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8680c30717356b740918eb08e18c581"><td class="memItemLeft" align="right" valign="top"><a id="ac8680c30717356b740918eb08e18c581" name="ac8680c30717356b740918eb08e18c581"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ping</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:ac8680c30717356b740918eb08e18c581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a896958f8e2b998b807a6a0b503c63338"><td class="memItemLeft" align="right" valign="top"><a id="a896958f8e2b998b807a6a0b503c63338" name="a896958f8e2b998b807a6a0b503c63338"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>oper</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a896958f8e2b998b807a6a0b503c63338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8af964f213ea3062eb118aab3bc415ce"><td class="memItemLeft" align="right" valign="top"><a id="a8af964f213ea3062eb118aab3bc415ce" name="a8af964f213ea3062eb118aab3bc415ce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>kill</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a8af964f213ea3062eb118aab3bc415ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49712ef0851ba488a986440e0428a90e"><td class="memItemLeft" align="right" valign="top"><a id="a49712ef0851ba488a986440e0428a90e" name="a49712ef0851ba488a986440e0428a90e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>quit</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a49712ef0851ba488a986440e0428a90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa220cc6d3d5361e527eadbe2aa315be1"><td class="memItemLeft" align="right" valign="top"><a id="aa220cc6d3d5361e527eadbe2aa315be1" name="aa220cc6d3d5361e527eadbe2aa315be1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>join</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:aa220cc6d3d5361e527eadbe2aa315be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aef19c68ad80587e8c2b6ed1dfc3c6f"><td class="memItemLeft" align="right" valign="top"><a id="a3aef19c68ad80587e8c2b6ed1dfc3c6f" name="a3aef19c68ad80587e8c2b6ed1dfc3c6f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>part</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a3aef19c68ad80587e8c2b6ed1dfc3c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb3d9ca313b8804ead62aa1ea10fc745"><td class="memItemLeft" align="right" valign="top"><a id="afb3d9ca313b8804ead62aa1ea10fc745" name="afb3d9ca313b8804ead62aa1ea10fc745"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>userMode</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:afb3d9ca313b8804ead62aa1ea10fc745"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6caef7c316d9dbc6cee35f40fab6644d"><td class="memItemLeft" align="right" valign="top"><a id="a6caef7c316d9dbc6cee35f40fab6644d" name="a6caef7c316d9dbc6cee35f40fab6644d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>channelMode</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a6caef7c316d9dbc6cee35f40fab6644d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2658f57e9de313cc82ebfb408b9620df"><td class="memItemLeft" align="right" valign="top"><a id="a2658f57e9de313cc82ebfb408b9620df" name="a2658f57e9de313cc82ebfb408b9620df"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="memdesc:a2658f57e9de313cc82ebfb408b9620df"><td class="mdescLeft">&#160;</td><td class="mdescRight">mode is not supported. <br /></td></tr>
-<tr class="separator:a2658f57e9de313cc82ebfb408b9620df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf06e83024b09918d11c87cf20100241"><td class="memItemLeft" align="right" valign="top"><a id="abf06e83024b09918d11c87cf20100241" name="abf06e83024b09918d11c87cf20100241"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>privmsg</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:abf06e83024b09918d11c87cf20100241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a218f104a44d2bfd08f31374a70516dec"><td class="memItemLeft" align="right" valign="top"><a id="a218f104a44d2bfd08f31374a70516dec" name="a218f104a44d2bfd08f31374a70516dec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
-<tr class="separator:a218f104a44d2bfd08f31374a70516dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7892040193cf50e7c52a3484e6f4b539"><td class="memItemLeft" align="right" valign="top"><a id="a7892040193cf50e7c52a3484e6f4b539" name="a7892040193cf50e7c52a3484e6f4b539"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>handleWriteEvent</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
+<tr class="separator:a7892040193cf50e7c52a3484e6f4b539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4630d257fa8196540a2e5ca2f760f59f"><td class="memItemLeft" align="right" valign="top"><a id="a4630d257fa8196540a2e5ca2f760f59f" name="a4630d257fa8196540a2e5ca2f760f59f"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>handleReadEvent</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
+<tr class="separator:a4630d257fa8196540a2e5ca2f760f59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eccfaa9b3d895497b0c147312510743"><td class="memItemLeft" align="right" valign="top"><a id="a6eccfaa9b3d895497b0c147312510743" name="a6eccfaa9b3d895497b0c147312510743"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>recvToBuffer</b> (size_t length)</td></tr>
+<tr class="separator:a6eccfaa9b3d895497b0c147312510743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1a60e43e6bb4e301168d901ae4fcd74"><td class="memItemLeft" align="right" valign="top">result_t::e&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#ae1a60e43e6bb4e301168d901ae4fcd74">handle</a> (<a class="el" href="structEvent.html">Event</a> e)</td></tr>
+<tr class="separator:ae1a60e43e6bb4e301168d901ae4fcd74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacc1ab3635863712407b714498abd394"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#aacc1ab3635863712407b714498abd394">handleError</a> ()</td></tr>
+<tr class="separator:aacc1ab3635863712407b714498abd394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c7faf8a2207c4da402bae4d563a454"><td class="memItemLeft" align="right" valign="top"><a id="a57c7faf8a2207c4da402bae4d563a454" name="a57c7faf8a2207c4da402bae4d563a454"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>ping</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a57c7faf8a2207c4da402bae4d563a454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab069a7513ca8ac4d5b1eca0d6c0e7c4b"><td class="memItemLeft" align="right" valign="top"><a id="ab069a7513ca8ac4d5b1eca0d6c0e7c4b" name="ab069a7513ca8ac4d5b1eca0d6c0e7c4b"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>oper</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:ab069a7513ca8ac4d5b1eca0d6c0e7c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb8e95d189a6b14b289f0c97afbee629"><td class="memItemLeft" align="right" valign="top"><a id="abb8e95d189a6b14b289f0c97afbee629" name="abb8e95d189a6b14b289f0c97afbee629"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>kill</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:abb8e95d189a6b14b289f0c97afbee629"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c74e81d56b8b295ea499bdc9974ef3d"><td class="memItemLeft" align="right" valign="top"><a id="a7c74e81d56b8b295ea499bdc9974ef3d" name="a7c74e81d56b8b295ea499bdc9974ef3d"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>quit</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a7c74e81d56b8b295ea499bdc9974ef3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a711d8749b29e046de011459b41df23c4"><td class="memItemLeft" align="right" valign="top"><a id="a711d8749b29e046de011459b41df23c4" name="a711d8749b29e046de011459b41df23c4"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>join</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a711d8749b29e046de011459b41df23c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47cb8cafcf8726eec345281d25f31d78"><td class="memItemLeft" align="right" valign="top"><a id="a47cb8cafcf8726eec345281d25f31d78" name="a47cb8cafcf8726eec345281d25f31d78"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>part</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a47cb8cafcf8726eec345281d25f31d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c9ed8bce49f30c1e96677c85a12160"><td class="memItemLeft" align="right" valign="top"><a id="ad6c9ed8bce49f30c1e96677c85a12160" name="ad6c9ed8bce49f30c1e96677c85a12160"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="memdesc:ad6c9ed8bce49f30c1e96677c85a12160"><td class="mdescLeft">&#160;</td><td class="mdescRight">mode is not supported. <br /></td></tr>
+<tr class="separator:ad6c9ed8bce49f30c1e96677c85a12160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c8e2a37df6abcedc1a181b783e7917e"><td class="memItemLeft" align="right" valign="top"><a id="a4c8e2a37df6abcedc1a181b783e7917e" name="a4c8e2a37df6abcedc1a181b783e7917e"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>privmsg</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a4c8e2a37df6abcedc1a181b783e7917e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb5254f5e7da867bd2bb5a901fe196c"><td class="memItemLeft" align="right" valign="top"><a id="a6eb5254f5e7da867bd2bb5a901fe196c" name="a6eb5254f5e7da867bd2bb5a901fe196c"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>nick</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a6eb5254f5e7da867bd2bb5a901fe196c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f2e6d98ba00cdeececab427734d71a0"><td class="memItemLeft" align="right" valign="top"><a id="a3f2e6d98ba00cdeececab427734d71a0" name="a3f2e6d98ba00cdeececab427734d71a0"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>alredyRegistered</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a3f2e6d98ba00cdeececab427734d71a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f1d3fcaa94c7a76b04c5e1df34647e"><td class="memItemLeft" align="right" valign="top"><a id="af9f1d3fcaa94c7a76b04c5e1df34647e" name="af9f1d3fcaa94c7a76b04c5e1df34647e"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>notRegistered</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:af9f1d3fcaa94c7a76b04c5e1df34647e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678ea4fb60dc50f82a0fd9be9023354f"><td class="memItemLeft" align="right" valign="top"><a id="a678ea4fb60dc50f82a0fd9be9023354f" name="a678ea4fb60dc50f82a0fd9be9023354f"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>registerPass</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a678ea4fb60dc50f82a0fd9be9023354f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a529dc03df297df687d210aa039cfc792"><td class="memItemLeft" align="right" valign="top"><a id="a529dc03df297df687d210aa039cfc792" name="a529dc03df297df687d210aa039cfc792"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>registerUser</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:a529dc03df297df687d210aa039cfc792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af21d18833e5d9baa9317f8082cf02f0a"><td class="memItemLeft" align="right" valign="top"><a id="af21d18833e5d9baa9317f8082cf02f0a" name="af21d18833e5d9baa9317f8082cf02f0a"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>registerNick</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:af21d18833e5d9baa9317f8082cf02f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d25087a8913b43969b19b5eda1ef671"><td class="memItemLeft" align="right" valign="top"><a id="a5d25087a8913b43969b19b5eda1ef671" name="a5d25087a8913b43969b19b5eda1ef671"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>handleReceive</b> (<a class="el" href="structEvent.html">Event</a> &amp;e)</td></tr>
+<tr class="separator:a5d25087a8913b43969b19b5eda1ef671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b856fd5cfbf804673b292cbf82ec2e"><td class="memItemLeft" align="right" valign="top"><a id="a61b856fd5cfbf804673b292cbf82ec2e" name="a61b856fd5cfbf804673b292cbf82ec2e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>complateRegister</b> ()</td></tr>
+<tr class="separator:a61b856fd5cfbf804673b292cbf82ec2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6395030cdbdcac6885b275b46e6d3cfd"><td class="memItemLeft" align="right" valign="top"><a id="a6395030cdbdcac6885b275b46e6d3cfd" name="a6395030cdbdcac6885b275b46e6d3cfd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCommandMap</b> ()</td></tr>
+<tr class="separator:a6395030cdbdcac6885b275b46e6d3cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd48c27953358c225f13af29c9a37f5b"><td class="memItemLeft" align="right" valign="top"><a id="abd48c27953358c225f13af29c9a37f5b" name="abd48c27953358c225f13af29c9a37f5b"></a>
+result_t::e&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (const <a class="el" href="structMessage.html">Message</a> &amp;m)</td></tr>
+<tr class="separator:abd48c27953358c225f13af29c9a37f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">멤버 함수 문서화</h2>
 <a id="af49b65f16ec709c6421a67107aadbd6e" name="af49b65f16ec709c6421a67107aadbd6e"></a>
@@ -206,8 +234,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (c
 
 </div>
 </div>
-<a id="af79d9f380d4f22b8f07beeae64c77333" name="af79d9f380d4f22b8f07beeae64c77333"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79d9f380d4f22b8f07beeae64c77333">&#9670;&nbsp;</a></span>handle()</h2>
+<a id="ae1a60e43e6bb4e301168d901ae4fcd74" name="ae1a60e43e6bb4e301168d901ae4fcd74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1a60e43e6bb4e301168d901ae4fcd74">&#9670;&nbsp;</a></span>handle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,10 +244,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> (c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Client::handle </td>
+          <td class="memname">result_t::e Client::handle </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structEvent.html">Event</a>&#160;</td>
           <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classIEventHandler.html">IEventHandler</a>를 구현.</p>
+
+</div>
+</div>
+<a id="aacc1ab3635863712407b714498abd394" name="aacc1ab3635863712407b714498abd394"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacc1ab3635863712407b714498abd394">&#9670;&nbsp;</a></span>handleError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Client::handleError </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
