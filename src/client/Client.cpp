@@ -314,7 +314,7 @@ void Client::privmsg(const Message &m) {
     return;
   }
   const Message reply = {ident_->toString(), m.command, m.params};
-  const std::string recipient = reply.params[0];
+  const std::string &recipient = reply.params[0];
 
   if (util::isChannelPrefix(recipient.front())) {
     ChannelMap &channels = server.getChannels();
