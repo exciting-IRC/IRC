@@ -57,9 +57,6 @@ void Client::sendRegisterMessage() {
   send(Message::as_numeric_reply(
       util::RPL_MYINFO,
       VA((ident_->nickname_, config.name, VERSION_STRING, "o", "o", ""))));
-  send(Message::as_numeric_reply((util::returnCode)5,  // FIXME: 추가하기
-                                 VA((ident_->nickname_, "NETWORK=Localnet",
-                                     "are supported by this server"))));
   sendMOTD();
 }
 
@@ -81,6 +78,15 @@ void Client::sendMOTD() {
   reply.params.push_back(ident_->nickname_);
   reply.params.push_back("END of MOTD.");
   send(reply);
+}
+
+void Client::sendNotice(const std::string &msg) {
+  send(FMT(":{servername} NOTICE {nickname} :{message}",
+           (config.name, ident_->nickname_, msg)));
+}
+
+void Client::sendError(const std::string &msg) {
+  send(FMT("ERROR :{message}", (msg)));
 }
 
 std::string &Client::getNick() { return ident_->nickname_; }

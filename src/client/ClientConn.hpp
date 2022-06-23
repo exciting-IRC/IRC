@@ -90,6 +90,10 @@ class ClientConn : public IEventHandler {
 
   void send(const Message &msg);
 
+  void sendNotice(const std::string &msg);
+
+  void sendError(const std::string &msg);
+
  private:
   static const MPMap getMPMap();
   result_t::e handleWriteEvent(Event &e);
