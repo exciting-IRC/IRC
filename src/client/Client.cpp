@@ -156,23 +156,18 @@ void Client::kill(const Message &m) {
     send(Message::as_not_enough_params_reply(m.command));
     return;
   }
-  Message reply;
-
-  reply.prefix = "";
   const ClientMap &clients = server.getClients();
   if (clients.find(m.params[0]) == clients.end()) {
-    reply.command = util::pad_num(util::ERR_NOSUCHNICK);
-    reply.params.push_back(m.params[0]);
-    reply.params.push_back("No such nick/channel");
-    send(reply);
+    send(Message::as_reply("", util::pad_num(util::ERR_NOSUCHNICK),
+                           VA((m.params[0], "No such nick/channel"))));
     return;
   }
 
   bool has_privilege = (ident_->mode_ & UserMode::o);
   if (not has_privilege) {
-    reply.command = util::pad_num(util::ERR_NOPRIVILEGES);
-    reply.params.push_back("Permission Denied- You're not an IRC operator");
-    send(reply);
+    send(Message::as_reply(
+        "", util::pad_num(util::ERR_NOPRIVILEGES),
+        VA(("Permission Denied- You're not an IRC operator"))));
     return;
   } else {
     server.removeClient(m.params[0]);
@@ -181,8 +176,8 @@ void Client::kill(const Message &m) {
 
 void Client::quit(const Message &m) {
   Message reply = m;
-
   reply.prefix = ident_->toString();
+
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
@@ -226,20 +221,14 @@ void Client::part(const Message &m) {
     return;
   }
 
-  Message reply;
-
-  reply.prefix = server.config_.name;
   std::vector<std::string> channels = util::split(m.params[0], ",");
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();
        it != end; ++it) {
     ChannelMap::iterator channel = joined_channels_.find(*it);
     if (channel == joined_channels_.end()) {
-      reply.command = util::pad_num(util::ERR_NOTONCHANNEL);
-      reply.params.push_back(*it);
-      reply.params.push_back("You're not on that channel");
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::ERR_NOTONCHANNEL,
+                                     VA((*it, "You're not on that channel"))));
     } else {
       Channel *ch = channel->second;
 
@@ -266,21 +255,12 @@ void Client::userMode(const Message &m) {
   /* XXX handle MODE commands*/
 }
 
+/// mode is not supported.
 void Client::mode(const Message &m) {
-  // XXX mode is currently not supported.
   (void)m;
   send(Message::as_numeric_reply(util::ERR_UMODEUNKNOWNFLAG,
                                  VA((ident_->nickname_, "Unknown MODE flag"))));
-  // if (m.params.size() < 1) {
-  // send(Message::as_not_enough_params_reply(m.command))
   return;
-  //   return;
-  // }
-  // if (util::isChannelPrefix(m.params[0][0])) {
-  //   userMode(m);
-  // } else {
-  //   channelMode(m);
-  // }
 }
 
 void Client::privmsg(const Message &m) {
