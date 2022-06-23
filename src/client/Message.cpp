@@ -1,12 +1,6 @@
 #include "client/Client.hpp"
 #include "server/Server.hpp"
 
-void Message::clear() {
-  prefix.clear();
-  command.clear();
-  params.clear();
-}
-
 Message Message::as_reply(const std::string& prefix, const std::string& command,
                           const std::vector<std::string>& params) {
   std::vector<util::LazyString> lazy_params(params.begin(), params.end());

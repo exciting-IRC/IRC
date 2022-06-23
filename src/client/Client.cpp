@@ -217,9 +217,7 @@ result_t::e Client::handle(Event e) {
   }
 }
 
-void Client::handleError() {
-  server.removeClient(ident_.nickname_);
-}
+void Client::handleError() { server.removeClient(ident_.nickname_); }
 
 result_t::e Client::ping(const Message &m) {
   if (m.params.size() != 1) {
@@ -300,10 +298,8 @@ result_t::e Client::join(const Message &m) {
 
   if (m.params[0] == "0") {
     const Message partMsg = {
-      server.config_.name,
-      "PART",
-      VL((util::join(util::keys(joined_channels_), ",")))
-    };
+        server.config_.name, "PART",
+        VL((util::join(util::keys(joined_channels_), ",")))};
     part(partMsg);
     return result_t::kOK;
   }
@@ -316,9 +312,11 @@ result_t::e Client::join(const Message &m) {
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
       send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
-      send(Message::as_numeric_reply(
-          util::RPL_NAMREPLY,
-          VA((*it, util::join(util::keys(new_channel->getUsers()), " ")))));
+
+      sendList(Message::as_numeric_reply(util::RPL_NAMREPLY, VA(())),
+               util::keys(new_channel->getUsers()),
+               Message::as_numeric_reply(util::RPL_ENDOFNAMES,
+                                         VA(("End of /NAMES"))));
     } else {
       send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
                                      VA((*it, "No such channel"))));

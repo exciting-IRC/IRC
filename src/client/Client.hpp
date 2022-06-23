@@ -93,6 +93,10 @@ class Client : public IEventHandler {
 
   void send(const std::string &str);
 
+  template <typename Cont>
+  void sendList(const Message list_base, const Cont &list,
+                const Message list_end);
+
   void sendRegisterMessage();
 
   void sendMOTD();
@@ -163,5 +167,7 @@ class Client : public IEventHandler {
   util::Buffer recv_buffer_;
   std::queue<StringBuffer> send_queue_;
 };
+
+#include "Client.tpp"
 
 #endif  // CLIENT_CLIENT_HPP
