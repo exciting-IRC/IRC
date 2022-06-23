@@ -139,7 +139,7 @@ void ClientConn::processUser(const Message &m) {
     sendError("PASS needed before USER command.");
     return;
   }
-  
+
   if (m.params.size() != 4) {
     send(Message::as_not_enough_params_reply(m.command));
     return;
@@ -285,7 +285,7 @@ UserIdent *ClientConn::moveIdent() { return util::moveptr(ident_); }
 
 void ClientConn::sendNotice(const std::string &msg) {
   send(FMT(":{servername} NOTICE {nickname} :{message}",
-           (config.name, ident_->nickname_, msg)));
+           (server.config_.name, ident_->nickname_, msg)));
 }
 
 void ClientConn::sendError(const std::string &msg) {

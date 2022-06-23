@@ -49,24 +49,24 @@ void Client::sendRegisterMessage() {
       util::RPL_YOURHOST,
       VA((ident_->nickname_,
           FMT("Your host is {servername}, running version {version}",
-              (config.name, VERSION_STRING))))));
+              (server.config_.name, VERSION_STRING))))));
   send(Message::as_numeric_reply(
       util::RPL_CREATED,
       VA((ident_->nickname_, FMT("This server was created {create_time}",
-                                 (config.create_time))))));
-  send(Message::as_numeric_reply(
-      util::RPL_MYINFO,
-      VA((ident_->nickname_, config.name, VERSION_STRING, "o", "o", ""))));
+                                 (server.config_.create_time))))));
+  send(Message::as_numeric_reply(util::RPL_MYINFO,
+                                 VA((ident_->nickname_, server.config_.name,
+                                     VERSION_STRING, "o", "o", ""))));
   sendMOTD();
 }
 
 void Client::sendMOTD() {
-  std::stringstream ss(config.motd);
+  std::stringstream ss(server.config_.motd);
 
   std::string line;
   Message reply;
 
-  reply.prefix = config.name;
+  reply.prefix = server.config_.name;
   reply.command = util::pad_num(util::RPL_MOTD);
   while (std::getline(ss, line)) {
     reply.params.push_back(ident_->nickname_);
@@ -82,7 +82,7 @@ void Client::sendMOTD() {
 
 void Client::sendNotice(const std::string &msg) {
   send(FMT(":{servername} NOTICE {nickname} :{message}",
-           (config.name, ident_->nickname_, msg)));
+           (server.config_.name, ident_->nickname_, msg)));
 }
 
 void Client::sendError(const std::string &msg) {
@@ -133,7 +133,7 @@ void Client::ping(const Message &m) {
     send(Message::as_numeric_reply(util::ERR_NOORIGIN,
                                    VA(("No origin specified"))));
   }
-  send(FMT(":{0} PONG {0} :{1}", (config.name, m.params[0])));
+  send(FMT(":{0} PONG {0} :{1}", (server.config_.name, m.params[0])));
 }
 
 void Client::oper(const Message &m) {
@@ -142,8 +142,8 @@ void Client::oper(const Message &m) {
     return;
   }
 
-  const bool is_ok =
-      config.oper_user == m.params[0] && config.oper_password == m.params[1];
+  const bool is_ok = server.config_.oper_user == m.params[0] &&
+                     server.config_.oper_password == m.params[1];
 
   if (is_ok) {
     ident_->mode_ |= UserMode::o;
@@ -215,7 +215,7 @@ void Client::join(const Message &m) {
        it != end; ++it) {
     Message reply;
 
-    reply.prefix = config.name;
+    reply.prefix = server.config_.name;
 
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
@@ -256,7 +256,7 @@ void Client::part(const Message &m) {
 
   Message reply;
 
-  reply.prefix = config.name;
+  reply.prefix = server.config_.name;
   std::vector<std::string> channels = util::split(m.params[0], ",");
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();

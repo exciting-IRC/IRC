@@ -29,7 +29,6 @@ static sig_atomic_t recived_sig;
 void server_close_handler(int sig) { recived_sig = sig; }
 
 Server server;
-util::Config config = util::Config::from("config.yml");
 
 int main() {
   using namespace util;
@@ -38,6 +37,8 @@ int main() {
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
 
+  util::Config config = util::Config::from("config.yml");
+  server.config_ = config;
   cout << config << endl;
   debug_info("create time:", config.create_time);
   debug_info("name:", config.name);
