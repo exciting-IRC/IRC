@@ -3,11 +3,8 @@
 
 #include <vector>
 
-#include "command/returncode.hpp"
+#include "Message.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/LazyString/LazyString.hpp"
-#include "util/config/config.hpp"
-#include "util/strutil/conversion.hpp"
 
 struct ParserResult {
   enum e { kContinue, kSuccess, kFailure };
@@ -25,31 +22,6 @@ struct ParserState {
     kLF,
     kEmptyLF
   };
-};
-
-struct Message {
-  void clear() {
-    prefix.clear();
-    command.clear();
-    params.clear();
-  }
-  util::LazyString prefix;
-  util::LazyString command;
-  std::vector<util::LazyString> params;
-  /**
-   * @brief
-   *
-   */
-  static Message as_numeric_reply(util::returnCode code,
-                                  std::vector<std::string> params) {
-    std::vector<util::LazyString> lazy_params(params.begin(), params.end());
-    Message reply = {config.name, util::pad_num(code), lazy_params};
-    return reply;
-  }
-  static Message as_not_enough_params_reply(std::string command) {
-    return as_numeric_reply(util::ERR_NEEDMOREPARAMS,
-                            VA((command, "Not enough parameters")));
-  }
 };
 
 class IRCParser {
