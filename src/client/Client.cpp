@@ -316,10 +316,10 @@ void Client::privmsg(const Message &m) {
   const Message reply = {ident_->toString(), m.command, m.params};
   const std::string recipient = reply.params[0];
 
-  if (util::isChannelPrefix(recipient.front() == '#')) {
-    ChannelMap &cm = server.getChannels();
-    ChannelMap::iterator it = cm.find(reply.params[0]);
-    if (it == cm.end()) {
+  if (util::isChannelPrefix(recipient.front())) {
+    ChannelMap &channels = server.getChannels();
+    ChannelMap::iterator it = channels.find(recipient);
+    if (it == channels.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
                                      VA(("No such channel"))));
       return;
@@ -328,7 +328,7 @@ void Client::privmsg(const Message &m) {
     }
   } else {
     ClientMap &clients = server.getClients();
-    ClientMap::iterator it = clients.find(reply.params[0]);
+    ClientMap::iterator it = clients.find(recipient);
     if (it == clients.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
                                      VA(("No such nick"))));
