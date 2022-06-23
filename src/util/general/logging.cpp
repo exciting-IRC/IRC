@@ -15,10 +15,6 @@ void debug(const string& msg, bool ok) {
            (get_current_time("[%H:%M:%S]"), result[ok], msg, END));
 }
 
-void debug_info(const string& msg, const string& highlight, bool ok) {
-  debug(FMT("{s}{msg} {m}{hl}", (ok ? HGRN : HRED, msg, BHMAG, highlight)), ok);
-}
-
 void debug_input(const string& command, bool ok) {
   debug(FMT(BHCYN "-> {red}\"{}\"", (HRED, command)), ok);
 }
