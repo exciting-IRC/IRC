@@ -21,7 +21,7 @@ var annotated_dup =
     ] ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
-    [ "Client", "classClient.html", null ],
+    [ "Client", "classClient.html", "classClient" ],
     [ "ClientConn", "classClientConn.html", null ],
     [ "ConnState", "structConnState.html", null ],
     [ "Event", "structEvent.html", null ],

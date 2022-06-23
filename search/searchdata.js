@@ -3,7 +3,7 @@ var indexSectionsWithContent =
   0: "abcefiklmnoprstuv명💬",
   1: "acefilmprstuv",
   2: "cnv",
-  3: "abcflos",
+  3: "abcflmos",
   4: "ik명💬"
 };
 

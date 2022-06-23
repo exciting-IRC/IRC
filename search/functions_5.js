@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_5b_5d_0',['operator[]',['../structutil_1_1array.html#a0991395ea080170667db3524e6145ce7',1,'util::array']]]
+  ['mode_0',['mode',['../classClient.html#a2658f57e9de313cc82ebfb408b9620df',1,'Client']]]
 ];
