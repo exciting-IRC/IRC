@@ -28,6 +28,9 @@ struct Config {
   string oper_user;
   string oper_password;
 
+  string password;
+  uint16_t port;
+
   uint32_t max_clients;
   uint32_t ping;
   uint32_t timeout;
