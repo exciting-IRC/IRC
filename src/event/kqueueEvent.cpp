@@ -110,7 +110,8 @@ int EventPool::handleEvent(struct kevent &kev) {
       break;
   }
   IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);
-  handler->handle(ev);
+  if (handler->handle(ev) == result_t::kError)
+    handler->handleError();
   return 0;
 }
 

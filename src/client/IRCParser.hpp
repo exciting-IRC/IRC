@@ -38,7 +38,7 @@ class IRCParser {
   void clearMessage();
   void clearState();
   void clear();
-  const Message &getMessage();
+  Message getMessage();
 
  private:
   void applyAll(const char *start, const char *end);

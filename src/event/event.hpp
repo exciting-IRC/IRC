@@ -34,7 +34,8 @@ struct Event {
 
 class IEventHandler {
  public:
-  virtual int handle(Event e) = 0;
+  virtual result_t::e handle(Event e) = 0;
+  virtual void handleError() = 0;
   virtual int getFd() const = 0;
 };
 
