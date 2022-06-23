@@ -20,18 +20,22 @@ using std::string;
 pair<string, string> getkv(string line);
 
 struct Config {
-  const string name;
-  const string create_time;
-  const string info;
-  const string motd;
+  string name;
+  string create_time;
+  string info;
+  string motd;
 
-  const string oper_user;
-  const string oper_password;
+  string oper_user;
+  string oper_password;
 
-  const uint32_t max_clients;
-  const uint32_t ping;
-  const uint32_t timeout;
+  string password;
+  uint16_t port;
 
+  uint32_t max_clients;
+  uint32_t ping;
+  uint32_t timeout;
+
+  Config() {}
   Config(string name, string info, string motd, string oper_user,
          string oper_password, string max_clients, string ping, string timeout)
       : name(name),

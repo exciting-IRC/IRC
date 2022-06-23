@@ -7,6 +7,7 @@
 #include "client/Client.hpp"
 #include "event/event.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/config/config.hpp"
 #include "util/general/result.hpp"
 class Server;
 class Client;
@@ -54,7 +55,7 @@ class Channel {
 
   void removeUser(const std::string &name) { users_.erase(name); }
 
- ClientMap getUsers();
+  ClientMap getUsers();
 
  private:
   ClientMap users_;
@@ -95,6 +96,9 @@ class Server : public IEventHandler {
   EventPool &getPool();
 
   ChannelMap &getChannels();
+
+ public:
+  util::Config config_;
 
  private:
   EventPool pool_;

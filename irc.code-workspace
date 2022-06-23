@@ -140,6 +140,7 @@
       "__functional_03": "cpp",
       "queue": "cpp",
       "ranges": "cpp"
-    }
+    },
+    "makefile.extensionOutputFolder": "./.vscode"
   }
 }

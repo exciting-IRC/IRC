@@ -16,7 +16,7 @@
 #include "util/general/logging.hpp"
 #include "util/strutil/format.hpp"
 
-Server::Server() : sock_(-1) {}
+Server::Server() : config_(), sock_(-1) {}
 
 Server::~Server() {
   for (CCList::iterator it = client_conn_.begin(), end = client_conn_.end();

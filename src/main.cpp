@@ -22,31 +22,40 @@
 #include "util/vargs/container_of.hpp"
 
 const static char *bind_addr = "0.0.0.0";
-const static int port = 6667;
 
 static sig_atomic_t recived_sig;
 
 void server_close_handler(int sig) { recived_sig = sig; }
 
 Server server;
-util::Config config = util::Config::from("config.yml");
 
-int main() {
+int main(const int argc, const char *argv[]) {
   using namespace util;
   using namespace std;
 
   signal(SIGINT, server_close_handler);
   signal(SIGTERM, server_close_handler);
 
+  util::Config config = util::Config::from("config.yml");
+  if (argc != 3) {
+    debug_info("warning:", "using defaults", false);
+    config.port = 6667;
+    config.password = "1234";
+  } else {
+    config.port = convert_to<uint16_t>(argv[1]);
+    config.password = argv[2];
+  }
+
+  server.config_ = config;
   cout << config << endl;
   debug_info("create time:", config.create_time);
   debug_info("name:", config.name);
 
   debug_info("bind_addr:", bind_addr);
-  if (server.init(bind_addr, port, 64) == result_t::kError)
+  if (server.init(bind_addr, config.port, 64) == result_t::kError)
     err(1, "Server init");
 
-  debug_info("Listen at", FMT("{bind_addr}:{port}", (bind_addr, port)));
+  debug_info("Listen at", FMT("{bind_addr}:{port}", (bind_addr, config.port)));
 
   server.getPool().addEvent(EventKind::kRead, &server);
 
