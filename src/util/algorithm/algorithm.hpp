@@ -1,6 +1,7 @@
 #ifndef UTIL_ALGORITHM_ALGORITHM_HPP
 #define UTIL_ALGORITHM_ALGORITHM_HPP
 
+#include <functional>
 #include <iterator>
 
 namespace util {
@@ -26,6 +27,12 @@ bool none_of(InputIterator first, InputIterator last, UnaryPredicate pred);
 /// 원소가 하나라도 참인지 확인
 template <typename InputIterator, typename UnaryPredicate>
 bool any_of(InputIterator first, InputIterator last, UnaryPredicate pred);
+
+template <typename C>
+std::vector<typename C::key_type> keys(const C &c);
+
+template <typename C>
+std::vector<typename C::value_type> values(const C &c);
 
 }  // namespace util
 
