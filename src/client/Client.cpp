@@ -7,10 +7,12 @@
 #include "ClientConn.hpp"
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
+#include "util/color.hpp"
 #include "util/config/config.hpp"
 #include "util/general/logging.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
+#include "util/strutil/format.hpp"
 #include "util/vargs/container_of.hpp"
 #include "version.hpp"
 
@@ -39,7 +41,7 @@ Client::~Client() {
 int Client::getFd() const { return conn_->getFd(); }
 
 void Client::sendRegisterMessage() {
-  std::cout << "sending register message\n";
+  util::debug_info("sending register message to", ident_->nickname_);
   send(Message::as_numeric_reply(
       util::RPL_WELCOME,
       VA((ident_->nickname_, "Welcome to the Internet Relay Network!"))));
@@ -304,14 +306,22 @@ void Client::mode(const Message &m) {
 }
 
 void Client::privmsg(const Message &m) {
-  Message reply(m);
+  if (m.params.empty() or m.params[0].empty()) {
+    send(Message::as_numeric_reply(util::ERR_NORECIPIENT, VA((m.command))));
+    return;
+  }
+  if (m.params.size() < 2 or m.params[1].empty()) {
+    send(Message::as_numeric_reply(util::ERR_NOTEXTTOSEND,
+                                   VA(("No text to send"))));
+    return;
+  }
+  const Message reply = {ident_->toString(), m.command, m.params};
+  const std::string &recipient = reply.params[0];
 
-  reply.prefix = ident_->toString();
-  if (util::isChannelPrefix(reply.params[0][0])) {
-    ChannelMap &cm = server.getChannels();
-
-    ChannelMap::iterator it = cm.find(reply.params[0]);
-    if (it == cm.end()) {
+  if (util::isChannelPrefix(recipient.front())) {
+    ChannelMap &channels = server.getChannels();
+    ChannelMap::iterator it = channels.find(recipient);
+    if (it == channels.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
                                      VA(("No such channel"))));
       return;
@@ -320,7 +330,7 @@ void Client::privmsg(const Message &m) {
     }
   } else {
     ClientMap &clients = server.getClients();
-    ClientMap::iterator it = clients.find(m.params[0]);
+    ClientMap::iterator it = clients.find(recipient);
     if (it == clients.end()) {
       send(Message::as_numeric_reply(util::ERR_NOSUCHNICK,
                                      VA(("No such nick"))));

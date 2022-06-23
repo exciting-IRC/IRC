@@ -203,12 +203,12 @@ void ClientConn::send(const std::string &str) {
 
 void ClientConn::send(const Message &msg) {
   typedef std::vector<util::LazyString>::const_iterator const_it;
-  
+
   std::string str;
-  
-  if (msg.prefix != ""){
+
+  if (msg.prefix != "") {
     str += ":" + msg.prefix + " ";
-  } 
+  }
 
   str += msg.command;
 
@@ -233,8 +233,6 @@ void ClientConn::registerClient(const Event &e) {
 
   e.pool.removeEvent(EventKind::kRead, this);
   e.pool.addEvent(EventKind::kRead, client);
-
-  std::cout << "Register" << std::endl;
 
   client->sendRegisterMessage();
 }
