@@ -7,10 +7,12 @@
 #include "ClientConn.hpp"
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
+#include "util/color.hpp"
 #include "util/config/config.hpp"
 #include "util/general/logging.hpp"
 #include "util/irctype/irctype.hpp"
 #include "util/strutil/conversion.hpp"
+#include "util/strutil/format.hpp"
 #include "util/vargs/container_of.hpp"
 #include "version.hpp"
 
@@ -39,7 +41,7 @@ Client::~Client() {
 int Client::getFd() const { return conn_->getFd(); }
 
 void Client::sendRegisterMessage() {
-  std::cout << "sending register message\n";
+  util::debug_info("sending register message to", ident_->nickname_);
   send(Message::as_numeric_reply(
       util::RPL_WELCOME,
       VA((ident_->nickname_, "Welcome to the Internet Relay Network!"))));

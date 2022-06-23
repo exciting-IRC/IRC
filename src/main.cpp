@@ -39,14 +39,14 @@ int main() {
   signal(SIGTERM, server_close_handler);
 
   cout << config << endl;
-  debug(FMT("create time: {datetime}", (config.create_time)));
-  debug(FMT("name: {name}", (config.name)));
+  debug_info("create time:", config.create_time);
+  debug_info("name:", config.name);
 
-  debug(FMT("bind_addr: {bind_addr}", (bind_addr)));
+  debug_info("bind_addr:", bind_addr);
   if (server.init(bind_addr, port, 64) == result_t::kError)
     err(1, "Server init");
 
-  debug(FMT("Listen at {bind_addr}:{port}", (bind_addr, port)));
+  debug_info("Listen at", FMT("{bind_addr}:{port}", (bind_addr, port)));
 
   server.getPool().addEvent(EventKind::kRead, &server);
 

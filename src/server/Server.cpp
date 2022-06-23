@@ -12,6 +12,9 @@
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
+#include "util/color.hpp"
+#include "util/general/logging.hpp"
+#include "util/strutil/format.hpp"
 
 Server::Server() : sock_(-1) {}
 
@@ -76,9 +79,9 @@ int Server::handle(Event e) {
         util::accept(sock_, reinterpret_cast<struct sockaddr *>(&sin), &length);
     if (client_socket == -1)
       err(1, "server handler");
-    std::cout << "Accept connection: "
-              << addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL)
-              << std::endl;
+    util::debug_info(
+        "connection accpepted at",
+        addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL));
     CCList::iterator entry = client_conn_.insert(client_conn_.end(), NULL);
     *entry = new ClientConn(client_socket, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
