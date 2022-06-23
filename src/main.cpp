@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "client/ClientConn.hpp"
 #include "event/event.hpp"
 #include "server/Server.hpp"
 #include "socket/socket.hpp"

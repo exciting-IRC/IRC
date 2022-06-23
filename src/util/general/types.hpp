@@ -3,4 +3,4 @@
 
 typedef int fd_t;
 
-#endif // UTIL_GENERAL_TYPES_HPP
+#endif  // UTIL_GENERAL_TYPES_HPP

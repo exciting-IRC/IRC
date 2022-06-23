@@ -179,7 +179,7 @@ ParserResult::e IRCParser::parse(util::Buffer &buffer) {
   return ParserResult::kContinue;
 }
 
-void IRCParser::clearMessage() { msg_.clear(); }
+void IRCParser::clearMessage() { msg_ = Message(); }
 
 void IRCParser::clearState() {
   state_ = ParserState::kBegin;
@@ -191,7 +191,11 @@ void IRCParser::clear() {
   clearState();
 }
 
-const Message &IRCParser::getMessage() { return msg_; }
+Message IRCParser::getMessage() {
+  Message msg = msg_;
+  clear();
+  return msg;
+}
 
 void IRCParser::applyAll(const char *start, const char *end) {
   if (state_ == ParserState::kPrefix) {
@@ -202,7 +206,8 @@ void IRCParser::applyAll(const char *start, const char *end) {
     msg_.command.setEnd(end);
     msg_.command.apply();
     msg_.command.setStart(start);
-  } else if (state_ == ParserState::kParam || state_ == ParserState::kTrailing) {
+  } else if (state_ == ParserState::kParam ||
+             state_ == ParserState::kTrailing) {
     msg_.params.back().setEnd(end);
     msg_.params.back().apply();
     msg_.params.back().setStart(start);

@@ -2,17 +2,19 @@
 #define CLIENT_CLIENT_HPP
 
 #include <algorithm>
+#include <list>
 #include <map>
+#include <queue>
 #include <string>
 
-#include "client/ClientConn.hpp"
+#include "client/IRCParser.hpp"
 #include "command/returncode.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
+#include "util/StringBuffer.hpp"
 #include "util/config/config.hpp"
 #include "util/strutil/strutil.hpp"
 #include "util/vargs/container_of.hpp"
-
 class Channel;
 
 #define VL(param) container_of<std::vector<util::LazyString> > param
@@ -27,14 +29,51 @@ class Channel;
  *s - marks a user for receipt of server notices. (deprecated)
  */
 
-class ClientConn;
-struct UserIdent;
 struct Message;
 class Client;
 
+typedef std::list<Client *> ClientList;
+
+struct UserMode {
+  enum e {
+    clear = 0,
+    a = (1 << 0),
+    r = (1 << 1),
+    w = (1 << 2),
+    i = (1 << 3),
+    o = (1 << 4),
+    O = (1 << 5),
+    s = (1 << 6)
+  };
+};
+
+struct UserIdent {
+  std::string toString() {
+    return nickname_ + "!" + username_ + "@" + hostname_;
+  }
+  std::string password_;
+  std::string username_;
+  std::string realname_;
+  std::string nickname_;
+  std::string hostname_;
+  std::string servername_;
+  struct sockaddr_in addr_;
+  unsigned int mode_;
+};
+
+struct ConnState {
+  enum e {
+    kClear = 0,
+    kPass = (1 << 0),
+    kUser = (1 << 1),
+    kNick = (1 << 2),
+    kRegistered = (kPass | kUser | kNick)
+  };
+};
+
 class Client : public IEventHandler {
  public:
-  Client(ClientConn *conn);
+  Client(int sock, ClientList::iterator pos);
 
   virtual ~Client();
 
@@ -43,14 +82,16 @@ class Client : public IEventHandler {
   Client &operator=(const Client &);  // = delete;
 
  private:
-  typedef std::map<std::string, void (Client::*)(const Message &)> MPClientMap;
+  typedef std::map<std::string, result_t::e (Client::*)(const Message &)>
+      CmdMap;
   typedef std::map<std::string, Channel *> ChannelMap;
 
  public:
   int getFd() const;
 
-  template <typename T>
-  void send(const T &msg);
+  void send(const Message &msg);
+
+  void send(const std::string &str);
 
   void sendRegisterMessage();
 
@@ -62,41 +103,65 @@ class Client : public IEventHandler {
 
   std::string &getNick();
 
-  void handleWriteEvent(Event &e);
+  result_t::e handleWriteEvent(Event &e);
 
-  void handleReadEvent(Event &e);
+  result_t::e handleReadEvent(Event &e);
 
-  int handle(Event e);
+  ssize_t recvToBuffer(size_t length);
 
-  void ping(const Message &m);
+  result_t::e handle(Event e);
 
-  void oper(const Message &m);
+  void handleError();
 
-  void kill(const Message &m);
+  result_t::e ping(const Message &m);
 
-  void quit(const Message &m);
+  result_t::e oper(const Message &m);
 
-  void join(const Message &m);
+  result_t::e kill(const Message &m);
 
-  void part(const Message &m);
+  result_t::e quit(const Message &m);
 
-  void userMode(const Message &m);
+  result_t::e join(const Message &m);
 
-  void channelMode(const Message &m);
+  result_t::e part(const Message &m);
 
-  void mode(const Message &m);
+  result_t::e mode(const Message &m);
 
-  void privmsg(const Message &m);
+  result_t::e privmsg(const Message &m);
 
-  void processMessage(const Message &m);
+  result_t::e nick(const Message &m);
+
+  result_t::e alredyRegistered(const Message &m);
+
+  result_t::e notRegistered(const Message &m);
+
+  result_t::e registerPass(const Message &m);
+
+  result_t::e registerUser(const Message &m);
+
+  result_t::e registerNick(const Message &m);
+
+  result_t::e handleReceive(Event &e);
+
+  void complateRegister();
+
+  void updateCommandMap();
+
+  result_t::e processMessage(const Message &m);
 
  private:
-  ChannelMap joined_channels_;
-  ClientConn *conn_;
-  UserIdent *ident_;
-  static const MPClientMap map_;
-};
+  const static CmdMap map_before_register_;
+  const static CmdMap map_after_register_;
+  const CmdMap *map_;
 
-#include "client/Client.tpp"
+  IRCParser parser_;
+  int sock_;
+  ClientList::iterator pos_;
+  UserIdent ident_;
+  ChannelMap joined_channels_;
+  unsigned int conn_state_;
+  util::Buffer recv_buffer_;
+  std::queue<StringBuffer> send_queue_;
+};
 
 #endif  // CLIENT_CLIENT_HPP

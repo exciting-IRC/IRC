@@ -8,7 +8,7 @@
 #include <iostream>
 #include <list>
 
-#include "client/ClientConn.hpp"
+#include "client/Client.hpp"
 #include "event/event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
@@ -19,7 +19,8 @@
 Server::Server() : config_(), sock_(-1) {}
 
 Server::~Server() {
-  for (CCList::iterator it = client_conn_.begin(), end = client_conn_.end();
+  for (ClientList::iterator it = unregistered_clients_.begin(),
+                            end = unregistered_clients_.end();
        it != end; ++it) {
     delete *it;
   }
@@ -71,35 +72,48 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
 
 int Server::getFd() const { return sock_; }
 
-int Server::handle(Event e) {
+result_t::e Server::handle(Event e) {
   if (e.kind == EventKind::kRead) {
     struct sockaddr_in sin;
     socklen_t length = sizeof(sin);
     int client_socket =
         util::accept(sock_, reinterpret_cast<struct sockaddr *>(&sin), &length);
     if (client_socket == -1)
-      err(1, "server handler");
+      return result_t::kError;
+
     util::debug_info(
         "connection accpepted at",
         addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL));
-    CCList::iterator entry = client_conn_.insert(client_conn_.end(), NULL);
-    *entry = new ClientConn(client_socket, entry);
+
+    ClientList::iterator entry =
+        unregistered_clients_.insert(unregistered_clients_.end(), NULL);
+
+    *entry = new Client(client_socket, entry);
     e.pool.addEvent(EventKind::kRead, *entry);
+    return result_t::kOK;
+  } else {
+    return result_t::kError;  // unknown event
   }
-  return 0;
 }
 
-void Server::moveClientConn(CCList::iterator pos) { client_conn_.erase(pos); }
+void Server::handleError() {}
 
-void Server::removeClient(CCList::iterator pos) {
+void Server::eraseFromClientList(ClientList::iterator pos) {
+  unregistered_clients_.erase(pos);
+}
+
+void Server::removeClient(ClientList::iterator pos) {
   delete *pos;
-  client_conn_.erase(pos);
+  unregistered_clients_.erase(pos);
+}
+
+void Server::eraseFromClientMap(const std::string &nickname) {
+  ClientMap::iterator target = clients_.find(nickname);
+  clients_.erase(target);
 }
 
 void Server::removeClient(const std::string &nickname) {
   ClientMap::iterator target = clients_.find(nickname);
-  if (target == clients_.end())
-    return;
   delete target->second;
   clients_.erase(target);
 }

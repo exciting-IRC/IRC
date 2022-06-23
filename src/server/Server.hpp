@@ -13,7 +13,7 @@ class Server;
 class Client;
 class ClientConn;
 
-typedef std::list<ClientConn *> CCList;
+typedef std::list<Client *> ClientList;
 typedef std::map<std::string, Client *> ClientMap;
 
 /**
@@ -79,10 +79,13 @@ class Server : public IEventHandler {
 
   int getFd() const;  // override, final
 
-  int handle(Event e);  // override, final
+  result_t::e handle(Event e);  // override, final
 
-  void moveClientConn(CCList::iterator pos);
-  void removeClient(CCList::iterator pos);
+  void handleError();
+
+  void eraseFromClientList(ClientList::iterator pos);
+  void eraseFromClientMap(const std::string &nickname);
+  void removeClient(ClientList::iterator pos);
   void removeClient(const std::string &nickname);
 
   void addClient(const std::string &nick, Client *client);
@@ -102,7 +105,7 @@ class Server : public IEventHandler {
 
  private:
   EventPool pool_;
-  CCList client_conn_;
+  ClientList unregistered_clients_;
   ClientMap clients_;
   ChannelMap channels_;
   int sock_;

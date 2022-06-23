@@ -13,4 +13,4 @@ vector<string> split(const string& str, const string& sep = "");
 
 }  // namespace util
 
-#endif // UTIL_STRUTIL_SPLIT_HPP
+#endif  // UTIL_STRUTIL_SPLIT_HPP
