@@ -7,6 +7,7 @@
 #include "ClientConn.hpp"
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
+#include "util/algorithm/functor.hpp"
 #include "util/color.hpp"
 #include "util/config/config.hpp"
 #include "util/general/logging.hpp"
@@ -64,20 +65,12 @@ void Client::sendMOTD() {
   std::stringstream ss(server.config_.motd);
 
   std::string line;
-  Message reply;
-
-  reply.prefix = server.config_.name;
-  reply.command = util::pad_num(util::RPL_MOTD);
   while (std::getline(ss, line)) {
-    reply.params.push_back(ident_->nickname_);
-    reply.params.push_back(line);
-    send(reply);
-    reply.params.clear();
+    send(Message::as_numeric_reply(util::RPL_MOTD,
+                                   VA((ident_->nickname_, line))));
   }
-  reply.command = util::pad_num(util::RPL_ENDOFMOTD);
-  reply.params.push_back(ident_->nickname_);
-  reply.params.push_back("END of MOTD.");
-  send(reply);
+  send(Message::as_numeric_reply(util::RPL_ENDOFMOTD,
+                                 VA((ident_->nickname_, "End of MOTD"))));
 }
 
 void Client::sendNotice(const std::string &msg) {
@@ -106,7 +99,7 @@ void Client::handleReadEvent(Event &e) {
     delete conn_;
     conn_ = NULL;
   } else {
-    ParserResult::e result;
+    ParserResult::e result;  // TODO: 안 쓸거면 지우기
     while ((result = conn_->parse()) == ParserResult::kSuccess) {
       Message msg = conn_->getMessage();
       processMessage(msg);
@@ -213,37 +206,16 @@ void Client::join(const Message &m) {
   for (std::vector<std::string>::iterator it = channels.begin(),
                                           end = channels.end();
        it != end; ++it) {
-    Message reply;
-
-    reply.prefix = server.config_.name;
-
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
-      reply.command = util::pad_num(util::RPL_TOPIC);
-      reply.params.push_back(*it);
-      reply.params.push_back("");
-      send(reply);
-      reply.params.clear();
-
-      reply.command = util::pad_num(util::RPL_NAMREPLY);
-      reply.params.push_back(*it);
-      reply.params.push_back("");
-      const ClientMap users = new_channel->getUsers();
-      for (ClientMap::const_iterator user = users.begin(),
-                                     end = util::prev(users.end());
-           user != end; ++user) {
-        reply.params[1] += user->first + " ";
-      }
-      reply.params[1] += util::prev(users.end())->first;
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
+      send(Message::as_numeric_reply(
+          util::RPL_NAMREPLY,
+          VA((*it, util::join(util::keys(new_channel->getUsers()), " ")))));
     } else {
-      reply.command = util::pad_num(util::ERR_NOSUCHCHANNEL);
-      reply.params.push_back(*it);
-      reply.params.push_back("No such Channel");
-      send(reply);
-      reply.params.clear();
+      send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
+                                     VA((*it, "No such channel"))));
     }
   }
 }
