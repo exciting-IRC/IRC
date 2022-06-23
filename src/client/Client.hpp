@@ -56,6 +56,10 @@ class Client : public IEventHandler {
 
   void sendMOTD();
 
+  void sendNotice(const std::string &msg);
+
+  void sendError(const std::string &msg);
+
   std::string &getNick();
 
   void handleWriteEvent(Event &e);
