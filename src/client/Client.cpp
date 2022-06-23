@@ -7,7 +7,6 @@
 #include "ClientConn.hpp"
 #include "command/returncode.hpp"
 #include "server/Server.hpp"
-#include "util/algorithm/functor.hpp"
 #include "util/color.hpp"
 #include "util/config/config.hpp"
 #include "util/general/logging.hpp"
@@ -181,6 +180,10 @@ void Client::quit(const Message &m) {
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
+    it->second->sendAll(
+        FMT("ERROR :Closing link: ({user}@{host}) [{msg}]",
+            (ident_->username_, ident_->hostname_, m.params[0])),
+        this);  // FIXME hostname이 아직 제대로 동작 안함
     it->second->sendAll(reply, this);
   }
   server.removeClient(ident_->nickname_);
