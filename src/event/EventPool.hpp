@@ -21,8 +21,10 @@ class EventPool {
   int close();
 
   int addEvent(EventKind::e kind, IEventHandler *eh);
+  int addTimer(TimerKind::e kind, IEventHandler *eh, unsigned int timeout);
 
   int removeEvent(EventKind::e kind, IEventHandler *eh);
+  int removeTimer(TimerKind::e kind, IEventHandler *eh, unsigned int timeout);
 
   int dispatchEvent(time_t sec);
 

@@ -86,11 +86,15 @@ class Client : public IEventHandler {
 
   void sendError(const std::string &msg);
 
+  void sendPing();
+
   const UserIdent &getIdent();
 
   result_t::e handleWriteEvent(Event &e);
 
   result_t::e handleReadEvent(Event &e);
+
+  result_t::e handleTimerEvent(Event &e);
 
   ssize_t recvToBuffer(size_t length);
 
@@ -101,6 +105,8 @@ class Client : public IEventHandler {
   int addEvent(EventKind::e kind);
 
   int removeEvent(EventKind::e kind);
+
+  result_t::e pong(const Message &m);
 
   result_t::e ping(const Message &m);
 

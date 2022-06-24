@@ -54,6 +54,9 @@ int16_t convert_to_evfilt(EventKind::e kind) {
     case EventKind::kWrite:
       return EVFILT_WRITE;
 
+    case EventKind::kTimer:
+      return EVFILT_TIMER;
+
     default:
       util::debug_info("aborting due to unknown EventKind:", kind, false);
       abort();
@@ -66,6 +69,56 @@ struct kevent create_kevent(EventKind::e kind, IEventHandler *eh,
                       0,           static_cast<void *>(eh)};
 
   return ev;
+}
+
+struct kevent getRegisterTimer(int timeout, unsigned int flag,
+                               IEventHandler *eh) {
+  struct kevent ev = {
+      TimerKind::kRegister, EVFILT_TIMER, flag | EV_ONESHOT | EV_UDATA_SPECIFIC,
+      NOTE_SECONDS,         timeout,      eh};
+  return ev;
+}
+
+struct kevent getPingTimer(int timeout, unsigned int flag, IEventHandler *eh) {
+  struct kevent ev = {TimerKind::kPing, EVFILT_TIMER, flag | EV_UDATA_SPECIFIC,
+                      NOTE_SECONDS,     timeout,      eh};
+  return ev;
+}
+
+struct kevent getPongTimer(int timeout, unsigned int flag, IEventHandler *eh) {
+  struct kevent ev = {
+      TimerKind::kPong, EVFILT_TIMER, flag | EV_ONESHOT | EV_UDATA_SPECIFIC,
+      NOTE_SECONDS,     timeout,      eh};
+  return ev;
+}
+
+struct kevent getTimer(TimerKind::e kind, int timeout, unsigned int flag,
+                       IEventHandler *eh) {
+  switch (kind) {
+    case TimerKind::kPing:
+      return getPingTimer(timeout, flag, eh);
+      break;
+    case TimerKind::kPong:
+      return getPongTimer(timeout, flag, eh);
+      break;
+    case TimerKind::kRegister:
+      return getRegisterTimer(timeout, flag, eh);
+      break;
+  }
+}
+
+int EventPool::addTimer(TimerKind::e kind, IEventHandler *eh,
+                        unsigned int timeout) {
+  struct kevent ev = getTimer(kind, timeout, EV_ADD, eh);
+
+  return util::kevent_ctl(fd_, &ev, 1, NULL);
+}
+
+int EventPool::removeTimer(TimerKind::e kind, IEventHandler *eh,
+                           unsigned int timeout) {
+  struct kevent ev = getTimer(kind, timeout, EV_DELETE, eh);
+
+  return util::kevent_ctl(fd_, &ev, 1, NULL);
 }
 
 int EventPool::addEvent(EventKind::e kind, IEventHandler *eh) {
@@ -100,8 +153,9 @@ int EventPool::handleEvent(struct kevent &kev) {
     case EVFILT_WRITE:
       ev.setWriteEvent(kev);
       break;
-    default:
-      util::debug_info("Unknown kevent filter:", kev.filter, false);
+
+    case EVFILT_TIMER:
+      ev.setTimerEvent(kev);
       break;
   }
   IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);
