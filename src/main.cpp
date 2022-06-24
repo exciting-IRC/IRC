@@ -28,14 +28,10 @@ void server_close_handler(int sig) { recived_sig = sig; }
 
 Server server;
 
-int main(const int argc, const char *argv[]) {
+static util::Config init_config(const int argc, const char *argv[]) {
   using namespace util;
-  using namespace std;
 
-  signal(SIGINT, server_close_handler);
-  signal(SIGTERM, server_close_handler);
-
-  util::Config config = util::Config::from("config.yml");
+  Config config = util::Config::from("config.yml");
   if (argc != 3) {
     debug_info("warning:", "using defaults", false);
     config.port = 6667;
@@ -44,29 +40,36 @@ int main(const int argc, const char *argv[]) {
     config.port = convert_to<uint16_t>(argv[1]);
     config.password = argv[2];
   }
+  return config;
+}
 
-  server.config_ = config;
-  cout << config << endl;
-  debug_info("create time:", config.create_time);
-  debug_info("name:", config.name);
+static void loop() {
+  while (not recived_sig) {
+    server.getPool().dispatchEvent(1);
+  }
+  util::debug_info("shutdown", strsignal(recived_sig));
+}
 
-  debug_info("bind_addr:", bind_addr);
-  if (server.init(bind_addr, config.port, 64) == result_t::kError)
-    err(1, "Server init");
+int main(const int argc, const char *argv[]) {
+  using namespace util;
+  using namespace std;
 
-  debug_info("Listen at", FMT("{bind_addr}:{port}", (bind_addr, config.port)));
+  signal(SIGINT, server_close_handler);
+  signal(SIGTERM, server_close_handler);
 
-  server.getPool().addEvent(EventKind::kRead, &server);
+  server.config_ = init_config(argc, argv);
+  cout << server.config_ << endl;
+
+  if (server.init(bind_addr, server.config_.port, 64) == result_t::kError) {
+    debug_info("Fail at server initialization", strerror(errno), false);
+    return 1;
+  }
+
+  debug_info("Listen at",
+             FMT("{bind_addr}:{port}", (bind_addr, server.config_.port)));
 
   try {
-    while (true) {
-      int k = server.getPool().dispatchEvent(1);
-      (void)k;
-      if (recived_sig) {
-        debug(FMT("{red}shutdown... {}", (BHRED, strsignal(recived_sig))));
-        return 0;
-      }
-    }
+    loop();
   } catch (std::exception &e) {
     std::cerr << e.what() << std::endl;
   }

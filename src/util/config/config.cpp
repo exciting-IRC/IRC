@@ -17,11 +17,8 @@ pair<string, string> getkv(string line) {
 }  // namespace util
 
 std::ostream &util::operator<<(std::ostream &os, const Config &config) {
-  os << "name: " << config.name << "\n";
-  os << "info: " << config.info << "\n";
-  os << "motd:\n" << config.motd << "\n";
-  os << "oper_user: " << config.oper_user << "\n";
-  os << "oper_password: " << config.oper_password << "\n";
-  os << "max_clients: " << config.max_clients << "\n";
-  return os;
+  return os << FMT("name: {}\n"
+  "create_time: {}""\noper_user: {}""\noper_password: {}""info:\n{}\n""\nmotd:\n{}",
+            (config.name,  config.create_time, config.oper_user,
+             config.oper_password, config.info, config.motd));
 }

@@ -63,29 +63,6 @@ Client::~Client() {
 
 int Client::getFd() const { return sock_; }
 
-void Client::send(const Message &msg) {
-  typedef std::vector<util::LazyString>::const_iterator const_it;
-
-  std::string str;
-
-  if (msg.prefix != "") {
-    str += ":" + msg.prefix + " ";
-  }
-
-  str += msg.command;
-
-  if (not msg.params.empty()) {
-    for (const_it it = msg.params.begin(), end = util::prev(msg.params.end());
-         it != end; ++it) {
-      str += " " + *it;
-    }
-    str += " :" + *msg.params.rbegin();
-  } else {
-    str += " :";
-  }
-  send(str);
-}
-
 void Client::send(const std::string &str) {
   util::debug_output(str);
   send_queue_.push(StringBuffer(str + "\r\n"));
@@ -165,7 +142,7 @@ result_t::e Client::processMessage(const Message &m) {
   CmdMap::const_iterator it = map_->find(util::to_upper(m.command));
 
   const bool found = it != map_->end();
-  util::debug_input(m.command, found);
+  util::debug_input(std::string(m), found);
   if (found)
     return (this->*(it->second))(m);
   return result_t::kOK;
