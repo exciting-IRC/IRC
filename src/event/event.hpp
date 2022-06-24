@@ -8,8 +8,12 @@
 
 #include "util/general/result.hpp"
 
+struct TimerKind {
+  enum e { kPing, kRegister, kPong };
+};
+
 struct EventKind {
-  enum e { kNone = 0, kRead = (1 << 0), kWrite = (1 << 1) };
+  enum e { kNone = 0, kRead = (1 << 0), kWrite = (1 << 1), kTimer = (1 << 2) };
 };
 
 typedef std::bitset<8> EventFlagSet;
@@ -24,6 +28,7 @@ struct Event {
   Event(EventPool &pool_);
   void setReadEvent(const struct kevent &kev);
   void setWriteEvent(const struct kevent &kev);
+  void setTimerEvent(const struct kevent &kev);
 
   EventPool &pool;
   EventKind::e kind;
