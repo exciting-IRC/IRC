@@ -75,7 +75,7 @@ class Server : public IEventHandler {
   typedef std::map<std::string, Channel *> ChannelMap;
 
  public:
-  result_t::e init(const char *listen_addr, int port, int backlog);
+  result_t::e init(int backlog);
 
   int getFd() const;  // override, final
 
