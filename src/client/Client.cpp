@@ -348,10 +348,10 @@ result_t::e Client::quit(const Message &m) {
                             end = joined_channels_.end();
        it != end; ++it) {
     Channel &channel = *it->second;
-    channel.sendAll(FMT("ERROR :Closing link: ({user}@{host}) [{msg}]",
-                        (ident_.username_, ident_.hostname_, m.params[0])),
-                    this);  // FIXME hostname이 아직 제대로 동작 안함
+    channel.sendAll(reply, this);
   }
+  send(FMT("ERROR :Closing link: ({user}@{host}) [{msg}]",
+           (ident_.username_, ident_.hostname_, m.params[0])));
   return result_t::kClosing;
 }
 
@@ -408,11 +408,10 @@ result_t::e Client::part(const Message &m) {
                                      VA((*it, "You're not on that channel"))));
     } else {
       Channel *ch = channel->second;
+      ch->sendAll(Message::as_reply(ident_.toString(), "PART", VA((*it))),
+                  NULL);
       ch->removeUser(this);
       joined_channels_.erase(channel);
-      if (ch->getUsers().empty()) {
-        server.removeChannel(*it);
-      }
     }
   }
   return result_t::kOK;
