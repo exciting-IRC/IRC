@@ -1,5 +1,5 @@
 # 서버 정보
-name: exictingirc
+name: excitingirc
 info: asset/info.txt # 서버 정보
 motd: asset/motd.txt # 오늘의 문구 (Message Of The Day)
 
