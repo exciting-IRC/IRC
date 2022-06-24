@@ -7,6 +7,7 @@
 
 #include "event/event.hpp"
 #include "event/kqueue/kqueue.hpp"
+#include "util/general/logging.hpp"
 #include "util/general/time.hpp"
 
 Event::Event(EventPool &pool_) : pool(pool_), flags() {}
@@ -106,7 +107,7 @@ int EventPool::dispatchEvent(time_t sec) {
 
 int EventPool::handleEvent(struct kevent &kev) {
   if (kev.flags & EV_ERROR) {
-    // log
+    util::debug("kevent flags got EV_ERROR", false);
     return -1;
   }
   Event ev(*this);
@@ -119,7 +120,7 @@ int EventPool::handleEvent(struct kevent &kev) {
       ev.setWriteEvent(kev);
       break;
     default:
-      // XXX add log
+      util::debug_info("Unknown kevent filter:", kev.filter, false);
       break;
   }
   IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);
