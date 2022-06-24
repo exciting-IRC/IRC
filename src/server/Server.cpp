@@ -24,11 +24,11 @@ Server::~Server() {
        it != end; ++it) {
     delete *it;
   }
-  for (ChannelMap::iterator it = channels_.begin(), end = channels_.end();
+  for (ClientMap::iterator it = clients_.begin(), end = clients_.end();
        it != end; ++it) {
     delete it->second;
   }
-  for (ClientMap::iterator it = clients_.begin(), end = clients_.end();
+  for (ChannelMap::iterator it = channels_.begin(), end = channels_.end();
        it != end; ++it) {
     delete it->second;
   }
