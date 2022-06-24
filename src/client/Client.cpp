@@ -17,12 +17,6 @@
 #include "version.hpp"
 
 using util::p;
-// const Client::MPClientMap Client::map_ =
-//     container_of<MPClientMap, MPClientMap::value_type>(
-//         p("PING", &Client::ping), p("QUIT", &Client::quit),
-//         p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
-//         p("KILL", &Client::kill), p("OPER", &Client::oper),
-//         p("MODE", &Client::mode), p("PART", &Client::part));
 
 const Client::CmdMap Client::map_before_register_ =
     container_of<CmdMap, CmdMap::value_type>(
