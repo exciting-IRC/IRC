@@ -12,4 +12,4 @@ oper_password: admin # 관리자 계정 비밀번호
 # 서버 설정
 max_clients: 5000 # 최대 접속자 수
 ping: 60 # 핑 주기
-timeout: 300 # 접속 시간 제한
+timeout: 120 # 접속 시간 제한
