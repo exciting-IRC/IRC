@@ -286,7 +286,8 @@ result_t::e Client::kill(const Message &m) {
   if (not has_privilege) {
     send(Message::as_reply(
         "", util::pad_num(util::ERR_NOPRIVILEGES),
-        VA(("Permission Denied- You're not an IRC operator"))));
+        VA((ident_.nickname_,
+            "Permission Denied- You're not an IRC operator"))));
   } else {
     Client &target = *target_it->second;
     target.send(Message::as_reply(ident_.toString(), "KILL",
