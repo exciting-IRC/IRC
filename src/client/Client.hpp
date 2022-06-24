@@ -135,7 +135,7 @@ class Client : public IEventHandler {
 
   result_t::e handleReceive(Event &e);
 
-  void complateRegister();
+  void completeRegister();
 
   void updateCommandMap();
 

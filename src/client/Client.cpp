@@ -467,7 +467,7 @@ result_t::e Client::registerUser(const Message &m) {
 
   conn_state_ |= ConnState::kUser;
   if (conn_state_ == ConnState::kRegistered)
-    complateRegister();
+    completeRegister();
   return result_t::kOK;
 }
 
@@ -525,12 +525,12 @@ result_t::e Client::registerNick(const Message &m) {
   ident_.nickname_ = nick;
   conn_state_ |= ConnState::kNick;
   if (conn_state_ == ConnState::kRegistered)
-    complateRegister();
+    completeRegister();
 
   return result_t::kOK;
 }
 
-void Client::complateRegister() {
+void Client::completeRegister() {
   server.eraseFromClientList(pos_);
   server.addClient(ident_.nickname_, this);
 
