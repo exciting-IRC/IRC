@@ -35,10 +35,7 @@ struct ChannelMode {
 
 class Channel {
  public:
-  Channel() {}
-  Channel(const std::string &name, Client *client) : name_(name) {
-    users_.insert(std::make_pair(client->getNick(), client));
-  }
+  Channel(const std::string &name);
 
   template <typename T>
   void sendAll(const T &msg, Client *exclude) {
@@ -49,11 +46,9 @@ class Channel {
     }
   }
 
-  void addUser(const std::string &name, Client *client) {
-    users_[name] = client;
-  }
+  void addUser(Client *client);
 
-  void removeUser(const std::string &name) { users_.erase(name); }
+  void removeUser(Client *client);
 
   ClientMap getUsers();
 

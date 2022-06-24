@@ -129,11 +129,15 @@ Channel *Server::addUserToChannel(const std::string &channel_name,
   ChannelMap::iterator channel_iter = channels_.find(channel_name);
 
   if (channel_iter == channels_.end()) {
-    return (channels_[channel_name] = new Channel(channel_name, user));
-  } else {
-    channel_iter->second->addUser(user->getNick(), user);
-    return channel_iter->second;
+    channel_iter = channels_
+                       .insert(ChannelMap::value_type(
+                           channel_name, new Channel(channel_name)))
+                       .first;
   }
+  Channel *&ch = channel_iter->second;
+
+  ch->addUser(user);
+  return ch;
 }
 
 void Server::removeChannel(const std::string &channel_name) {
@@ -145,5 +149,19 @@ ClientMap &Server::getClients() { return clients_; }
 Server::ChannelMap &Server::getChannels() { return channels_; }
 
 EventPool &Server::getPool() { return pool_; }
+
+Channel::Channel(const std::string &name) : name_(name) {}
+
+void Channel::addUser(Client *client) {
+  users_[client->getIdent().nickname_] = client;
+  sendAll(Message::as_reply(client->getIdent().toString(), "JOIN", VA((name_))),
+          NULL);
+}
+
+void Channel::removeUser(Client *client) {
+  sendAll(Message::as_reply(client->getIdent().toString(), "PART", VA((name_))),
+          NULL);
+  users_.erase(client->getIdent().nickname_);
+}
 
 ClientMap Channel::getUsers() { return users_; }
