@@ -255,13 +255,15 @@ result_t::e Client::oper(const Message &m) {
 
   if (is_ok) {
     ident_.mode_ |= UserMode::o;
-    send(Message::as_numeric_reply(util::RPL_YOUAREOPER,
-                                   VA(("You are now an IRC operator"))));
+    send(Message::as_numeric_reply(
+        util::RPL_YOUAREOPER,
+        VA((ident_.nickname_, "You are now an IRC operator"))));
     return result_t::kOK;
   } else {  // 보안적인 이유로 비밀번호가 틀렸을 때, 유저네임이 틀렸을 때 모두
             // 같은 에러로 응답함.
-    send(Message::as_numeric_reply(util::ERR_NOOPERHOST,
-                                   VA(("No O-lines for your host"))));
+    send(Message::as_numeric_reply(
+        util::ERR_NOOPERHOST,
+        VA((ident_.nickname_, "Invalid oper credentials"))));
     return result_t::kOK;
   }
 }
@@ -272,8 +274,9 @@ result_t::e Client::kill(const Message &m) {
     return result_t::kOK;
   }
 
-  const ClientMap &clients = server.getClients();
-  if (clients.find(m.params[0]) == clients.end()) {
+  ClientMap &clients = server.getClients();
+  ClientMap::iterator target_it = clients.find(m.params[0]);
+  if (target_it == clients.end()) {
     send(Message::as_reply("", util::pad_num(util::ERR_NOSUCHNICK),
                            VA((m.params[0], "No such nick/channel"))));
     return result_t::kOK;
@@ -283,9 +286,15 @@ result_t::e Client::kill(const Message &m) {
   if (not has_privilege) {
     send(Message::as_reply(
         "", util::pad_num(util::ERR_NOPRIVILEGES),
-        VA(("Permission Denied- You're not an IRC operator"))));
+        VA((ident_.nickname_,
+            "Permission Denied- You're not an IRC operator"))));
   } else {
-    return result_t::kError;
+    Client &target = *target_it->second;
+    target.send(Message::as_reply(ident_.toString(), "KILL",
+                                  VA((ident_.nickname_, "Killed"))));
+    target.sendError(
+        FMT("Closing link: {ident} [ Killed ]", (ident_.toString())));
+    target.removeEvent(EventKind::kRead);
   }
   return result_t::kOK;
 }
@@ -326,12 +335,15 @@ result_t::e Client::join(const Message &m) {
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
-      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
+      // send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
-      sendList(Message::as_numeric_reply(util::RPL_NAMREPLY, VA(())),
+      sendList(FMT(":{server} {code} {nick} = {channel} :",
+                   (server.config_.name, util::pad_num(util::RPL_NAMREPLY),
+                    ident_.nickname_, *it)),
                util::keys(new_channel->getUsers()),
-               Message::as_numeric_reply(util::RPL_ENDOFNAMES,
-                                         VA(("End of /NAMES"))));
+               Message::as_numeric_reply(
+                   util::RPL_ENDOFNAMES,
+                   VA((ident_.nickname_, *it, "End of /NAMES"))));
     } else {
       send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
                                      VA((*it, "No such channel"))));
@@ -544,30 +556,48 @@ result_t::e Client::nick(const Message &m) {
 
   const std::string &newnick = m.params[0];
   if (!isValidNick(newnick)) {
-    send(Message::as_numeric_reply(util::ERR_ERRONEUSNICKNAME,
-                                   VA((newnick, "Erroneous nickname"))));
+    send(Message::as_numeric_reply(
+        util::ERR_ERRONEUSNICKNAME,
+        VA((ident_.nickname_, newnick, "Erroneous nickname"))));
     return result_t::kOK;
   }
 
   ClientMap clients = server.getClients();
   if (clients.find(newnick) != clients.end()) {
     send(Message::as_numeric_reply(
-        util::ERR_NICKNAMEINUSE, VA((newnick, "Nickname is already in use"))));
+        util::ERR_NICKNAMEINUSE,
+        VA((ident_.nickname_, newnick, "Nickname is already in use"))));
     return result_t::kOK;
   }
 
   server.eraseFromClientMap(ident_.nickname_);
-  server.addClient(ident_.nickname_, this);
+  server.addClient(newnick, this);
+
+  const std::string oldnick = ident_.nickname_;
 
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
     Channel &channel = *it->second;
-    channel.removeUser(this);
-    channel.addUser(this);
+    channel.changeUserName(oldnick, newnick);
+    channel.sendAll(Message::as_reply(oldnick, "NICK", VA((newnick))), this);
   }
 
   ident_.nickname_ = newnick;
 
+  send(Message::as_reply(oldnick, "NICK", VA((newnick))));
+
   return result_t::kOK;
 }
+
+/*
+
+:test1!root@root JOIN :#test
+:exictingirc 353 test1 = #test :test1
+:exictingirc 366 #test :End of /NAMES
+
+:test1!root@127.0.0.1 JOIN :#test
+:irc.local 353 test1 = #test :@test1
+:irc.local 366 test1 #test :End of /NAMES list.
+
+*/

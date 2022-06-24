@@ -50,6 +50,8 @@ class Channel {
 
   void removeUser(Client *client);
 
+  void changeUserName(const std::string &oldnick, const std::string &newnick);
+
   ClientMap getUsers();
 
  private:
