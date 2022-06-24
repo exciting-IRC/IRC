@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "util/algorithm/algorithm.hpp"
+#include "util/algorithm/functor.hpp"
+#include "util/irctype/irctype.hpp"
+
 namespace util {
 
 using std::string;
@@ -17,6 +21,9 @@ string to_string(const string& t);
 /// istringstream 에서 변환이 가능한 타입에 한해 해당 타입으로 변환
 template <typename T>
 T convert_to(const string& from);
+
+template <>
+uint16_t convert_to(const string& from);
 
 /// 문자열을 대문자로 변경
 string to_upper(string str);
