@@ -47,7 +47,10 @@ Client::Client(int sock, ClientList::iterator pos)
     : map_(&map_before_register_),
       sock_(sock),
       pos_(pos),
-      conn_state_(ConnState::kClear) {}
+      event_state_(EventKind::kNone),
+      conn_state_(ConnState::kClear) {
+  addEvent(EventKind::kRead);
+}
 
 Client::~Client() {
   for (ChannelMap::iterator it = joined_channels_.begin(),
@@ -86,7 +89,7 @@ void Client::send(const Message &msg) {
 void Client::send(const std::string &str) {
   util::debug_output(str);
   send_queue_.push(StringBuffer(str + "\r\n"));
-  server.getPool().addEvent(EventKind::kWrite, this);
+  addEvent(EventKind::kWrite);
 }
 
 void Client::sendRegisterMessage() {
@@ -129,7 +132,7 @@ result_t::e Client::handleWriteEvent(Event &e) {
   if (buffer.empty()) {
     send_queue_.pop();
     if (send_queue_.empty()) {
-      e.pool.removeEvent(EventKind::kWrite, this);
+      removeEvent(EventKind::kWrite);
     }
   }
   return result_t::kOK;
@@ -187,8 +190,9 @@ result_t::e Client::handleReadEvent(Event &e) {
     ParserResult::e result;
     while ((result = parser_.parse(recv_buffer_)) == ParserResult::kSuccess) {
       Message msg = parser_.getMessage();
-      if (processMessage(msg) == result_t::kError)
-        return result_t::kError;
+      result_t::e result = processMessage(msg);
+      if (result != result_t::kOK)
+        return result;
     }
     if (result == ParserResult::kFailure) {
       return result_t::kError;
@@ -207,18 +211,50 @@ ssize_t Client::recvToBuffer(size_t length) {
 }
 
 result_t::e Client::handle(Event e) {
+  result_t::e result;
   switch (e.kind) {
     case EventKind::kRead:
-      return handleReadEvent(e);
+      result = handleReadEvent(e);
+      break;
     case EventKind::kWrite:
-      return handleWriteEvent(e);
+      result = handleWriteEvent(e);
+      break;
     default:
-      return result_t::kError;
+      result = result_t::kError;
+      break;
   }
+  if (result == result_t::kClosing) {
+    removeEvent(EventKind::kRead);
+    result = result_t::kOK;
+  }
+  if (event_state_ == EventKind::kNone)
+    return result_t::kError;
+  return result;
 }
 
 void Client::handleError() {
-  server.removeClient(ident_.nickname_);
+  if (conn_state_ == ConnState::kRegistered)
+    server.removeClient(ident_.nickname_);
+  else
+    server.removeClient(pos_);
+}
+
+int Client::addEvent(EventKind::e kind) {
+  int result = result_t::kOK;
+  if (!(event_state_ & kind)) {
+    result = server.getPool().addEvent(kind, this);
+    event_state_ |= kind;
+  }
+  return result;
+}
+
+int Client::removeEvent(EventKind::e kind) {
+  int result = result_t::kOK;
+  if ((event_state_ & kind)) {
+    result = server.getPool().removeEvent(kind, this);
+    event_state_ &= (~kind);
+  }
+  return result;
 }
 
 result_t::e Client::ping(const Message &m) {
@@ -258,6 +294,7 @@ result_t::e Client::kill(const Message &m) {
     send(Message::as_not_enough_params_reply(m.command));
     return result_t::kOK;
   }
+
   const ClientMap &clients = server.getClients();
   if (clients.find(m.params[0]) == clients.end()) {
     send(Message::as_reply("", util::pad_num(util::ERR_NOSUCHNICK),
@@ -270,10 +307,10 @@ result_t::e Client::kill(const Message &m) {
     send(Message::as_reply(
         "", util::pad_num(util::ERR_NOPRIVILEGES),
         VA(("Permission Denied- You're not an IRC operator"))));
-    return result_t::kOK;
   } else {
-    return result_t::kError;
+    server.removeClient(m.params[0]);
   }
+  return result_t::kOK;
 }
 
 result_t::e Client::quit(const Message &m) {
@@ -289,7 +326,7 @@ result_t::e Client::quit(const Message &m) {
                     this);  // FIXME hostname이 아직 제대로 동작 안함
     channel.sendAll(reply, this);
   }
-  return result_t::kError;
+  return result_t::kClosing;
 }
 
 result_t::e Client::join(const Message &m) {
@@ -300,10 +337,8 @@ result_t::e Client::join(const Message &m) {
 
   if (m.params[0] == "0") {
     const Message partMsg = {
-      server.config_.name,
-      "PART",
-      VL((util::join(util::keys(joined_channels_), ",")))
-    };
+        server.config_.name, "PART",
+        VL((util::join(util::keys(joined_channels_), ",")))};
     part(partMsg);
     return result_t::kOK;
   }
@@ -413,9 +448,10 @@ result_t::e Client::registerPass(const Message &m) {
   }
 
   if (m.params[0] != server.config_.password) {
-    send(Message::as_numeric_reply(util::ERR_PASSWDMISMATCH,
-                                   VA(("Password incorrect"))));
-    return result_t::kOK;
+    // 표준에서는 이 상황에서 ERR_PASSWDMISMATCH를 반환하지만, 보안상의 이유로
+    // 일반화된 에러를 반환함.
+    sendError("Closing link: [Access denied by configuration]");
+    return result_t::kClosing;
   }
 
   ident_.password_ = m.params[0];
@@ -427,7 +463,7 @@ result_t::e Client::registerPass(const Message &m) {
 result_t::e Client::registerUser(const Message &m) {
   if (!(conn_state_ & ConnState::kPass)) {
     sendError("PASS needed before USER command.");
-    return result_t::kError;
+    return result_t::kClosing;
   }
 
   if (m.params.size() != 4) {
@@ -477,7 +513,7 @@ bool isValidNick(const std::string &nick) {
 result_t::e Client::registerNick(const Message &m) {
   if (!(conn_state_ & ConnState::kPass)) {
     sendError("PASS needed before NICK command.");
-    return result_t::kError;
+    return result_t::kClosing;
   }
   if (m.params.empty()) {
     send(Message::as_numeric_reply(util::ERR_NONICKNAMEGIVEN,
