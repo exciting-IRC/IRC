@@ -1,7 +1,6 @@
 #ifndef CLIENT_CLIENT_HPP
 #define CLIENT_CLIENT_HPP
 
-#include <algorithm>
 #include <list>
 #include <map>
 #include <queue>
@@ -9,12 +8,9 @@
 
 #include "client/IRCParser.hpp"
 #include "event/Event.hpp"
-#include "returncode.hpp"
 #include "socket/socket.hpp"
 #include "util/StringBuffer.hpp"
-#include "util/config/config.hpp"
-#include "util/strutil/strutil.hpp"
-#include "util/vargs/container_of.hpp"
+
 class Channel;
 
 #define VL(param) container_of<std::vector<util::LazyString> > param

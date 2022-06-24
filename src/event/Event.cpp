@@ -1,12 +1,5 @@
 #include "event/Event.hpp"
 
-#include <unistd.h>
-
-#include <cstring>
-#include <iostream>
-#include <new>
-#include <stdexcept>
-
 #include "event/kqueue/kqueue.hpp"
 #include "util/general/logging.hpp"
 #include "util/general/time.hpp"

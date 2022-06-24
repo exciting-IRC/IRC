@@ -1,16 +1,9 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <algorithm>
-#include <functional>
-#include <list>
-#include <map>
-#include <utility>
-
 #include "client/Client.hpp"
 #include "event/Event.hpp"
 #include "event/EventPool.hpp"
-#include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/config/config.hpp"
 #include "util/general/result.hpp"
 

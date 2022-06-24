@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 
 #include "util/general/result.hpp"
+
 namespace util {
 socket_t socket(int domain, int type, int protocol) {
   int sock = ::socket(domain, type, protocol);
