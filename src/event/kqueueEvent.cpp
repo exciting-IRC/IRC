@@ -74,7 +74,7 @@ int16_t convert_to_evfilt(EventKind::e kind) {
       return EVFILT_WRITE;
 
     default:
-      return 32767;
+      abort();
   }
 }
 
