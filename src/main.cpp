@@ -20,27 +20,30 @@
 #include "util/general/logging.hpp"
 #include "util/vargs/container_of.hpp"
 
-const static char *bind_addr = "0.0.0.0";
-
 static sig_atomic_t recived_sig;
+const static std::string config_file = "config.yml";
 
 void server_close_handler(int sig) { recived_sig = sig; }
 
 Server server;
 
-static util::Config init_config(const int argc, const char *argv[]) {
+static util::Config init_config(const int argc, const char* argv[]) {
   using namespace util;
-
-  Config config = util::Config::from("config.yml");
-  if (argc != 3) {
-    debug_info("warning:", "using defaults", false);
-    config.port = 6667;
-    config.password = "password";
-  } else {
-    config.port = convert_to<uint16_t>(argv[1]);
-    config.password = argv[2];
+  try {
+    Config config = util::Config::from(config_file);
+    if (argc != 3) {
+      debug_info("no port and password given:", "using defaults", false);
+      config.port = 6667;
+      config.password = "password";
+    } else {
+      config.port = convert_to<uint16_t>(argv[1]);
+      config.password = argv[2];
+    }
+    return config;
+  } catch (std::exception& e) {
+    debug_info("on reading:", e.what(), false);
+    exit(1);
   }
-  return config;
 }
 
 static void loop() {
@@ -50,7 +53,7 @@ static void loop() {
   util::debug_info("shutdown", strsignal(recived_sig));
 }
 
-int main(const int argc, const char *argv[]) {
+int main(const int argc, const char* argv[]) {
   using namespace util;
   using namespace std;
 
@@ -58,19 +61,18 @@ int main(const int argc, const char *argv[]) {
   signal(SIGTERM, server_close_handler);
 
   server.config_ = init_config(argc, argv);
-  cout << server.config_ << endl;
-
-  if (server.init(bind_addr, server.config_.port, 64) == result_t::kError) {
+  if (server.init(64) == result_t::kError) {
     debug_info("Fail at server initialization", strerror(errno), false);
     return 1;
   }
 
-  debug_info("Listen at",
-             FMT("{bind_addr}:{port}", (bind_addr, server.config_.port)));
+  cout << server.config_ << endl;
+  debug_info("Listen at", FMT("{address}:{port}",
+                              (server.config_.address, server.config_.port)));
 
   try {
     loop();
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     std::cerr << e.what() << std::endl;
   }
 

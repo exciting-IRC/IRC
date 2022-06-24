@@ -9,6 +9,7 @@
 #include <string>
 
 #include "util/FixedBuffer/array.hpp"
+#include "util/general/map_get.hpp"
 #include "util/general/time.hpp"
 #include "util/strutil/strutil.hpp"
 
@@ -28,6 +29,7 @@ struct Config {
   string oper_user;
   string oper_password;
 
+  string address;
   string password;
   uint16_t port;
 
@@ -37,13 +39,15 @@ struct Config {
 
   Config() {}
   Config(string name, string info, string motd, string oper_user,
-         string oper_password, string max_clients, string ping, string timeout)
+         string oper_password, string address, string max_clients, string ping,
+         string timeout)
       : name(name),
         create_time(get_current_time()),
         info(read_text(info)),
         motd(read_text(motd)),
         oper_user(oper_user),
         oper_password(oper_password),
+        address(address),
         max_clients(convert_to<uint32_t>(max_clients)),
         ping(convert_to<uint32_t>(ping)),
         timeout(convert_to<uint32_t>(timeout)) {}
@@ -61,9 +65,10 @@ struct Config {
         continue;
       m.insert(getkv(line));
     }
-    return Config(m.at("name"), m["info"], m["motd"], m["oper_user"],
-                  m["oper_password"], m.at("max_clients"), m.at("ping"),
-                  m.at("timeout"));
+    return Config(map_get(m, "name"), m["info"], m["motd"], m["oper_user"],
+                  m["oper_password"], map_get(m, "address"),
+                  map_get(m, "max_clients"), map_get(m, "ping"),
+                  map_get(m, "timeout"));
   }
 };
 

@@ -35,7 +35,7 @@ Server::~Server() {
   close(sock_);
 }
 
-result_t::e Server::init(const char *listen_addr, int port, int backlog) {
+result_t::e Server::init(int backlog) {
   sock_ = util::socket(PF_INET, SOCK_STREAM);
   if (sock_ == -1) {
     return result_t::kError;
@@ -50,13 +50,13 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   struct sockaddr_in addr;
 
   memset(&addr, 0, sizeof(addr));
-  in_addr_t in_addr = inet_addr(listen_addr);
+  in_addr_t in_addr = inet_addr(config_.address.c_str());
   if (in_addr == INADDR_NONE)
     return result_t::kError;
 
   addr.sin_addr.s_addr = in_addr;
   addr.sin_family = AF_INET;
-  addr.sin_port = htons(port);
+  addr.sin_port = htons(config_.port);
 
   if (util::bind_in(sock_, &addr) == result_t::kError)
     return result_t::kError;
