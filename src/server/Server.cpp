@@ -75,6 +75,12 @@ result_t::e Server::handle(Event e) {
     if (client_socket == -1)
       return result_t::kError;
 
+    int option = false;
+    if (util::setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &option,
+                         sizeof(option)) == -1) {
+      return result_t::kError;
+    }
+
     util::debug_info(
         "connection accpepted at",
         addr2ascii(AF_INET, &sin.sin_addr, sizeof(sin.sin_addr), NULL));

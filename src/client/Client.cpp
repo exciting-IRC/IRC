@@ -45,7 +45,7 @@ Client::Client(int sock, ClientList::iterator pos)
       event_state_(EventKind::kNone),
       conn_state_(ConnState::kClear) {
   addEvent(EventKind::kRead);
-  server.getPool().addTimer(TimerKind::kRegister, this, 60);
+  server.getPool().addTimer(TimerKind::kRegister, this, server.config_.timeout);
 }
 
 Client::~Client() {
@@ -57,6 +57,10 @@ Client::~Client() {
       it->second->removeUser(this);
     }
   }
+  server.getPool().removeTimer(TimerKind::kRegister, this,
+                               server.config_.timeout);
+  server.getPool().removeTimer(TimerKind::kPong, this, server.config_.timeout);
+  server.getPool().removeTimer(TimerKind::kPing, this, server.config_.ping);
   close(sock_);
 }
 
@@ -167,6 +171,9 @@ result_t::e Client::handleTimerEvent(Event &e) {
           FMT("Closing link: ({userinfo}) [Ping timeout: {timeout} seconds]",
               (ident_.toString(), server.config_.timeout)));
       return result_t::kClosing;
+
+    default:
+      return result_t::kError;
   }
 }
 
@@ -221,6 +228,9 @@ result_t::e Client::handle(Event e) {
     case EventKind::kTimer:
       result = handleTimerEvent(e);
       break;
+    default:
+      result = result_t::kError;
+      break;
   }
   if (result == result_t::kClosing) {
     removeEvent(EventKind::kRead);
@@ -257,7 +267,8 @@ int Client::removeEvent(EventKind::e kind) {
 }
 
 result_t::e Client::pong(const Message &m) {
-  server.getPool().removeTimer(TimerKind::kPong, this, server.config_.ping);
+  (void)m;
+  server.getPool().removeTimer(TimerKind::kPong, this, server.config_.timeout);
   return result_t::kOK;
 }
 
@@ -267,6 +278,8 @@ result_t::e Client::ping(const Message &m) {
                                    VA(("No origin specified"))));
     return result_t::kOK;
   }
+  server.getPool().removeTimer(TimerKind::kPong, this, server.config_.timeout);
+  server.getPool().addTimer(TimerKind::kPing, this, server.config_.ping);
   send(FMT(":{0} PONG {0} :{1}", (server.config_.name, m.params[0])));
   return result_t::kOK;
 }
@@ -561,7 +574,8 @@ void Client::completeRegister() {
   server.addClient(ident_.nickname_, this);
 
   server.getPool().addTimer(TimerKind::kPing, this, server.config_.ping);
-  server.getPool().removeTimer(TimerKind::kRegister, this, 60);
+  server.getPool().removeTimer(TimerKind::kRegister, this,
+                               server.config_.timeout);
 
   updateCommandMap();
   sendRegisterMessage();

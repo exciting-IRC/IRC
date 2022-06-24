@@ -86,7 +86,7 @@ class Client : public IEventHandler {
 
   void sendError(const std::string &msg);
 
-  void Client::sendPing();
+  void sendPing();
 
   const UserIdent &getIdent();
 
