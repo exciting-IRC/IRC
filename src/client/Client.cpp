@@ -255,13 +255,15 @@ result_t::e Client::oper(const Message &m) {
 
   if (is_ok) {
     ident_.mode_ |= UserMode::o;
-    send(Message::as_numeric_reply(util::RPL_YOUAREOPER,
-                                   VA(("You are now an IRC operator"))));
+    send(Message::as_numeric_reply(
+        util::RPL_YOUAREOPER,
+        VA((ident_.nickname_, "You are now an IRC operator"))));
     return result_t::kOK;
   } else {  // 보안적인 이유로 비밀번호가 틀렸을 때, 유저네임이 틀렸을 때 모두
             // 같은 에러로 응답함.
-    send(Message::as_numeric_reply(util::ERR_NOOPERHOST,
-                                   VA(("No O-lines for your host"))));
+    send(Message::as_numeric_reply(
+        util::ERR_NOOPERHOST,
+        VA((ident_.nickname_, "Invalid oper credentials"))));
     return result_t::kOK;
   }
 }
@@ -272,8 +274,9 @@ result_t::e Client::kill(const Message &m) {
     return result_t::kOK;
   }
 
-  const ClientMap &clients = server.getClients();
-  if (clients.find(m.params[0]) == clients.end()) {
+  ClientMap &clients = server.getClients();
+  ClientMap::iterator target_it = clients.find(m.params[0]);
+  if (target_it == clients.end()) {
     send(Message::as_reply("", util::pad_num(util::ERR_NOSUCHNICK),
                            VA((m.params[0], "No such nick/channel"))));
     return result_t::kOK;
@@ -285,7 +288,12 @@ result_t::e Client::kill(const Message &m) {
         "", util::pad_num(util::ERR_NOPRIVILEGES),
         VA(("Permission Denied- You're not an IRC operator"))));
   } else {
-    return result_t::kError;
+    Client &target = *target_it->second;
+    target.send(Message::as_reply(ident_.toString(), "KILL",
+                                  VA((ident_.nickname_, "Killed"))));
+    target.sendError(
+        FMT("Closing link: {ident} [ Killed ]", (ident_.toString())));
+    target.removeEvent(EventKind::kRead);
   }
   return result_t::kOK;
 }
@@ -326,7 +334,7 @@ result_t::e Client::join(const Message &m) {
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
-      //      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
+      // send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
       sendList(FMT(":{server} {code} {nick} = {channel} :",
                    (server.config_.name, util::pad_num(util::RPL_NAMREPLY),
