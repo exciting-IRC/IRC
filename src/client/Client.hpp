@@ -8,8 +8,8 @@
 #include <string>
 
 #include "client/IRCParser.hpp"
-#include "command/returncode.hpp"
 #include "event/event.hpp"
+#include "returncode.hpp"
 #include "socket/socket.hpp"
 #include "util/StringBuffer.hpp"
 #include "util/config/config.hpp"

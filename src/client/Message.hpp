@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "command/returncode.hpp"
+#include "returncode.hpp"
 #include "util/LazyString/LazyString.hpp"
 #include "util/algorithm/algorithm.hpp"
 #include "util/config/config.hpp"
