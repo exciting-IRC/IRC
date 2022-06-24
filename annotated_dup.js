@@ -12,15 +12,14 @@ var annotated_dup =
       [ "LazyString", "classutil_1_1LazyString.html", "classutil_1_1LazyString" ],
       [ "RecvFlag_t", "structutil_1_1RecvFlag__t.html", null ],
       [ "SendFlag_t", "structutil_1_1SendFlag__t.html", null ],
-      [ "SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ],
-      [ "User", "structutil_1_1User.html", null ]
+      [ "SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ]
     ] ],
     [ "vec_of_any", "namespacevec__of__any.html", [
       [ "Template", "classvec__of__any_1_1Template.html", null ],
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
     [ "Channel", "classChannel.html", null ],
-    [ "ChannelMode", "structChannelMode.html", null ],
+    [ "ChannelMode", "structChannelMode.html", "structChannelMode" ],
     [ "Client", "classClient.html", "classClient" ],
     [ "ConnState", "structConnState.html", null ],
     [ "Event", "structEvent.html", null ],
@@ -36,5 +35,5 @@ var annotated_dup =
     [ "Server", "classServer.html", null ],
     [ "StringBuffer", "classStringBuffer.html", null ],
     [ "UserIdent", "structUserIdent.html", null ],
-    [ "UserMode", "structUserMode.html", null ]
+    [ "UserMode", "structUserMode.html", "structUserMode" ]
 ];

@@ -71,7 +71,9 @@ var NAVTREE =
       [ "클래스 계통도", "hierarchy.html", "hierarchy" ],
       [ "클래스 멤버", "functions.html", [
         [ "모두", "functions.html", null ],
-        [ "함수", "functions_func.html", null ]
+        [ "함수", "functions_func.html", null ],
+        [ "열거형 타입", "functions_enum.html", null ],
+        [ "열거형 멤버", "functions_eval.html", null ]
       ] ]
     ] ],
     [ "파일들", "files.html", [
