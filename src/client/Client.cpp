@@ -38,7 +38,7 @@ const Client::CmdMap Client::map_after_register_ =
         p("PONG", &Client::pong));
 /*CLIENT===============================*/
 
-Client::Client(int sock, ClientList::iterator pos)
+Client::Client(int sock, struct sockaddr_in addr, ClientList::iterator pos)
     : map_(&map_before_register_),
       sock_(sock),
       pos_(pos),
@@ -46,6 +46,7 @@ Client::Client(int sock, ClientList::iterator pos)
       conn_state_(ConnState::kClear) {
   addEvent(EventKind::kRead);
   server.getPool().addTimer(TimerKind::kRegister, this, server.config_.timeout);
+  ident_.addr_ = addr;
 }
 
 Client::~Client() {
@@ -500,7 +501,11 @@ result_t::e Client::registerUser(const Message &m) {
   }
 
   ident_.username_ = m.params[0];
-  ident_.hostname_ = m.params[1];
+
+  // TODO rDNS 쿼리로 검증
+  // ident_.hostname_ = m.params[1];
+  ident_.hostname_ = inet_ntoa(ident_.addr_.sin_addr);
+
   ident_.servername_ = m.params[2];
   ident_.realname_ = m.params[3];
 

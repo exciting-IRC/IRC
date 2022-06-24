@@ -56,7 +56,7 @@ struct ConnState {
 
 class Client : public IEventHandler {
  public:
-  Client(int sock, ClientList::iterator pos);
+  Client(int sock, struct sockaddr_in addr, ClientList::iterator pos);
 
   virtual ~Client();
 

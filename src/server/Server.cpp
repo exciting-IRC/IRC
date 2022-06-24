@@ -88,7 +88,7 @@ result_t::e Server::handle(Event e) {
     ClientList::iterator entry =
         unregistered_clients_.insert(unregistered_clients_.end(), NULL);
 
-    *entry = new Client(client_socket, entry);
+    *entry = new Client(client_socket, sin, entry);
     return result_t::kOK;
   } else {
     return result_t::kError;  // unknown event
