@@ -326,12 +326,15 @@ result_t::e Client::join(const Message &m) {
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
-      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
+      //      send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
-      sendList(Message::as_numeric_reply(util::RPL_NAMREPLY, VA(())),
+      sendList(FMT(":{server} {code} {nick} = {channel} :",
+                   (server.config_.name, util::pad_num(util::RPL_NAMREPLY),
+                    ident_.nickname_, *it)),
                util::keys(new_channel->getUsers()),
-               Message::as_numeric_reply(util::RPL_ENDOFNAMES,
-                                         VA(("End of /NAMES"))));
+               Message::as_numeric_reply(
+                   util::RPL_ENDOFNAMES,
+                   VA((ident_.nickname_, *it, "End of /NAMES"))));
     } else {
       send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
                                      VA((*it, "No such channel"))));
@@ -571,3 +574,15 @@ result_t::e Client::nick(const Message &m) {
 
   return result_t::kOK;
 }
+
+/*
+
+:test1!root@root JOIN :#test
+:exictingirc 353 test1 = #test :test1
+:exictingirc 366 #test :End of /NAMES
+
+:test1!root@127.0.0.1 JOIN :#test
+:irc.local 353 test1 = #test :@test1
+:irc.local 366 test1 #test :End of /NAMES list.
+
+*/
