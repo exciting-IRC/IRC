@@ -67,6 +67,9 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   if (pool_.init(backlog) == result_t::kError)
     return result_t::kError;
 
+  if (getPool().addEvent(EventKind::kRead, this) == result_t::kError)
+    return result_t::kError;
+
   return result_t::kOK;
 }
 
