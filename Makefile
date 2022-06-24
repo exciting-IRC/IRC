@@ -1,11 +1,9 @@
 
 NAME := ircserv
-
 MAKEFLAGS += -j
 
 CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
-
 CXXFLAGS += -I src
 CXXFLAGS += -MMD -MP
 
@@ -39,5 +37,7 @@ run: all
 
 say:
 	@echo $(SRC)
+
+.PHONY: all clean fclean re run say
 
 include color.mk
