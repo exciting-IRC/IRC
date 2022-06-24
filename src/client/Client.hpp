@@ -111,6 +111,10 @@ class Client : public IEventHandler {
 
   void handleError();
 
+  int addEvent(EventKind::e kind);
+
+  int removeEvent(EventKind::e kind);
+
   result_t::e ping(const Message &m);
 
   result_t::e oper(const Message &m);
@@ -157,6 +161,7 @@ class Client : public IEventHandler {
   ClientList::iterator pos_;
   UserIdent ident_;
   ChannelMap joined_channels_;
+  unsigned int event_state_;
   unsigned int conn_state_;
   util::Buffer recv_buffer_;
   std::queue<StringBuffer> send_queue_;

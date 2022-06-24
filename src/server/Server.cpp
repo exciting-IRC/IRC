@@ -92,7 +92,6 @@ result_t::e Server::handle(Event e) {
         unregistered_clients_.insert(unregistered_clients_.end(), NULL);
 
     *entry = new Client(client_socket, entry);
-    e.pool.addEvent(EventKind::kRead, *entry);
     return result_t::kOK;
   } else {
     return result_t::kError;  // unknown event
