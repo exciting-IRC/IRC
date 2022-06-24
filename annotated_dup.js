@@ -34,6 +34,7 @@ var annotated_dup =
     [ "result_t", "structresult__t.html", null ],
     [ "Server", "classServer.html", null ],
     [ "StringBuffer", "classStringBuffer.html", null ],
+    [ "TimerKind", "structTimerKind.html", null ],
     [ "UserIdent", "structUserIdent.html", null ],
     [ "UserMode", "structUserMode.html", "structUserMode" ]
 ];

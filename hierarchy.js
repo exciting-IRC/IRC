@@ -34,6 +34,7 @@ var hierarchy =
     [ "StringBuffer", "classStringBuffer.html", null ],
     [ "container_of.Template", "classcontainer__of_1_1Template.html", null ],
     [ "vec_of_any.Template", "classvec__of__any_1_1Template.html", null ],
+    [ "TimerKind", "structTimerKind.html", null ],
     [ "UserIdent", "structUserIdent.html", null ],
     [ "UserMode", "structUserMode.html", null ],
     [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
