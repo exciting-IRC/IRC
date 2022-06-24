@@ -65,9 +65,23 @@ int EventPool::close() {
   return ret;
 }
 
+int16_t convert_to_evfilt(EventKind::e kind) {
+  switch (kind) {
+    case EventKind::kRead:
+      return EVFILT_READ;
+
+    case EventKind::kWrite:
+      return EVFILT_WRITE;
+
+    default:
+      return 32767;
+  }
+}
+
 struct kevent create_kevent(EventKind::e kind, IEventHandler *eh,
                             uint16_t flag) {
-  struct kevent ev = {eh->getFd(), kind, flag, 0, 0, static_cast<void *>(eh)};
+  struct kevent ev = {eh->getFd(), convert_to_evfilt(kind), flag, 0,
+                      0,           static_cast<void *>(eh)};
 
   return ev;
 }
