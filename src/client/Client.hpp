@@ -48,7 +48,7 @@ struct UserMode {
 };
 
 struct UserIdent {
-  std::string toString() {
+  std::string toString() const {
     return nickname_ + "!" + username_ + "@" + hostname_;
   }
   std::string password_;
@@ -103,7 +103,7 @@ class Client : public IEventHandler {
 
   void sendError(const std::string &msg);
 
-  std::string &getNick();
+  const UserIdent &getIdent();
 
   result_t::e handleWriteEvent(Event &e);
 

@@ -56,7 +56,7 @@ Client::~Client() {
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
-    it->second->removeUser(ident_.nickname_);
+    it->second->removeUser(this);
   }
   close(sock_);
 }
@@ -136,7 +136,7 @@ void Client::sendError(const std::string &msg) {
   send(FMT("ERROR :{message}", (msg)));
 }
 
-std::string &Client::getNick() { return ident_.nickname_; }
+const UserIdent &Client::getIdent() { return ident_; }
 
 result_t::e Client::processMessage(const Message &m) {
   CmdMap::const_iterator it = map_->find(util::to_upper(m.command));
@@ -301,7 +301,6 @@ result_t::e Client::quit(const Message &m) {
     channel.sendAll(FMT("ERROR :Closing link: ({user}@{host}) [{msg}]",
                         (ident_.username_, ident_.hostname_, m.params[0])),
                     this);  // FIXME hostname이 아직 제대로 동작 안함
-    channel.sendAll(reply, this);
   }
   return result_t::kClosing;
 }
@@ -326,8 +325,6 @@ result_t::e Client::join(const Message &m) {
        it != end; ++it) {
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
-      new_channel->sendAll(
-          Message::as_reply(ident_.toString(), "JOIN", VA((*it))), NULL);
       joined_channels_.insert(std::make_pair(*it, new_channel));
       send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
@@ -359,8 +356,7 @@ result_t::e Client::part(const Message &m) {
                                      VA((*it, "You're not on that channel"))));
     } else {
       Channel *ch = channel->second;
-
-      ch->removeUser(ident_.nickname_);
+      ch->removeUser(this);
       joined_channels_.erase(channel);
       if (ch->getUsers().empty()) {
         server.removeChannel(*it);
@@ -567,8 +563,8 @@ result_t::e Client::nick(const Message &m) {
                             end = joined_channels_.end();
        it != end; ++it) {
     Channel &channel = *it->second;
-    channel.removeUser(ident_.nickname_);
-    channel.addUser(newnick, this);
+    channel.removeUser(this);
+    channel.addUser(this);
   }
 
   ident_.nickname_ = newnick;
