@@ -141,7 +141,9 @@ Channel *Server::addUserToChannel(const std::string &channel_name,
 }
 
 void Server::removeChannel(const std::string &channel_name) {
-  channels_.erase(channel_name);
+  ChannelMap::iterator channel_it = channels_.find(channel_name);
+  delete channel_it->second;
+  channels_.erase(channel_it);
 }
 
 ClientMap &Server::getClients() { return clients_; }
