@@ -285,7 +285,7 @@ result_t::e Client::kill(const Message &m) {
         "", util::pad_num(util::ERR_NOPRIVILEGES),
         VA(("Permission Denied- You're not an IRC operator"))));
   } else {
-    server.removeClient(m.params[0]);
+    return result_t::kError;
   }
   return result_t::kOK;
 }
@@ -326,11 +326,15 @@ result_t::e Client::join(const Message &m) {
        it != end; ++it) {
     Channel *new_channel = server.addUserToChannel(*it, this);
     if (new_channel) {
+      new_channel->sendAll(
+          Message::as_reply(ident_.toString(), "JOIN", VA((*it))), NULL);
       joined_channels_.insert(std::make_pair(*it, new_channel));
       send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
-      send(Message::as_numeric_reply(
-          util::RPL_NAMREPLY,
-          VA((*it, util::join(util::keys(new_channel->getUsers()), " ")))));
+
+      sendList(Message::as_numeric_reply(util::RPL_NAMREPLY, VA(())),
+               util::keys(new_channel->getUsers()),
+               Message::as_numeric_reply(util::RPL_ENDOFNAMES,
+                                         VA(("End of /NAMES"))));
     } else {
       send(Message::as_numeric_reply(util::ERR_NOSUCHCHANNEL,
                                      VA((*it, "No such channel"))));
