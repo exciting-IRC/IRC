@@ -12,9 +12,6 @@
 #include "util/StringBuffer.hpp"
 
 class Channel;
-
-#define VL(param) container_of<std::vector<util::LazyString> > param
-
 struct Message;
 class Client;
 

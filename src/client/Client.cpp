@@ -321,10 +321,9 @@ result_t::e Client::join(const Message &m) {
   }
 
   if (m.params[0] == "0") {
-    const Message partMsg = {
-        server.config_.name, "PART",
-        VL((util::join(util::keys(joined_channels_), ",")))};
-    part(partMsg);
+    part(
+        Message::as_reply(server.config_.name, "PART",
+                          VA((util::join(util::keys(joined_channels_), ",")))));
     return result_t::kOK;
   }
 
