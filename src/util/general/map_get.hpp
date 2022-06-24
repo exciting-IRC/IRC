@@ -8,9 +8,10 @@
 namespace util {
 using std::map;
 
-template <typename K, typename V>
-const V& map_get(const map<K, V>& m, const K& k) {
-  typename map<K, V>::const_iterator it = m.find(k);
+template <typename C>
+const typename C::mapped_type& map_get(const C& m,
+                                       const typename C::key_type& k) {
+  typename C::const_iterator it = m.find(k);
 
   if (it == m.end())
     throw std::out_of_range("tried to get non-existent key" + to_string(k));
@@ -18,9 +19,11 @@ const V& map_get(const map<K, V>& m, const K& k) {
   return it->second;
 }
 
-template <typename K, typename V>
-const V& map_get(const map<K, V>& m, const K& k, const V& default_value) {
-  typename map<K, V>::const_iterator it = m.find(k);
+template <typename C>
+const typename C::mapped_type& map_get(
+    const C& m, const typename C::key_type& k,
+    const typename C::mapped_type& default_value) {
+  typename C::const_iterator it = m.find(k);
 
   if (it == m.end())
     return default_value;

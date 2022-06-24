@@ -1,8 +1,8 @@
 #ifndef STRUTIL_HPP
 #define STRUTIL_HPP
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 namespace util {
 using std::string;

@@ -3,9 +3,7 @@ name: exictingirc
 info: asset/info.txt # 서버 정보
 motd: asset/motd.txt # 오늘의 문구 (Message Of The Day)
 
-# 개발자 정보
-# admin_motd: asset/admin.txt # 관리자로 접속 시 문구
-# admin_emails: <cjeon@student.42.fr>, <youkim@student.42.fr>
+address: 0.0.0.0
 
 # 관리자 정보
 oper_user: admin # 관리자 계정 이름
