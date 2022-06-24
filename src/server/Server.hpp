@@ -1,14 +1,12 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <list>
-#include <map>
-
 #include "client/Client.hpp"
-#include "event/event.hpp"
-#include "util/FixedBuffer/FixedBuffer.hpp"
+#include "event/Event.hpp"
+#include "event/EventPool.hpp"
 #include "util/config/config.hpp"
 #include "util/general/result.hpp"
+
 class Server;
 class Client;
 class ClientConn;
@@ -16,22 +14,16 @@ class ClientConn;
 typedef std::list<Client *> ClientList;
 typedef std::map<std::string, Client *> ClientMap;
 
-/**
- * p - private channel flag;
- * s - secret channel flag;
- * i - invite-only channel flag;
- * t - topic settable by channel operator only flag;
- * n - no messages to channel from clients on the outside;
- * m - moderated channel;
- *
- */
 struct ChannelMode {
-  enum e { p, s, i, t, n, m };
+  enum e {
+    p,  ///< private channel flag;
+    s,  ///< secret channel flag;
+    i,  ///< invite-only channel flag;
+    t,  ///< topic settable by channel operator only flag;
+    n,  ///< no messages to channel from clients on the outside;
+    m   ///< moderated channel;
+  };
 };
-
-#include <algorithm>
-#include <functional>
-#include <utility>
 
 class Channel {
  public:

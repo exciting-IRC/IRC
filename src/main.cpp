@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "event/event.hpp"
+#include "event/Event.hpp"
 #include "server/Server.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"

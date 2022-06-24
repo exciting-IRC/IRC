@@ -4,8 +4,6 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#include <bitset>
-
 #include "util/general/result.hpp"
 #include "util/general/types.hpp"
 

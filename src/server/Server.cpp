@@ -1,20 +1,11 @@
 #include "Server.hpp"
 
-#include <err.h>
-#include <string.h>
 #include <unistd.h>
 
-#include <algorithm>
-#include <iostream>
-#include <list>
-
 #include "client/Client.hpp"
-#include "event/event.hpp"
+#include "event/Event.hpp"
 #include "socket/socket.hpp"
-#include "util/FixedBuffer/FixedBuffer.hpp"
-#include "util/color.hpp"
 #include "util/general/logging.hpp"
-#include "util/strutil/format.hpp"
 
 Server::Server() : config_(), sock_(-1) {}
 
@@ -32,7 +23,7 @@ Server::~Server() {
        it != end; ++it) {
     delete it->second;
   }
-  close(sock_);
+  ::close(sock_);
 }
 
 result_t::e Server::init(int backlog) {

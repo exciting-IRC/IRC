@@ -1,29 +1,10 @@
+#include "EventPool.hpp"
+
 #include <unistd.h>
 
-#include <cstring>
-#include <iostream>
-#include <new>
-#include <stdexcept>
-
-#include "event/event.hpp"
-#include "event/kqueue/kqueue.hpp"
+#include "kqueue/kqueue.hpp"
+#include "util/general/logging.hpp"
 #include "util/general/time.hpp"
-
-Event::Event(EventPool &pool_) : pool(pool_), flags() {}
-
-void Event::setReadEvent(const struct kevent &kev) {
-  this->kind = EventKind::kRead;
-  this->data = kev.data;
-  if (kev.flags & EV_EOF)
-    this->flags.set(EventFlag::kEOF);
-}
-
-void Event::setWriteEvent(const struct kevent &kev) {
-  this->kind = EventKind::kWrite;
-  this->data = kev.data;
-  if (kev.flags & EV_EOF)
-    this->flags.set(EventFlag::kEOF);
-}
 
 result_t::e EventPool::initKqueue() {
   fd_ = util::kqueue();
@@ -74,6 +55,7 @@ int16_t convert_to_evfilt(EventKind::e kind) {
       return EVFILT_WRITE;
 
     default:
+      util::debug_info("aborting due to unknown EventKind:", kind, false);
       abort();
   }
 }
@@ -106,7 +88,7 @@ int EventPool::dispatchEvent(time_t sec) {
 
 int EventPool::handleEvent(struct kevent &kev) {
   if (kev.flags & EV_ERROR) {
-    // log
+    util::debug("kevent flags got EV_ERROR", false);
     return -1;
   }
   Event ev(*this);
@@ -119,7 +101,7 @@ int EventPool::handleEvent(struct kevent &kev) {
       ev.setWriteEvent(kev);
       break;
     default:
-      // XXX add log
+      util::debug_info("Unknown kevent filter:", kev.filter, false);
       break;
   }
   IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);

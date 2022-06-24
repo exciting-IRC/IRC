@@ -18,7 +18,6 @@ struct EventFlag {
   enum e { kEmpty = 0, kEOF = 1 };
 };
 
-// forward declearation
 class EventPool;
 
 struct Event {
@@ -37,42 +36,6 @@ class IEventHandler {
   virtual result_t::e handle(Event e) = 0;
   virtual void handleError() = 0;
   virtual int getFd() const = 0;
-};
-
-class EventPool {
- public:
-  EventPool();
-  ~EventPool();
-
- private:
-  EventPool(const EventPool &);             // = delete;
-  EventPool &operator=(const EventPool &);  // = delete;
-
- public:
-  result_t::e init(int max_event);
-
-  int close();
-
-  int addEvent(EventKind::e kind, IEventHandler *eh);
-
-  int removeEvent(EventKind::e kind, IEventHandler *eh);
-
-  int dispatchEvent(time_t sec);
-
-  int dispatchEvent(const struct timespec &ts);
-
- private:
-  int handleEvent(struct kevent &kev);
-
- private:
-  result_t::e initKqueue();
-  result_t::e initEventList();
-
- private:
-  struct kevent *event_list_;
-  int fd_;
-  int max_event_;
-  bool is_fd_open_;
 };
 
 #endif  // EVENT_EVENT_HPP

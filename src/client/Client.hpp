@@ -1,34 +1,17 @@
 #ifndef CLIENT_CLIENT_HPP
 #define CLIENT_CLIENT_HPP
 
-#include <algorithm>
 #include <list>
 #include <map>
 #include <queue>
 #include <string>
 
 #include "client/IRCParser.hpp"
-#include "command/returncode.hpp"
-#include "event/event.hpp"
+#include "event/Event.hpp"
 #include "socket/socket.hpp"
 #include "util/StringBuffer.hpp"
-#include "util/config/config.hpp"
-#include "util/strutil/strutil.hpp"
-#include "util/vargs/container_of.hpp"
+
 class Channel;
-
-#define VL(param) container_of<std::vector<util::LazyString> > param
-
-/**
- *a - user is flagged as away;
- *i - marks a users as invisible;
- *w - user receives wallops;
- *r - restricted user connection;
- *o - operator flag;
- *O - local operator flag;
- *s - marks a user for receipt of server notices. (deprecated)
- */
-
 struct Message;
 class Client;
 
@@ -37,13 +20,13 @@ typedef std::list<Client *> ClientList;
 struct UserMode {
   enum e {
     clear = 0,
-    a = (1 << 0),
-    r = (1 << 1),
-    w = (1 << 2),
-    i = (1 << 3),
-    o = (1 << 4),
-    O = (1 << 5),
-    s = (1 << 6)
+    a = (1 << 0),  ///< user is flagged as away;
+    r = (1 << 1),  ///< marks a users as invisible;
+    w = (1 << 2),  ///< user receives wallops;
+    i = (1 << 3),  ///< restricted user connection;
+    o = (1 << 4),  ///< operator flag;
+    O = (1 << 5),  ///< local operator flag;
+    s = (1 << 6)   ///< marks a user for receipt of server notices. (deprecated)
   };
 };
 
@@ -149,7 +132,7 @@ class Client : public IEventHandler {
 
   result_t::e handleReceive(Event &e);
 
-  void complateRegister();
+  void completeRegister();
 
   void updateCommandMap();
 

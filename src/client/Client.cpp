@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "command/returncode.hpp"
+#include "returncode.hpp"
 #include "server/Server.hpp"
 #include "util/algorithm/algorithm.hpp"
 #include "util/color.hpp"
@@ -321,10 +321,9 @@ result_t::e Client::join(const Message &m) {
   }
 
   if (m.params[0] == "0") {
-    const Message partMsg = {
-        server.config_.name, "PART",
-        VL((util::join(util::keys(joined_channels_), ",")))};
-    part(partMsg);
+    part(
+        Message::as_reply(server.config_.name, "PART",
+                          VA((util::join(util::keys(joined_channels_), ",")))));
     return result_t::kOK;
   }
 
@@ -467,7 +466,7 @@ result_t::e Client::registerUser(const Message &m) {
 
   conn_state_ |= ConnState::kUser;
   if (conn_state_ == ConnState::kRegistered)
-    complateRegister();
+    completeRegister();
   return result_t::kOK;
 }
 
@@ -525,12 +524,12 @@ result_t::e Client::registerNick(const Message &m) {
   ident_.nickname_ = nick;
   conn_state_ |= ConnState::kNick;
   if (conn_state_ == ConnState::kRegistered)
-    complateRegister();
+    completeRegister();
 
   return result_t::kOK;
 }
 
-void Client::complateRegister() {
+void Client::completeRegister() {
   server.eraseFromClientList(pos_);
   server.addClient(ident_.nickname_, this);
 
