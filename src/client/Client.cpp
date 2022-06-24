@@ -39,7 +39,7 @@ const Client::CmdMap Client::map_after_register_ =
         p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
         p("KILL", &Client::kill), p("OPER", &Client::oper),
         p("MODE", &Client::mode), p("PART", &Client::part),
-        p("PASS", &Cgitlient::alredyRegistered),
+        p("PASS", &Client::alredyRegistered),
         p("USER", &Client::alredyRegistered), p("NICK", &Client::nick));
 /*CLIENT===============================*/
 
