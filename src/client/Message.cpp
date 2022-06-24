@@ -7,9 +7,18 @@ void Message::clear() {
   params.clear();
 }
 
+Message::operator std::string() const { return util::to_string(*this); }
+
 Message Message::as_reply(const std::string& prefix, const std::string& command,
                           const std::vector<std::string>& params) {
-  std::vector<util::LazyString> lazy_params(params.begin(), params.end());
+  typedef std::vector<util::LazyString> lazyvec;
+  typedef std::vector<std::string>::const_iterator const_it;
+
+  lazyvec lazy_params;
+  lazy_params.reserve(params.size());
+  for (const_it it = params.begin(); it != params.end(); ++it) {
+    lazy_params.push_back(util::LazyString(*it));
+  }
 
   Message reply = {util::LazyString(prefix), util::LazyString(command),
                    lazy_params};
@@ -24,4 +33,25 @@ Message Message::as_numeric_reply(util::returnCode code,
 Message Message::as_not_enough_params_reply(std::string command) {
   return as_numeric_reply(util::ERR_NEEDMOREPARAMS,
                           VA((command, "Not enough parameters")));
+}
+
+std::ostream& operator<<(std::ostream& os, const Message& msg) {
+  typedef std::vector<util::LazyString>::const_iterator const_it;
+
+  if (not msg.prefix.empty()) {
+    os << ":" << msg.prefix << " ";
+  }
+
+  os << msg.command;
+
+  if (not msg.params.empty()) {
+    for (const_it it = msg.params.begin(), end = util::prev(msg.params.end());
+         it != end; ++it) {
+      os << " " + *it;
+    }
+    os << " :" << *msg.params.rbegin();
+  } else {
+    os << " :";
+  }
+  return os;
 }

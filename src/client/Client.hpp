@@ -89,8 +89,6 @@ class Client : public IEventHandler {
  public:
   int getFd() const;
 
-  void send(const Message &msg);
-
   void send(const std::string &str);
 
   void sendRegisterMessage();
