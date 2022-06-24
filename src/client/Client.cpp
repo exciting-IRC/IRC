@@ -555,30 +555,36 @@ result_t::e Client::nick(const Message &m) {
 
   const std::string &newnick = m.params[0];
   if (!isValidNick(newnick)) {
-    send(Message::as_numeric_reply(util::ERR_ERRONEUSNICKNAME,
-                                   VA((newnick, "Erroneous nickname"))));
+    send(Message::as_numeric_reply(
+        util::ERR_ERRONEUSNICKNAME,
+        VA((ident_.nickname_, newnick, "Erroneous nickname"))));
     return result_t::kOK;
   }
 
   ClientMap clients = server.getClients();
   if (clients.find(newnick) != clients.end()) {
     send(Message::as_numeric_reply(
-        util::ERR_NICKNAMEINUSE, VA((newnick, "Nickname is already in use"))));
+        util::ERR_NICKNAMEINUSE,
+        VA((ident_.nickname_, newnick, "Nickname is already in use"))));
     return result_t::kOK;
   }
 
   server.eraseFromClientMap(ident_.nickname_);
-  server.addClient(ident_.nickname_, this);
+  server.addClient(newnick, this);
+
+  const std::string oldnick = ident_.nickname_;
 
   for (ChannelMap::iterator it = joined_channels_.begin(),
                             end = joined_channels_.end();
        it != end; ++it) {
     Channel &channel = *it->second;
-    channel.removeUser(this);
-    channel.addUser(this);
+    channel.changeUserName(oldnick, newnick);
+    channel.sendAll(Message::as_reply(oldnick, "NICK", VA((newnick))), this);
   }
 
   ident_.nickname_ = newnick;
+
+  send(Message::as_reply(oldnick, "NICK", VA((newnick))));
 
   return result_t::kOK;
 }

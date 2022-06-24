@@ -164,4 +164,13 @@ void Channel::removeUser(Client *client) {
   users_.erase(client->getIdent().nickname_);
 }
 
+void Channel::changeUserName(const std::string &oldnick,
+                             const std::string &newnick) {
+  ClientMap::iterator user_it = users_.find(oldnick);
+
+  Client *user = user_it->second;
+  users_.erase(user_it);
+  users_.insert(ClientMap::value_type(newnick, user));
+}
+
 ClientMap Channel::getUsers() { return users_; }
