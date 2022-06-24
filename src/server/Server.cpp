@@ -67,6 +67,9 @@ result_t::e Server::init(const char *listen_addr, int port, int backlog) {
   if (pool_.init(backlog) == result_t::kError)
     return result_t::kError;
 
+  if (getPool().addEvent(EventKind::kRead, this) == result_t::kError)
+    return result_t::kError;
+
   return result_t::kOK;
 }
 
@@ -89,7 +92,6 @@ result_t::e Server::handle(Event e) {
         unregistered_clients_.insert(unregistered_clients_.end(), NULL);
 
     *entry = new Client(client_socket, entry);
-    e.pool.addEvent(EventKind::kRead, *entry);
     return result_t::kOK;
   } else {
     return result_t::kError;  // unknown event

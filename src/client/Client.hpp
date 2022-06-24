@@ -89,13 +89,11 @@ class Client : public IEventHandler {
  public:
   int getFd() const;
 
-  void send(const Message &msg);
-
   void send(const std::string &str);
 
   template <typename Cont>
-  void sendList(const Message list_base, const Cont &list,
-                const Message list_end);
+  void sendList(const std::string &list_base, const Cont &list,
+                const std::string &list_end);
 
   void sendRegisterMessage();
 
@@ -116,6 +114,10 @@ class Client : public IEventHandler {
   result_t::e handle(Event e);
 
   void handleError();
+
+  int addEvent(EventKind::e kind);
+
+  int removeEvent(EventKind::e kind);
 
   result_t::e ping(const Message &m);
 
@@ -163,6 +165,7 @@ class Client : public IEventHandler {
   ClientList::iterator pos_;
   UserIdent ident_;
   ChannelMap joined_channels_;
+  unsigned int event_state_;
   unsigned int conn_state_;
   util::Buffer recv_buffer_;
   std::queue<StringBuffer> send_queue_;

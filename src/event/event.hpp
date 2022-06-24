@@ -9,7 +9,7 @@
 #include "util/general/result.hpp"
 
 struct EventKind {
-  enum e { kRead = EVFILT_READ, kWrite = EVFILT_WRITE };
+  enum e { kNone = 0, kRead = (1 << 0), kWrite = (1 << 1) };
 };
 
 typedef std::bitset<8> EventFlagSet;
