@@ -9,7 +9,7 @@
 #include <list>
 
 #include "client/Client.hpp"
-#include "event/event.hpp"
+#include "event/Event.hpp"
 #include "socket/socket.hpp"
 #include "util/FixedBuffer/FixedBuffer.hpp"
 #include "util/color.hpp"

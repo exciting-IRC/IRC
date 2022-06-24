@@ -8,7 +8,7 @@
 #include <string>
 
 #include "client/IRCParser.hpp"
-#include "event/event.hpp"
+#include "event/Event.hpp"
 #include "returncode.hpp"
 #include "socket/socket.hpp"
 #include "util/StringBuffer.hpp"
