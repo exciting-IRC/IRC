@@ -158,9 +158,10 @@ void Channel::addUser(Client *client) {
 }
 
 void Channel::removeUser(Client *client) {
-  sendAll(Message::as_reply(client->getIdent().toString(), "PART", VA((name_))),
-          NULL);
   users_.erase(client->getIdent().nickname_);
+  if (users_.empty()) {
+    server.removeChannel(name_);
+  }
 }
 
 void Channel::changeUserName(const std::string &oldnick,
