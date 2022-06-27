@@ -30,13 +30,27 @@ template <size_t width, size_t height>
 class MineSweeper {
  public:
   MineSweeper(double mine_ratio);
+  MineSweeper &operator=(const MineSweeper &other) {
+    const size_t size = width * height;
+    unknown_tiles_ = other.unknown_tiles_;
+    memcpy(board_, other.board_, size);
+    memcpy(board_mask_, other.board_mask_, size);
+    state_ = other.state_;
+  }
+  MineSweeper(const MineSweeper &other) {
+    const size_t size = width * height;
+    unknown_tiles_ = other.unknown_tiles_;
+    memcpy(board_, other.board_, size);
+    memcpy(board_mask_, other.board_mask_, size);
+    state_ = other.state_;
+  }
 
  private:
   enum { kMine = '*', kEmpty = 0 };
   enum { kClose, kOpen, kMark };
 
  private:
-  void shuffleBoard(int count);
+  void shuffleBoard(size_t count);
 
   void initMines(double mine_ratio);
 
@@ -46,7 +60,7 @@ class MineSweeper {
 
   bool isMine(int y, int x) const;
 
-  int countAdjacentMines(int y, int x) const;
+  size_t countAdjacentMines(int y, int x) const;
 
   char getBoardChar(int y, int x) const;
 
@@ -57,7 +71,7 @@ class MineSweeper {
   void openRecursive(int y, int x);
 
  public:
-  bool isInBoard(int y, int x) const;
+  bool isInBoard(size_t y, size_t x) const;
 
   void exmine(int y, int x);
 
@@ -93,8 +107,8 @@ inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::shuffleBoard(int count) {
-  for (int i = 0; i < count; ++i) {
+inline void MineSweeper<width, height>::shuffleBoard(size_t count) {
+  for (size_t i = 0; i < count; ++i) {
     int ox = util::randRange(0, width), oy = util::randRange(0, height);
     int nx = util::randRange(0, width), ny = util::randRange(0, height);
     std::swap(board_[oy][ox], board_[ny][nx]);
@@ -103,13 +117,13 @@ inline void MineSweeper<width, height>::shuffleBoard(int count) {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMines(double mine_ratio) {
-  int size = width * height;
-  int mine_count = round(size * mine_ratio);
+  size_t size = width * height;
+  size_t mine_count = round(size * mine_ratio);
 
-  for (int i = 0; i < mine_count; ++i) {
+  for (size_t i = 0; i < mine_count; ++i) {
     board_[i / height][i % width] = kMine;
   }
-  for (int i = mine_count; i < size; ++i) {
+  for (size_t i = mine_count; i < size; ++i) {
     board_[i / height][i % width] = kEmpty;
   }
 }
@@ -121,8 +135,8 @@ inline void MineSweeper<width, height>::initBoardMask() {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMineCounts() {
-  for (int i = 0; i < height; ++i) {
-    for (int j = 0; j < width; ++j) {
+  for (size_t i = 0; i < height; ++i) {
+    for (size_t j = 0; j < width; ++j) {
       if (board_[i][j] == kEmpty) {
         board_[i][j] = countAdjacentMines(i, j);
       }
@@ -136,9 +150,10 @@ inline bool MineSweeper<width, height>::isMine(int y, int x) const {
 }
 
 template <size_t width, size_t height>
-inline int MineSweeper<width, height>::countAdjacentMines(int y, int x) const {
-  int count = 0;
-  for (int i = 0; i < 8; ++i) {
+inline size_t MineSweeper<width, height>::countAdjacentMines(int y,
+                                                             int x) const {
+  size_t count = 0;
+  for (size_t i = 0; i < 8; ++i) {
     int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
     if (isInBoard(y + dy, x + dx) && isMine(y + dy, x + dx))
       count++;
@@ -166,7 +181,7 @@ inline void MineSweeper<width, height>::_openRecursive(int y, int x) {
   }
   openTile(y, x);
   if (board_[y][x] == 0) {
-    for (int i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < 8; ++i) {
       int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
       if (isInBoard(y + dy, x + dx)) {
         _openRecursive(y + dy, x + dx);
@@ -179,7 +194,7 @@ template <size_t width, size_t height>
 inline void MineSweeper<width, height>::openRecursive(int y, int x) {
   openTile(y, x);
   if (board_[y][x] == 0) {
-    for (int i = 0; i < 8; ++i) {
+    for (size_t i = 0; i < 8; ++i) {
       int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
       if (isInBoard(y + dy, x + dx)) {
         _openRecursive(y + dy, x + dx);
@@ -189,7 +204,7 @@ inline void MineSweeper<width, height>::openRecursive(int y, int x) {
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isInBoard(int y, int x) const {
+inline bool MineSweeper<width, height>::isInBoard(size_t y, size_t x) const {
   return y >= 0 && y < height && x >= 0 && x < width;
 }
 
@@ -240,14 +255,14 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   std::string str;
 
   str += "  ";
-  for (int i = 0; i < width; ++i) {
+  for (size_t i = 0; i < width; ++i) {
     str.append("│");
     str.push_back(' ');
     str.push_back('A' + i);
   }
-  for (int i = 0; i < height; ++i) {
+  for (size_t i = 0; i < height; ++i) {
     str.append("\n──┼");
-    for (int j = 0; j < width; ++j) {
+    for (size_t j = 0; j < width; ++j) {
       if (j != 0)
         str.append("┼");
       str.append("──");
@@ -255,7 +270,7 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     str.append("\n ");
     str.push_back('0' + i + 1);
     str.append("│");
-    for (int j = 0; j < width; ++j) {
+    for (size_t j = 0; j < width; ++j) {
       if (j != 0)
         str.append("│");
       if (mask_board) {
