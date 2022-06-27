@@ -148,11 +148,12 @@ inline size_t MineSweeper<width, height>::countAdjacentMines(pos p) const {
 // TODO: board로 이동
 template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::getBoardChar(pos p) const {
-  if (0 <= board_.at(p) && board_.at(p) <= 8) {
+  const char c = board_.at(p);
+  if (c == 0) {
+    return " ";
+  } else if (0 < c && c <= 8) {
     std::string color;
-    switch (board_.at(p)) {
-      case 0:
-        break;
+    switch (c) {
       case 1:
         color = HBLU;
         break;
@@ -165,12 +166,12 @@ inline std::string MineSweeper<width, height>::getBoardChar(pos p) const {
       default:
         color = MAG;
     }
-    return color + std::string(1, board_.at(p) + '0');
-  } else if (board_.at(p) == kMine) {
+    return color + std::string(1, c + '0');
+  } else if (c == kMine) {
     return BHRED + std::string(1, kMine);
   }
 
-  return std::string(1, board_.at(p));
+  return std::string(1, c);
 }
 
 template <size_t width, size_t height>
@@ -256,11 +257,12 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
 
   ss << "  ";
   for (size_t i = 0; i < width; ++i) {
-    ss << " " << static_cast<char>('A' + i);
+    ss << " " HMAG << static_cast<char>('A' + i);
   }
+  ss << END;
   for (size_t i = 0; i < height; ++i) {
     ss << "\n ";
-    ss << static_cast<char>('0' + i + 1);
+    ss << HBLU << static_cast<char>('0' + i + 1) << END;
     for (size_t j = 0; j < width; ++j) {
       pos p(i, j);
       if (mask_board) {
