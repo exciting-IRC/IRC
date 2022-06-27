@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['template_0',['Template',['../classcontainer__of_1_1Template.html',1,'container_of.Template'],['../classvec__of__any_1_1Template.html',1,'vec_of_any.Template']]],
-  ['timerkind_1',['TimerKind',['../structTimerKind.html',1,'']]]
+  ['userident_0',['UserIdent',['../structUserIdent.html',1,'']]],
+  ['usermode_1',['UserMode',['../structUserMode.html',1,'']]]
 ];

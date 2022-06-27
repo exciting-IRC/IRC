@@ -18,17 +18,14 @@ var annotated_dup =
       [ "Template", "classvec__of__any_1_1Template.html", null ],
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
-    [ "board", "classboard.html", "classboard" ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", "structChannelMode" ],
     [ "Client", "classClient.html", "classClient" ],
-    [ "command", "structcommand.html", null ],
     [ "ConnState", "structConnState.html", null ],
     [ "Event", "structEvent.html", null ],
     [ "EventFlag", "structEventFlag.html", null ],
     [ "EventKind", "structEventKind.html", null ],
     [ "EventPool", "classEventPool.html", null ],
-    [ "GameAction", "structGameAction.html", null ],
     [ "GameState", "structGameState.html", null ],
     [ "IEventHandler", "classIEventHandler.html", null ],
     [ "IRCParser", "classIRCParser.html", null ],
@@ -41,6 +38,5 @@ var annotated_dup =
     [ "StringBuffer", "classStringBuffer.html", null ],
     [ "TimerKind", "structTimerKind.html", null ],
     [ "UserIdent", "structUserIdent.html", null ],
-    [ "UserMode", "structUserMode.html", "structUserMode" ],
-    [ "vec2", "structvec2.html", null ]
+    [ "UserMode", "structUserMode.html", "structUserMode" ]
 ];

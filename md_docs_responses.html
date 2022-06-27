@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line">306    RPL_NOWAWAY</div>
 <div class="line">      <span class="stringliteral">&quot;:You have been marked as being away&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - These replies are used with the AWAY <a class="code hl_struct" href="structcommand.html">command</a> (<span class="keywordflow">if</span></div>
+<div class="line">  - These replies are used with the AWAY command (<span class="keywordflow">if</span></div>
 <div class="line">    allowed).  RPL_AWAY is sent to any client sending a</div>
 <div class="line">    PRIVMSG to a client which is away.  RPL_AWAY is only</div>
 <div class="line">    sent by the server to which the client is connected.</div>
@@ -461,7 +461,7 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line"><span class="stringliteral">    opened, in seconds.</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">212    RPL_STATSCOMMANDS</span></div>
-<div class="line"><span class="stringliteral">      &quot;</span>&lt;<a class="code hl_struct" href="structcommand.html">command</a>&gt; &lt;count&gt; &lt;<span class="keywordtype">byte</span> count&gt; &lt;remote count&gt;<span class="stringliteral">&quot;</span></div>
+<div class="line"><span class="stringliteral">      &quot;</span>&lt;command&gt; &lt;count&gt; &lt;<span class="keywordtype">byte</span> count&gt; &lt;remote count&gt;<span class="stringliteral">&quot;</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">  - reports statistics on commands usage.</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
@@ -542,20 +542,19 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line"><span class="stringliteral">    in RPL_ADMINEMAIL.</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">263    RPL_TRYAGAIN</span></div>
-<div class="line"><span class="stringliteral">      &quot;</span>&lt;<a class="code hl_struct" href="structcommand.html">command</a>&gt; :Please wait a <span class="keywordflow">while</span> and <span class="keywordflow">try</span> again.<span class="stringliteral">&quot;</span></div>
+<div class="line"><span class="stringliteral">      &quot;</span>&lt;command&gt; :Please wait a <span class="keywordflow">while</span> and <span class="keywordflow">try</span> again.<span class="stringliteral">&quot;</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">  - When a server drops a command without processing it,</span></div>
 <div class="line"><span class="stringliteral">    it MUST use the reply RPL_TRYAGAIN to inform the</span></div>
 <div class="line"><span class="stringliteral">    originating client.</span></div>
 <div class="ttc" id="aclassServer_html"><div class="ttname"><a href="classServer.html">Server</a></div><div class="ttdef"><b>Definition:</b> Server.hpp:54</div></div>
-<div class="ttc" id="astructcommand_html"><div class="ttname"><a href="structcommand.html">command</a></div><div class="ttdef"><b>Definition:</b> main.cpp:7</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md32"></a>
 에러 반환값 (400 ~ 599)</h1>
 <div class="fragment"><div class="line">401    ERR_NOSUCHNICK</div>
 <div class="line">      <span class="stringliteral">&quot;&lt;nickname&gt; :No such nick/channel&quot;</span></div>
 <div class="line"> </div>
 <div class="line">  - Used to indicate the nickname parameter supplied to a</div>
-<div class="line">    <a class="code hl_struct" href="structcommand.html">command</a> is currently unused.</div>
+<div class="line">    command is currently unused.</div>
 <div class="line"> </div>
 <div class="line">402    ERR_NOSUCHSERVER</div>
 <div class="line">      <span class="stringliteral">&quot;&lt;server name&gt; :No such server&quot;</span></div>
@@ -660,7 +659,7 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line">      <span class="stringliteral">&quot;:No nickname given&quot;</span></div>
 <div class="line"> </div>
 <div class="line">  - Returned when a nickname parameter expected <span class="keywordflow">for</span> a</div>
-<div class="line">    <a class="code hl_struct" href="structcommand.html">command</a> and isn<span class="stringliteral">&#39;t found.</span></div>
+<div class="line">    command and isn<span class="stringliteral">&#39;t found.</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">432    ERR_ERRONEUSNICKNAME</span></div>
 <div class="line"><span class="stringliteral">      &quot;&lt;nick&gt; :Erroneous nickname&quot;</span></div>
@@ -715,14 +714,14 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line">444    ERR_NOLOGIN</div>
 <div class="line">      <span class="stringliteral">&quot;&lt;user&gt; :User not logged in&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - Returned by the summon after a SUMMON <a class="code hl_struct" href="structcommand.html">command</a> <span class="keywordflow">for</span> a</div>
+<div class="line">  - Returned by the summon after a SUMMON command <span class="keywordflow">for</span> a</div>
 <div class="line">    user was unable to be performed since they were not</div>
 <div class="line">    logged in.</div>
 <div class="line"> </div>
 <div class="line">445    ERR_SUMMONDISABLED</div>
 <div class="line">      <span class="stringliteral">&quot;:SUMMON has been disabled&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - Returned as a response to the SUMMON <a class="code hl_struct" href="structcommand.html">command</a>.  MUST be</div>
+<div class="line">  - Returned as a response to the SUMMON command.  MUST be</div>
 <div class="line">    returned by any server which doesn<span class="stringliteral">&#39;t implement it.</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">446    ERR_USERSDISABLED</span></div>
@@ -801,14 +800,14 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line">481    ERR_NOPRIVILEGES</div>
 <div class="line">      <span class="stringliteral">&quot;:Permission Denied- You&#39;re not an IRC operator&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - Any <a class="code hl_struct" href="structcommand.html">command</a> requiring <span class="keyword">operator</span> privileges to operate</div>
+<div class="line">  - Any command requiring <span class="keyword">operator</span> privileges to operate</div>
 <div class="line">    MUST <span class="keywordflow">return</span> <span class="keyword">this</span> error to indicate the attempt was</div>
 <div class="line">    unsuccessful.</div>
 <div class="line"> </div>
 <div class="line">482    ERR_CHANOPRIVSNEEDED</div>
 <div class="line">      <span class="stringliteral">&quot;&lt;channel&gt; :You&#39;re not channel operator&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - Any <a class="code hl_struct" href="structcommand.html">command</a> requiring <span class="stringliteral">&#39;chanop&#39;</span> privileges (such as</div>
+<div class="line">  - Any command requiring <span class="stringliteral">&#39;chanop&#39;</span> privileges (such as</div>
 <div class="line">    MODE messages) MUST <span class="keywordflow">return</span> <span class="keyword">this</span> error <span class="keywordflow">if</span> the client</div>
 <div class="line">    making the attempt is not a chanop on the specified</div>
 <div class="line">    channel.</div>
@@ -816,7 +815,7 @@ $(document).ready(function(){initNavTree('md_docs_responses.html',''); initResiz
 <div class="line">483    ERR_CANTKILLSERVER</div>
 <div class="line">      <span class="stringliteral">&quot;:You can&#39;t kill a server!&quot;</span></div>
 <div class="line"> </div>
-<div class="line">  - Any attempts to use the KILL <a class="code hl_struct" href="structcommand.html">command</a> on a server</div>
+<div class="line">  - Any attempts to use the KILL command on a server</div>
 <div class="line">    are to be refused and <span class="keyword">this</span> error returned directly</div>
 <div class="line">    to the client.</div>
 <div class="line"> </div>

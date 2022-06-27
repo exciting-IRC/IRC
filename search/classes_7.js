@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['lazystring_0',['LazyString',['../classutil_1_1LazyString.html',1,'util']]]
+  ['message_0',['Message',['../structMessage.html',1,'']]],
+  ['minesweeper_1',['MineSweeper',['../classMineSweeper.html',1,'']]]
 ];
