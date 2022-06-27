@@ -10,6 +10,9 @@
 #include <iostream>
 #include <string>
 
+#include "util/color.hpp"
+#include "util/strutil/conversion.hpp"
+
 extern const int dir_offset_[8][2];
 
 namespace util {
@@ -238,49 +241,43 @@ inline GameState::e MineSweeper<width, height>::getState() {
 
 template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
-  std::string str;
+  std::stringstream ss;
 
-  str += "  ";
+  ss << "  ";
   for (size_t i = 0; i < width; ++i) {
-    str.append("│");
-    str.push_back(' ');
-    str.push_back('A' + i);
+    ss << "│ " << static_cast<char>('A' + i);
   }
   for (size_t i = 0; i < height; ++i) {
-    str.append("\n──┼");
+    ss << "\n──┼";
     for (size_t j = 0; j < width; ++j) {
       if (j != 0)
-        str.append("┼");
-      str.append("──");
+        ss << "┼";
+      ss << "──";
     }
-    str.append("\n ");
-    str.push_back('0' + i + 1);
-    str.append("│");
+    ss << "\n ";
+    ss << static_cast<char>('0' + i + 1);
+    ss << "│";
     for (size_t j = 0; j < width; ++j) {
       if (j != 0)
-        str.append("│");
+        ss << "│";
       if (mask_board) {
         switch (board_mask_[i][j]) {
           case kClose:
-            str.push_back(' ');
-            str.push_back('.');
+            ss << " .";
             break;
           case kOpen:
-            str.push_back(' ');
-            str.push_back(getBoardChar(i, j));
+            ss << ' ' << getBoardChar(i, j);
             break;
           case kMark:
-            str.push_back(' ');
-            str.push_back('P');
+            ss << " P";
             break;
         }
       } else {
-        str.push_back(' ');
-        str.push_back(getBoardChar(i, j));
+        ss << ' ' << getBoardChar(i, j);
       }
     }
   }
-  return str;
+  return ss.str();
 }
 
 #endif  // BOT_MINESWEEPER_HPP
