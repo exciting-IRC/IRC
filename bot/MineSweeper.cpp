@@ -7,5 +7,5 @@
 #include <iostream>
 #include <string>
 
-const pos dir_offset_[8] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
-                            {0, 1},   {1, -1}, {1, 0},  {1, 1}};
+const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
+                            pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};

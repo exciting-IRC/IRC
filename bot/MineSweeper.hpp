@@ -9,27 +9,16 @@
 #include <iostream>
 #include <string>
 
+#include "board.hpp"
 #include "util/color.hpp"
 #include "util/general/random.hpp"
 #include "util/strutil/conversion.hpp"
 #include "vec2.hpp"
 
-typedef vec2<size_t> pos;
-
 extern const pos dir_offset_[8];
 
 struct GameState {
   enum e { kContinue, kMineExploded, kMineSwept };
-};
-
-template <typename T, size_t width, size_t height>
-struct board {
-  T data_[height][width];
-
-  T at(size_t y, size_t x) const { return data_[y][x]; }
-  T &at(size_t y, size_t x) { return data_[y][x]; }
-  T at(pos p) const { return data_[p.y][p.x]; }
-  T &at(pos p) { return data_[p.y][p.x]; }
 };
 
 template <size_t width, size_t height>
@@ -63,7 +52,7 @@ class MineSweeper {
   void openRecursive(pos p);
 
  public:
-  bool isInBoard(pos p) const;
+  bool isInBoard(pos p) const { return board_.in_bounds(p); }
 
   void exmine(pos p);
 
@@ -132,7 +121,7 @@ template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMineCounts() {
   for (size_t i = 0; i < height; ++i) {
     for (size_t j = 0; j < width; ++j) {
-      pos p = {i, j};
+      pos p(i, j);
       if (board_.at(p) == kEmpty) {
         board_.at(p) = countAdjacentMines(p);
       }
@@ -217,11 +206,6 @@ inline void MineSweeper<width, height>::openRecursive(pos p) {
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isInBoard(pos p) const {
-  return (0 <= p.y && p.y < height) && (0 <= p.x && p.x < width);
-}
-
-template <size_t width, size_t height>
 inline void MineSweeper<width, height>::exmine(pos p) {
   if (board_.at(p) == kMine) {
     state_ = GameState::kMineExploded;
@@ -275,7 +259,7 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     ss << "\n ";
     ss << static_cast<char>('0' + i + 1);
     for (size_t j = 0; j < width; ++j) {
-      pos p = {i, j};
+      pos p(i, j);
       if (mask_board) {
         switch (board_mask_.at(p)) {
           case kClose:
