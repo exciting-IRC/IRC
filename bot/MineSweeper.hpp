@@ -13,36 +13,6 @@
 #include "util/color.hpp"
 #include "util/strutil/conversion.hpp"
 
-struct pos_t {
-  size_t y, x;
-
-  // 연산자 오버로딩
-  bool operator==(const pos_t &other) const {
-    return y == other.y and x == other.x;
-  }
-  bool operator!=(const pos_t &other) const { return not(*this == other); }
-  // +- 연산자 오버로딩
-  pos_t operator+(const pos_t &other) const {
-    pos_t tmp = {y + other.y, x + other.x};
-    return tmp;
-  }
-  pos_t operator-(const pos_t &other) const {
-    pos_t tmp = {y - other.y, x - other.x};
-    return tmp;
-  }
-  // +=, -= 연산자 오버로딩
-  pos_t &operator+=(const pos_t &other) {
-    *this = *this + other;
-    return *this;
-  }
-  pos_t &operator-=(const pos_t &other) {
-    *this = *this - other;
-    return *this;
-  }
-};
-
-extern const pos_t dir_offset_[8];
-
 namespace util {
 
 /**
@@ -53,15 +23,50 @@ size_t randRange(size_t min, size_t max);
 size_t randRange(size_t max);
 }  // namespace util
 
+struct pos_t {
+  size_t y, x;
+
+  // 연산자 오버로딩
+  bool operator==(const pos_t &other) const {
+    return y == other.y and x == other.x;
+  }
+  bool operator!=(const pos_t &other) const { return not(*this == other); }
+  pos_t operator+(const pos_t &other) const {
+    return from(y + other.y, x + other.x);
+  }
+  pos_t operator-(const pos_t &other) const {
+    return from(y - other.y, x - other.x);
+  }
+  pos_t &operator+=(const pos_t &other) {
+    *this = *this + other;
+    return *this;
+  }
+  pos_t &operator-=(const pos_t &other) {
+    *this = *this - other;
+    return *this;
+  }
+  static pos_t from(size_t y, size_t x) {
+    pos_t tmp = {y, x};
+    return tmp;
+  }
+  static pos_t random(size_t max_y, size_t max_x) {
+    return from(util::randRange(max_y), util::randRange(max_x));
+  }
+};
+
+extern const pos_t dir_offset_[8];
+
 struct GameState {
   enum e { kContinue, kMineExploded, kMineSwept };
 };
 
-template <size_t width, size_t height>
+template <typename T, size_t width, size_t height>
 struct board {
-  char data_[height][width];
-  char at(pos_t p) const { return data_[p.y][p.x]; }
-  char &at(pos_t p) { return data_[p.y][p.x]; }
+  T data_[height][width];
+  T at(size_t y, size_t x) const { return data_[y][x]; }
+  T &at(size_t y, size_t x) { return data_[y][x]; }
+  T at(pos_t p) const { return data_[p.y][p.x]; }
+  T &at(pos_t p) { return data_[p.y][p.x]; }
 };
 
 template <size_t width, size_t height>
@@ -109,8 +114,8 @@ class MineSweeper {
 
  private:
   size_t unknown_tiles_;
-  board<height, width> board_;
-  board<height, width> board_mask_;
+  board<char, height, width> board_;
+  board<char, height, width> board_mask_;
   GameState::e state_;
 };
 
@@ -133,24 +138,21 @@ inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::shuffleBoard(size_t count) {
   for (size_t i = 0; i < count; ++i) {
-    pos_t o = {util::randRange(height), util::randRange(width)};
-    pos_t n = {util::randRange(height), util::randRange(width)};
-    std::swap(board_.at(o), board_.at(n));
+    std::swap(board_.at(pos_t::random(height, width)),
+              board_.at(pos_t::random(height, width)));
   }
 }
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMines(double mine_ratio) {
-  size_t size = width * height;
-  size_t mine_count = round(size * mine_ratio);
+  const size_t size = width * height;
+  const size_t mine_count = round(size * mine_ratio);
 
   for (size_t i = 0; i < mine_count; ++i) {
-    pos_t p = {i / height, i % width};
-    board_.at(p) = kMine;
+    board_.at(i / height, i % width) = kMine;
   }
   for (size_t i = mine_count; i < size; ++i) {
-    pos_t p = {i / height, i % width};
-    board_.at(p) = kEmpty;
+    board_.at(i / height, i % width) = kEmpty;
   }
 }
 
@@ -158,8 +160,7 @@ template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initBoardMask() {
   for (size_t i = 0; i < height; ++i) {
     for (size_t j = 0; j < width; ++j) {
-      pos_t p = {i, j};
-      board_mask_.at(p) = kClose;
+      board_mask_.at(i, j) = kClose;
     }
   }
 }
