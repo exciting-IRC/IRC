@@ -6,7 +6,8 @@ var hierarchy =
     [ "util::array< T, buffer_size >", "structutil_1_1array.html", [
       [ "util::FixedBuffer< T, buffer_size >", "classutil_1_1FixedBuffer.html", null ]
     ] ],
-    [ "board< T, width, height >", "structboard.html", null ],
+    [ "board< T, width, height >", "classboard.html", null ],
+    [ "board< char, height, width >", "classboard.html", null ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
     [ "util::Config", "structutil_1_1Config.html", null ],

@@ -18,7 +18,7 @@ var annotated_dup =
       [ "Template", "classvec__of__any_1_1Template.html", null ],
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
-    [ "board", "structboard.html", null ],
+    [ "board", "classboard.html", "classboard" ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", "structChannelMode" ],
     [ "Client", "classClient.html", "classClient" ],
