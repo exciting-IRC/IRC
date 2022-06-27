@@ -16,12 +16,14 @@ var hierarchy =
     [ "EventKind", "structEventKind.html", null ],
     [ "EventPool", "classEventPool.html", null ],
     [ "util::format", "classutil_1_1format.html", null ],
+    [ "GameState", "structGameState.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
       [ "Client", "classClient.html", null ],
       [ "Server", "classServer.html", null ]
     ] ],
     [ "IRCParser", "classIRCParser.html", null ],
     [ "Message", "structMessage.html", null ],
+    [ "MineSweeper< width, height >", "classMineSweeper.html", null ],
     [ "ParserResult", "structParserResult.html", null ],
     [ "ParserState", "structParserState.html", null ],
     [ "util::RecvFlag_t", "structutil_1_1RecvFlag__t.html", null ],

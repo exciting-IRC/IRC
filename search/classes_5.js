@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['lazystring_0',['LazyString',['../classutil_1_1LazyString.html',1,'util']]]
+  ['ieventhandler_0',['IEventHandler',['../classIEventHandler.html',1,'']]],
+  ['ircparser_1',['IRCParser',['../classIRCParser.html',1,'']]]
 ];
