@@ -11,6 +11,7 @@
 
 #include "MineSweeper.hpp"
 #include "util/algorithm/functor.hpp"
+#include "util/strutil/format.hpp"
 
 const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
                             pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};
@@ -25,6 +26,7 @@ std::ostream &operator<<(std::ostream &stream,
 template <size_t width, size_t height>
 inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
     : unopend_tiles_(size),
+      num_mines_(round(size * mine_ratio)),
       board_(kEmpty),
       board_mask_(GameAction::kClose),
       state_(GameState::kContinue) {
@@ -32,7 +34,7 @@ inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
     throw std::invalid_argument("width and height must be between 6 and 10");
   }
   std::srand(std::clock());
-  initMines(mine_ratio);
+  initMines();
   shuffleBoard(size * 100);
   initMineCounts();
 }
@@ -45,10 +47,8 @@ inline void MineSweeper<width, height>::shuffleBoard(size_t count) {
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::initMines(double mine_ratio) {
-  const size_t mine_count = round(size * mine_ratio);
-
-  std::fill_n(board_.begin(), mine_count, static_cast<char>(kMine));
+inline void MineSweeper<width, height>::initMines() {
+  std::fill_n(board_.begin(), num_mines_, static_cast<char>(kMine));
 }
 
 template <size_t width, size_t height>
@@ -142,13 +142,17 @@ inline void MineSweeper<width, height>::openRecursive(pos p) {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::exmine(pos p) {
+  if (board_mask_.at(p) == GameAction::kFlag) {
+    return;
+  }
   if (board_.at(p) == kMine) {
     state_ = GameState::kMineExploded;
     return;
   }
   if (board_mask_.at(p) == GameAction::kClose)
     openRecursive(p);
-  if (unopend_tiles_ == 0) {
+  COUT_FMT("unopend_tiles: {}", (unopend_tiles_));
+  if (unopend_tiles_ == num_mines_) {
     state_ = GameState::kMineSwept;
   }
 }
@@ -159,7 +163,7 @@ inline void MineSweeper<width, height>::toggleFlag(pos p) {
   if (c == GameAction::kOpen)
     return;
   c = (c == GameAction::kFlag) ? GameAction::kClose : GameAction::kFlag;
-  if (unopend_tiles_ == 0) {
+  if (unopend_tiles_ == num_mines_) {
     state_ = GameState::kMineSwept;
   }
 }

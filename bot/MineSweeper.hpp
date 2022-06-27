@@ -38,7 +38,7 @@ class MineSweeper {
  private:
   void shuffleBoard(size_t count);
 
-  void initMines(double mine_ratio);
+  void initMines();
 
   void initMineCounts();
 
@@ -67,6 +67,7 @@ class MineSweeper {
 
  private:
   size_t unopend_tiles_;
+  size_t num_mines_;
   board_type board_;
   board_type board_mask_;
   GameState::e state_;
