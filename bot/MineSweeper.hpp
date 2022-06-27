@@ -13,7 +13,11 @@
 #include "util/color.hpp"
 #include "util/strutil/conversion.hpp"
 
-extern const int dir_offset_[8][2];
+struct pos_t {
+  const size_t y, x;
+};
+
+extern const pos_t dir_offset_[8];
 
 namespace util {
 
@@ -27,10 +31,6 @@ size_t randRange(size_t min, size_t max);
 
 struct GameState {
   enum e { kContinue, kMineExploded, kMineSwept };
-};
-
-struct pos_t {
-  const size_t y, x;
 };
 
 template <size_t width, size_t height>
@@ -147,7 +147,7 @@ template <size_t width, size_t height>
 inline size_t MineSweeper<width, height>::countAdjacentMines(pos_t p) const {
   size_t count = 0;
   for (size_t i = 0; i < 8; ++i) {
-    pos_t d = {dir_offset_[i][0], dir_offset_[i][1]};
+    pos_t d = {dir_offset_[i].y, dir_offset_[i].y};
     pos_t n = {p.y + d.y, p.x + d.x};
     if (isInBoard(n) and isMine(n))
       count++;
@@ -176,8 +176,8 @@ inline void MineSweeper<width, height>::_openRecursive(pos_t p) {
   openTile(p);
   if (board_[p.y][p.x] == 0) {
     for (size_t i = 0; i < 8; ++i) {
-      size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
-      pos_t n = {p.y + dy, p.x + dx};
+          pos_t d = {dir_offset_[i].y, dir_offset_[i].y};
+      pos_t n = {p.y + d.y, p.x + d.x};
       if (isInBoard(n)) {
         _openRecursive(n);
       }
@@ -190,8 +190,8 @@ inline void MineSweeper<width, height>::openRecursive(pos_t p) {
   openTile(p);
   if (board_[p.y][p.x] == 0) {
     for (size_t i = 0; i < 8; ++i) {
-      size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
-      pos_t n = {p.y + dy, p.x + dx};
+          pos_t d = {dir_offset_[i].y, dir_offset_[i].y};
+      pos_t n = {p.y + d.y, p.x + d.x};
       if (isInBoard(n)) {
         _openRecursive(n);
       }

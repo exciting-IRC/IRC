@@ -19,5 +19,5 @@ size_t randRange(size_t min, size_t max) {
 
 }  // namespace util
 
-const int dir_offset_[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
-                               {0, 1},   {1, -1}, {1, 0},  {1, 1}};
+const pos_t dir_offset_[8] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
+                              {0, 1},   {1, -1}, {1, 0},  {1, 1}};
