@@ -10,6 +10,7 @@ var hierarchy =
     [ "board< char, height, width >", "classboard.html", null ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
+    [ "command", "structcommand.html", null ],
     [ "util::Config", "structutil_1_1Config.html", null ],
     [ "ConnState", "structConnState.html", null ],
     [ "container_of.ContainerOfArgs", "classcontainer__of_1_1ContainerOfArgs.html", null ],
@@ -18,6 +19,7 @@ var hierarchy =
     [ "EventKind", "structEventKind.html", null ],
     [ "EventPool", "classEventPool.html", null ],
     [ "util::format", "classutil_1_1format.html", null ],
+    [ "GameAction", "structGameAction.html", null ],
     [ "GameState", "structGameState.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
       [ "Client", "classClient.html", null ],
@@ -42,5 +44,6 @@ var hierarchy =
     [ "UserIdent", "structUserIdent.html", null ],
     [ "UserMode", "structUserMode.html", null ],
     [ "vec2< T >", "structvec2.html", null ],
+    [ "vec2< size_t >", "structvec2.html", null ],
     [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
 ];
