@@ -18,7 +18,7 @@ namespace util {
  * @brief return pseudo random value
  *        in range [min, max)
  */
-int randRange(int min, int max);
+size_t randRange(size_t min, size_t max);
 
 }  // namespace util
 
@@ -36,7 +36,7 @@ class MineSweeper {
   enum { kClose, kOpen, kMark };
 
  private:
-  void shuffleBoard(int count);
+  void shuffleBoard(size_t count);
 
   void initMines(double mine_ratio);
 
@@ -44,33 +44,33 @@ class MineSweeper {
 
   void initMineCounts();
 
-  bool isMine(int y, int x) const;
+  bool isMine(size_t y, size_t x) const;
 
-  int countAdjacentMines(int y, int x) const;
+  size_t countAdjacentMines(size_t y, size_t x) const;
 
-  char getBoardChar(int y, int x) const;
+  char getBoardChar(size_t y, size_t x) const;
 
-  void openTile(int y, int x);
+  void openTile(size_t y, size_t x);
 
-  void _openRecursive(int y, int x);
+  void _openRecursive(size_t y, size_t x);
 
-  void openRecursive(int y, int x);
+  void openRecursive(size_t y, size_t x);
 
  public:
-  bool isInBoard(int y, int x) const;
+  bool isInBoard(size_t y, size_t x) const;
 
-  void exmine(int y, int x);
+  void exmine(size_t y, size_t x);
 
-  void mark(int y, int x);
+  void mark(size_t y, size_t x);
 
-  void unMark(int y, int x);
+  void unMark(size_t y, size_t x);
 
   GameState::e getState();
 
   std::string toString(bool mask_board) const;
 
  private:
-  int unknown_tiles_;
+  size_t unknown_tiles_;
   char board_[height][width];
   char board_mask_[height][width];
   GameState::e state_;
@@ -93,23 +93,23 @@ inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::shuffleBoard(int count) {
-  for (int i = 0; i < count; ++i) {
-    int ox = util::randRange(0, width), oy = util::randRange(0, height);
-    int nx = util::randRange(0, width), ny = util::randRange(0, height);
+inline void MineSweeper<width, height>::shuffleBoard(size_t count) {
+  for (size_t i = 0; i < count; ++i) {
+    size_t ox = util::randRange(0, width), oy = util::randRange(0, height);
+    size_t nx = util::randRange(0, width), ny = util::randRange(0, height);
     std::swap(board_[oy][ox], board_[ny][nx]);
   }
 }
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMines(double mine_ratio) {
-  int size = width * height;
-  int mine_count = round(size * mine_ratio);
+  size_t size = width * height;
+  size_t mine_count = round(size * mine_ratio);
 
-  for (int i = 0; i < mine_count; ++i) {
+  for (size_t i = 0; i < mine_count; ++i) {
     board_[i / height][i % width] = kMine;
   }
-  for (int i = mine_count; i < size; ++i) {
+  for (size_t i = mine_count; i < size; ++i) {
     board_[i / height][i % width] = kEmpty;
   }
 }
@@ -121,8 +121,8 @@ inline void MineSweeper<width, height>::initBoardMask() {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMineCounts() {
-  for (int i = 0; i < height; ++i) {
-    for (int j = 0; j < width; ++j) {
+  for (size_t i = 0; i < height; ++i) {
+    for (size_t j = 0; j < width; ++j) {
       if (board_[i][j] == kEmpty) {
         board_[i][j] = countAdjacentMines(i, j);
       }
@@ -131,15 +131,15 @@ inline void MineSweeper<width, height>::initMineCounts() {
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isMine(int y, int x) const {
+inline bool MineSweeper<width, height>::isMine(size_t y, size_t x) const {
   return board_[y][x] == kMine;
 }
 
 template <size_t width, size_t height>
-inline int MineSweeper<width, height>::countAdjacentMines(int y, int x) const {
-  int count = 0;
-  for (int i = 0; i < 8; ++i) {
-    int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
+inline size_t MineSweeper<width, height>::countAdjacentMines(size_t y, size_t x) const {
+  size_t count = 0;
+  for (size_t i = 0; i < 8; ++i) {
+    size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
     if (isInBoard(y + dy, x + dx) && isMine(y + dy, x + dx))
       count++;
   }
@@ -147,27 +147,27 @@ inline int MineSweeper<width, height>::countAdjacentMines(int y, int x) const {
 }
 
 template <size_t width, size_t height>
-inline char MineSweeper<width, height>::getBoardChar(int y, int x) const {
+inline char MineSweeper<width, height>::getBoardChar(size_t y, size_t x) const {
   if (0 <= board_[y][x] && board_[y][x] <= 8)
     return board_[y][x] + '0';
   return board_[y][x];
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::openTile(int y, int x) {
+inline void MineSweeper<width, height>::openTile(size_t y, size_t x) {
   board_mask_[y][x] = kOpen;
   --unknown_tiles_;
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::_openRecursive(int y, int x) {
+inline void MineSweeper<width, height>::_openRecursive(size_t y, size_t x) {
   if (board_mask_[y][x] != kClose) {
     return;
   }
   openTile(y, x);
   if (board_[y][x] == 0) {
-    for (int i = 0; i < 8; ++i) {
-      int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
+    for (size_t i = 0; i < 8; ++i) {
+      size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
       if (isInBoard(y + dy, x + dx)) {
         _openRecursive(y + dy, x + dx);
       }
@@ -176,11 +176,11 @@ inline void MineSweeper<width, height>::_openRecursive(int y, int x) {
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::openRecursive(int y, int x) {
+inline void MineSweeper<width, height>::openRecursive(size_t y, size_t x) {
   openTile(y, x);
   if (board_[y][x] == 0) {
-    for (int i = 0; i < 8; ++i) {
-      int dy = dir_offset_[i][0], dx = dir_offset_[i][1];
+    for (size_t i = 0; i < 8; ++i) {
+      size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
       if (isInBoard(y + dy, x + dx)) {
         _openRecursive(y + dy, x + dx);
       }
@@ -189,12 +189,12 @@ inline void MineSweeper<width, height>::openRecursive(int y, int x) {
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isInBoard(int y, int x) const {
+inline bool MineSweeper<width, height>::isInBoard(size_t y, size_t x) const {
   return y >= 0 && y < height && x >= 0 && x < width;
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::exmine(int y, int x) {
+inline void MineSweeper<width, height>::exmine(size_t y, size_t x) {
   if (board_[y][x] == kMine) {
     state_ = GameState::kMineExploded;
     return;
@@ -207,7 +207,7 @@ inline void MineSweeper<width, height>::exmine(int y, int x) {
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::mark(int y, int x) {
+inline void MineSweeper<width, height>::mark(size_t y, size_t x) {
   if (board_mask_[y][x] != kClose)
     return;
   board_mask_[y][x] = kMark;
@@ -219,7 +219,7 @@ inline void MineSweeper<width, height>::mark(int y, int x) {
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::unMark(int y, int x) {
+inline void MineSweeper<width, height>::unMark(size_t y, size_t x) {
   if (board_mask_[y][x] != kMark)
     return;
   board_mask_[y][x] = kClose;
@@ -240,14 +240,14 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   std::string str;
 
   str += "  ";
-  for (int i = 0; i < width; ++i) {
+  for (size_t i = 0; i < width; ++i) {
     str.append("│");
     str.push_back(' ');
     str.push_back('A' + i);
   }
-  for (int i = 0; i < height; ++i) {
+  for (size_t i = 0; i < height; ++i) {
     str.append("\n──┼");
-    for (int j = 0; j < width; ++j) {
+    for (size_t j = 0; j < width; ++j) {
       if (j != 0)
         str.append("┼");
       str.append("──");
@@ -255,7 +255,7 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     str.append("\n ");
     str.push_back('0' + i + 1);
     str.append("│");
-    for (int j = 0; j < width; ++j) {
+    for (size_t j = 0; j < width; ++j) {
       if (j != 0)
         str.append("│");
       if (mask_board) {

@@ -10,8 +10,8 @@
 
 namespace util {
 
-int randRange(int min, int max) {
-  unsigned int k = std::rand();
+size_t randRange(size_t min, size_t max) {
+  size_t k = std::rand();
 
   k %= max - min;
   k += min;

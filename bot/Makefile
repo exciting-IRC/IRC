@@ -1,12 +1,12 @@
-NAME := ircserv
+NAME := msbot
 MAKEFLAGS += -j
 
 CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
-CXXFLAGS += -I src
+CXXFLAGS += -I .
 CXXFLAGS += -MMD -MP
 
-SRC := $(shell find src -name '*.cpp')
+SRC := $(shell find . -name '*.cpp')
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(OBJ:%.o=%.d)
 
@@ -36,4 +36,4 @@ run: all
 
 .PHONY: all clean fclean re run
 
-include color.mk
+include ../color.mk
