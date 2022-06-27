@@ -30,6 +30,9 @@ class MineSweeper {
   enum { kMine = '*', kEmpty = 0 };
   enum { kClose, kOpen, kMark };
 
+  typedef board<char, height, width> board_type;
+  typedef typename board_type::iterator iterator;
+
  private:
   void shuffleBoard(size_t count);
 
@@ -66,8 +69,8 @@ class MineSweeper {
 
  private:
   size_t unknown_tiles_;
-  board<char, height, width> board_;
-  board<char, height, width> board_mask_;
+  board_type board_;
+  board_type board_mask_;
   GameState::e state_;
 };
 
@@ -119,13 +122,10 @@ inline void MineSweeper<width, height>::initBoardMask() {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initMineCounts() {
-  for (size_t i = 0; i < height; ++i) {
-    for (size_t j = 0; j < width; ++j) {
-      pos p(i, j);
-      if (board_.at(p) == kEmpty) {
-        board_.at(p) = countAdjacentMines(p);
-      }
-    }
+  for (typename board_type::iterator it = board_.begin(); it != board_.end();
+       ++it) {
+    if (*it == kEmpty)
+      *it = countAdjacentMines(board_.to_pos(it));
   }
 }
 
