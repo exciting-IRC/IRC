@@ -10,12 +10,14 @@
 #include <string>
 
 #include "MineSweeper.hpp"
+#include "util/algorithm/functor.hpp"
 
 const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
                             pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};
 
-template <size_t W, size_t H>
-std::ostream &operator<<(std::ostream &stream, const MineSweeper<W, H> &ms) {
+template <size_t width, size_t height>
+std::ostream &operator<<(std::ostream &stream,
+                         const MineSweeper<width, height> &ms) {
   stream << ms.toString(false);
   return stream;
 }
@@ -186,15 +188,18 @@ inline GameState::e MineSweeper<width, height>::getState() {
 template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   std::stringstream ss;
-  {
+  FUNCTOR(void, add_column, (std::stringstream & ss), {
     ss << "  ";
-    for (size_t i = 0; i < width; ++i) {
+    for (size_t i = 0; i < width; ++i)
       ss << " " HMAG << static_cast<char>('A' + i);
-    }
     ss << END << "\n";
-  }
+  });
+  FUNCTOR(void, add_row, (std::stringstream & ss, size_t i),
+          { ss << HBLU << static_cast<char>('0' + i + 1) << " " << END; });
+
+  add_column(ss);
   for (size_t i = 0; i < height; ++i) {
-    ss << HBLU << static_cast<char>('0' + i + 1) << " " << END;
+    add_row(ss, i);
     for (size_t j = 0; j < width; ++j) {
       pos p(i, j);
       if (mask_board) {
