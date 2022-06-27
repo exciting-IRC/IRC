@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>IRC: board&lt; width, height &gt; 구조체 템플릿 참조</title>
+<title>IRC: board&lt; T, width, height &gt; 구조체 템플릿 참조</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,27 +88,39 @@ $(document).ready(function(){initNavTree('structboard.html',''); initResizable()
 <a href="#pub-methods">Public 멤버 함수</a> &#124;
 <a href="#pub-attribs">Public 속성</a> &#124;
 <a href="structboard-members.html">모든 멤버 목록</a>  </div>
-  <div class="headertitle"><div class="title">board&lt; width, height &gt; 구조체 템플릿 참조</div></div>
+  <div class="headertitle"><div class="title">board&lt; T, width, height &gt; 구조체 템플릿 참조</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:afaf15737d24b9224c0307185f133a52c"><td class="memItemLeft" align="right" valign="top"><a id="afaf15737d24b9224c0307185f133a52c" name="afaf15737d24b9224c0307185f133a52c"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (<a class="el" href="structpos__t.html">pos_t</a> p) const</td></tr>
-<tr class="separator:afaf15737d24b9224c0307185f133a52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af70bd510d9127963b8f25bcaebca18dc"><td class="memItemLeft" align="right" valign="top"><a id="af70bd510d9127963b8f25bcaebca18dc" name="af70bd510d9127963b8f25bcaebca18dc"></a>
-char &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (<a class="el" href="structpos__t.html">pos_t</a> p)</td></tr>
-<tr class="separator:af70bd510d9127963b8f25bcaebca18dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a98cd5f83023362ea39c0a21939c151"><td class="memItemLeft" align="right" valign="top"><a id="a7a98cd5f83023362ea39c0a21939c151" name="a7a98cd5f83023362ea39c0a21939c151"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t y, size_t x) const</td></tr>
+<tr class="separator:a7a98cd5f83023362ea39c0a21939c151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ee05672799853d8be4eef28307229bb"><td class="memItemLeft" align="right" valign="top"><a id="a4ee05672799853d8be4eef28307229bb" name="a4ee05672799853d8be4eef28307229bb"></a>
+T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t y, size_t x)</td></tr>
+<tr class="separator:a4ee05672799853d8be4eef28307229bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c580c3139a8944e0eae9e7e4ddd19f9"><td class="memItemLeft" align="right" valign="top"><a id="a1c580c3139a8944e0eae9e7e4ddd19f9" name="a1c580c3139a8944e0eae9e7e4ddd19f9"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (<a class="el" href="structvec2.html">pos</a> p) const</td></tr>
+<tr class="separator:a1c580c3139a8944e0eae9e7e4ddd19f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45dcf3b8c6e2ae4e484125092369bd38"><td class="memItemLeft" align="right" valign="top"><a id="a45dcf3b8c6e2ae4e484125092369bd38" name="a45dcf3b8c6e2ae4e484125092369bd38"></a>
+T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (<a class="el" href="structvec2.html">pos</a> p)</td></tr>
+<tr class="separator:a45dcf3b8c6e2ae4e484125092369bd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cff86aa7b733b04d9d2a79d7e56fee1"><td class="memItemLeft" align="right" valign="top"><a id="a7cff86aa7b733b04d9d2a79d7e56fee1" name="a7cff86aa7b733b04d9d2a79d7e56fee1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>in_bounds</b> (<a class="el" href="structvec2.html">pos</a> p) const</td></tr>
+<tr class="separator:a7cff86aa7b733b04d9d2a79d7e56fee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a817b2c5934a4b0346568ddf16379af19"><td class="memItemLeft" align="right" valign="top"><a id="a817b2c5934a4b0346568ddf16379af19" name="a817b2c5934a4b0346568ddf16379af19"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>in_bounds</b> (size_t y, size_t x) const</td></tr>
+<tr class="separator:a817b2c5934a4b0346568ddf16379af19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public 속성</h2></td></tr>
-<tr class="memitem:aff32e91492df0c035f82049999deb2ac"><td class="memItemLeft" align="right" valign="top"><a id="aff32e91492df0c035f82049999deb2ac" name="aff32e91492df0c035f82049999deb2ac"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>data_</b> [height][width]</td></tr>
-<tr class="separator:aff32e91492df0c035f82049999deb2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31db3fea11ac4b2466ecad59527716bc"><td class="memItemLeft" align="right" valign="top"><a id="a31db3fea11ac4b2466ecad59527716bc" name="a31db3fea11ac4b2466ecad59527716bc"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>data_</b> [height][width]</td></tr>
+<tr class="separator:a31db3fea11ac4b2466ecad59527716bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>이 구조체에 대한 문서화 페이지는 다음의 파일로부터 생성되었습니다.:<ul>
-<li>bot/<a class="el" href="MineSweeper_8hpp_source.html">MineSweeper.hpp</a></li>
+<li>bot/<a class="el" href="board_8hpp_source.html">board.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

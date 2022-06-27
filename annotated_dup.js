@@ -34,11 +34,11 @@ var annotated_dup =
     [ "MineSweeper", "classMineSweeper.html", null ],
     [ "ParserResult", "structParserResult.html", null ],
     [ "ParserState", "structParserState.html", null ],
-    [ "pos_t", "structpos__t.html", null ],
     [ "result_t", "structresult__t.html", null ],
     [ "Server", "classServer.html", null ],
     [ "StringBuffer", "classStringBuffer.html", null ],
     [ "TimerKind", "structTimerKind.html", null ],
     [ "UserIdent", "structUserIdent.html", null ],
-    [ "UserMode", "structUserMode.html", "structUserMode" ]
+    [ "UserMode", "structUserMode.html", "structUserMode" ],
+    [ "vec2", "structvec2.html", null ]
 ];
