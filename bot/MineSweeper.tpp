@@ -213,4 +213,9 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   return ss.str();
 }
 
+template <size_t width, size_t height>
+inline bool MineSweeper<width, height>::isInBoard(pos p) const {
+  return board_.in_bounds(p);
+}
+
 #endif  // BOT_MINESWEEPER_TPP
