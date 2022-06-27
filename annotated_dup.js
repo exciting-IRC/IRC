@@ -18,6 +18,7 @@ var annotated_dup =
       [ "Template", "classvec__of__any_1_1Template.html", null ],
       [ "VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
     ] ],
+    [ "board", "structboard.html", null ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", "structChannelMode" ],
     [ "Client", "classClient.html", "classClient" ],
@@ -33,6 +34,7 @@ var annotated_dup =
     [ "MineSweeper", "classMineSweeper.html", null ],
     [ "ParserResult", "structParserResult.html", null ],
     [ "ParserState", "structParserState.html", null ],
+    [ "pos_t", "structpos__t.html", null ],
     [ "result_t", "structresult__t.html", null ],
     [ "Server", "classServer.html", null ],
     [ "StringBuffer", "classStringBuffer.html", null ],

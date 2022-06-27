@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['parserresult_0',['ParserResult',['../structParserResult.html',1,'']]],
-  ['parserstate_1',['ParserState',['../structParserState.html',1,'']]]
+  ['message_0',['Message',['../structMessage.html',1,'']]],
+  ['minesweeper_1',['MineSweeper',['../classMineSweeper.html',1,'']]]
 ];
