@@ -11,12 +11,10 @@
 namespace util {
 
 size_t randRange(size_t min, size_t max) {
-  size_t k = std::rand();
+  const size_t range = max - min;
+  const size_t n = std::rand() % range;
 
-  k %= max - min;
-  k += min;
-
-  return k;
+  return n + min;
 }
 
 }  // namespace util

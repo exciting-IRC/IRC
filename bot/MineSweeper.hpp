@@ -136,7 +136,8 @@ inline bool MineSweeper<width, height>::isMine(size_t y, size_t x) const {
 }
 
 template <size_t width, size_t height>
-inline size_t MineSweeper<width, height>::countAdjacentMines(size_t y, size_t x) const {
+inline size_t MineSweeper<width, height>::countAdjacentMines(size_t y,
+                                                             size_t x) const {
   size_t count = 0;
   for (size_t i = 0; i < 8; ++i) {
     size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
