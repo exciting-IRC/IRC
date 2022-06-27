@@ -25,8 +25,6 @@ const static std::string config_file = "config.yml";
 
 void server_close_handler(int sig) { recived_sig = sig; }
 
-Server server;
-
 static util::Config init_config(const int argc, const char* argv[]) {
   using namespace util;
   try {

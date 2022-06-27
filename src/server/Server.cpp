@@ -7,7 +7,9 @@
 #include "socket/socket.hpp"
 #include "util/general/logging.hpp"
 
-Server::Server() : config_(), sock_(-1) {}
+Server::Server() : config_(), sock_(-1) {
+  std::cout << "SRV-init" << std::endl;
+}
 
 Server::~Server() {
   for (ClientList::iterator it = unregistered_clients_.begin(),
@@ -174,3 +176,5 @@ void Channel::changeUserName(const std::string &oldnick,
 }
 
 ClientMap Channel::getUsers() { return users_; }
+
+Server server;
