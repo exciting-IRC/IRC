@@ -86,7 +86,7 @@ class MineSweeper {
 
   size_t countAdjacentMines(pos_t p) const;
 
-  char getBoardChar(pos_t p) const;
+  std::string getBoardChar(pos_t p) const;
 
   void openTile(pos_t p);
 
@@ -192,11 +192,29 @@ inline size_t MineSweeper<width, height>::countAdjacentMines(pos_t p) const {
   return count;
 }
 
+// TODO: board로 이동
 template <size_t width, size_t height>
-inline char MineSweeper<width, height>::getBoardChar(pos_t p) const {
-  if (0 <= board_.at(p) && board_.at(p) <= 8)
-    return board_.at(p) + '0';
-  return board_.at(p);
+inline std::string MineSweeper<width, height>::getBoardChar(pos_t p) const {
+  if (0 <= board_.at(p) && board_.at(p) <= 8) {
+    std::string color;
+    switch (board_.at(p)) {
+      case 0:
+        break;
+      case 1:
+        color = HBLU;
+        break;
+      case 2:
+        color = GRN;
+        break;
+      case 3:
+        color = RED;
+        break;
+      default:
+        color = MAG;
+    }
+    return color + std::string(1, board_.at(p) + '0');
+  }
+  return std::string(1, board_.at(p));
 }
 
 template <size_t width, size_t height>
@@ -287,36 +305,27 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
 
   ss << "  ";
   for (size_t i = 0; i < width; ++i) {
-    ss << "│ " << static_cast<char>('A' + i);
+    ss << " " << static_cast<char>('A' + i);
   }
   for (size_t i = 0; i < height; ++i) {
-    ss << "\n──┼";
-    for (size_t j = 0; j < width; ++j) {
-      if (j != 0)
-        ss << "┼";
-      ss << "──";
-    }
     ss << "\n ";
     ss << static_cast<char>('0' + i + 1);
-    ss << "│";
     for (size_t j = 0; j < width; ++j) {
-      if (j != 0)
-        ss << "│";
       pos_t p = {i, j};
       if (mask_board) {
         switch (board_mask_.at(p)) {
           case kClose:
-            ss << " .";
+            ss << GRNHB " ." END;
             break;
           case kOpen:
-            ss << ' ' << getBoardChar(p);
+            ss << " " << getBoardChar(p) << END;
             break;
           case kMark:
-            ss << " P";
+            ss << GRNHB BHRED " P" END;
             break;
         }
       } else {
-        ss << ' ' << getBoardChar(p);
+        ss << " " << getBoardChar(p);
       }
     }
   }

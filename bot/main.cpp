@@ -65,6 +65,7 @@ int main() {
     std::cout << "All mine swept. congratulations!!!" << std::endl;
   }
   if (state == GameState::kMineExploded) {
+    // TODO: print all mines
     std::cout << "Mine exploded. try again..." << std::endl;
   }
   return 0;
