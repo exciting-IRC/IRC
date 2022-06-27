@@ -38,8 +38,6 @@ class MineSweeper {
 
   void initMines(double mine_ratio);
 
-  void initBoardMask();
-
   void initMineCounts();
 
   bool isMine(pos p) const;

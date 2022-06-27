@@ -24,10 +24,12 @@ std::ostream &operator<<(std::ostream &stream,
 
 template <size_t width, size_t height>
 inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
-    : unknown_tiles_(size), board_(kEmpty), state_(GameState::kContinue) {
+    : unknown_tiles_(size), board_(kEmpty), board_mask_(kClose), state_(GameState::kContinue) {
+  if (not(6 <= width && width <= 10) or not(6 <= height && height <= 10)) {
+    throw std::invalid_argument("width and height must be between 6 and 10");
+  }
   std::srand(std::clock());
   initMines(mine_ratio);
-  initBoardMask();
   shuffleBoard(size * 100);
   initMineCounts();
 }
@@ -44,14 +46,6 @@ inline void MineSweeper<width, height>::initMines(double mine_ratio) {
   const size_t mine_count = round(size * mine_ratio);
 
   std::fill_n(board_.begin(), mine_count, static_cast<char>(kMine));
-}
-
-template <size_t width, size_t height>
-inline void MineSweeper<width, height>::initBoardMask() {
-  for (typename board_type::iterator it = board_mask_.begin();
-       it != board_mask_.end(); ++it) {
-    *it = kClose;
-  }
 }
 
 template <size_t width, size_t height>
@@ -189,13 +183,16 @@ template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   std::stringstream ss;
   FUNCTOR(void, add_column, (std::stringstream & ss), {
+    const static std::string col_str = "abcdefghij";
     ss << "  ";
     for (size_t i = 0; i < width; ++i)
-      ss << " " HMAG << static_cast<char>('A' + i);
+      ss << " " HMAG << col_str[i];
     ss << END << "\n";
   });
-  FUNCTOR(void, add_row, (std::stringstream & ss, size_t i),
-          { ss << HBLU << static_cast<char>('0' + i + 1) << " " << END; });
+  FUNCTOR(void, add_row, (std::stringstream & ss, size_t i), {
+    const static std::string row_str = "0123456789";
+    ss << HBLU << row_str[i] << " " << END;
+  });
 
   add_column(ss);
   for (size_t i = 0; i < height; ++i) {
