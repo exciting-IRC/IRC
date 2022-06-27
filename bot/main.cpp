@@ -25,29 +25,30 @@ int main() {
 
     x = toupper(x) - 'A';
     y = y - '0' - 1;
+    pos_t p = {y, x};
 
     switch (cmd) {
       case 'x':
-        if (ms.isInBoard(y, x)) {
-          ms.exmine(y, x);
+        if (ms.isInBoard(p)) {
+          ms.exmine(p);
         } else {
-          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (p.x, p.y));
         }
         break;
 
       case 'm':
-        if (ms.isInBoard(y, x)) {
-          ms.mark(y, x);
+        if (ms.isInBoard(p)) {
+          ms.mark(p);
         } else {
-          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (p.x, p.y));
         }
         break;
 
       case 'u':
-        if (ms.isInBoard(y, x)) {
-          ms.unMark(y, x);
+        if (ms.isInBoard(p)) {
+          ms.unMark(p);
         } else {
-          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (p.x, p.y));
         }
         break;
 

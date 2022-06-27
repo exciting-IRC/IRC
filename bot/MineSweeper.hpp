@@ -29,6 +29,10 @@ struct GameState {
   enum e { kContinue, kMineExploded, kMineSwept };
 };
 
+struct pos_t {
+  const size_t y, x;
+};
+
 template <size_t width, size_t height>
 class MineSweeper {
  public:
@@ -47,26 +51,26 @@ class MineSweeper {
 
   void initMineCounts();
 
-  bool isMine(size_t y, size_t x) const;
+  bool isMine(pos_t p) const;
 
-  size_t countAdjacentMines(size_t y, size_t x) const;
+  size_t countAdjacentMines(pos_t p) const;
 
-  char getBoardChar(size_t y, size_t x) const;
+  char getBoardChar(pos_t p) const;
 
-  void openTile(size_t y, size_t x);
+  void openTile(pos_t p);
 
-  void _openRecursive(size_t y, size_t x);
+  void _openRecursive(pos_t p);
 
-  void openRecursive(size_t y, size_t x);
+  void openRecursive(pos_t p);
 
  public:
-  bool isInBoard(size_t y, size_t x) const;
+  bool isInBoard(pos_t p) const;
 
-  void exmine(size_t y, size_t x);
+  void exmine(pos_t p);
 
-  void mark(size_t y, size_t x);
+  void mark(pos_t p);
 
-  void unMark(size_t y, size_t x);
+  void unMark(pos_t p);
 
   GameState::e getState();
 
@@ -127,95 +131,98 @@ inline void MineSweeper<width, height>::initMineCounts() {
   for (size_t i = 0; i < height; ++i) {
     for (size_t j = 0; j < width; ++j) {
       if (board_[i][j] == kEmpty) {
-        board_[i][j] = countAdjacentMines(i, j);
+        pos_t p = {i, j};
+        board_[i][j] = countAdjacentMines(p);
       }
     }
   }
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isMine(size_t y, size_t x) const {
-  return board_[y][x] == kMine;
+inline bool MineSweeper<width, height>::isMine(pos_t p) const {
+  return board_[p.y][p.x] == kMine;
 }
 
 template <size_t width, size_t height>
-inline size_t MineSweeper<width, height>::countAdjacentMines(size_t y,
-                                                             size_t x) const {
+inline size_t MineSweeper<width, height>::countAdjacentMines(pos_t p) const {
   size_t count = 0;
   for (size_t i = 0; i < 8; ++i) {
-    size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
-    if (isInBoard(y + dy, x + dx) && isMine(y + dy, x + dx))
+    pos_t d = {dir_offset_[i][0], dir_offset_[i][1]};
+    pos_t n = {p.y + d.y, p.x + d.x};
+    if (isInBoard(n) and isMine(n))
       count++;
   }
   return count;
 }
 
 template <size_t width, size_t height>
-inline char MineSweeper<width, height>::getBoardChar(size_t y, size_t x) const {
-  if (0 <= board_[y][x] && board_[y][x] <= 8)
-    return board_[y][x] + '0';
-  return board_[y][x];
+inline char MineSweeper<width, height>::getBoardChar(pos_t p) const {
+  if (0 <= board_[p.y][p.x] && board_[p.y][p.x] <= 8)
+    return board_[p.y][p.x] + '0';
+  return board_[p.y][p.x];
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::openTile(size_t y, size_t x) {
-  board_mask_[y][x] = kOpen;
+inline void MineSweeper<width, height>::openTile(pos_t p) {
+  board_mask_[p.y][p.x] = kOpen;
   --unknown_tiles_;
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::_openRecursive(size_t y, size_t x) {
-  if (board_mask_[y][x] != kClose) {
+inline void MineSweeper<width, height>::_openRecursive(pos_t p) {
+  if (board_mask_[p.y][p.x] != kClose) {
     return;
   }
-  openTile(y, x);
-  if (board_[y][x] == 0) {
+  openTile(p);
+  if (board_[p.y][p.x] == 0) {
     for (size_t i = 0; i < 8; ++i) {
       size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
-      if (isInBoard(y + dy, x + dx)) {
-        _openRecursive(y + dy, x + dx);
+      pos_t n = {p.y + dy, p.x + dx};
+      if (isInBoard(n)) {
+        _openRecursive(n);
       }
     }
   }
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::openRecursive(size_t y, size_t x) {
-  openTile(y, x);
-  if (board_[y][x] == 0) {
+inline void MineSweeper<width, height>::openRecursive(pos_t p) {
+  openTile(p);
+  if (board_[p.y][p.x] == 0) {
     for (size_t i = 0; i < 8; ++i) {
       size_t dy = dir_offset_[i][0], dx = dir_offset_[i][1];
-      if (isInBoard(y + dy, x + dx)) {
-        _openRecursive(y + dy, x + dx);
+      pos_t n = {p.y + dy, p.x + dx};
+      if (isInBoard(n)) {
+        _openRecursive(n);
       }
     }
   }
 }
 
 template <size_t width, size_t height>
-inline bool MineSweeper<width, height>::isInBoard(size_t y, size_t x) const {
-  return y >= 0 && y < height && x >= 0 && x < width;
+inline bool MineSweeper<width, height>::isInBoard(pos_t p) const {
+  return (0 <= p.y && p.y < height) && (0 <= p.x && p.x < width);
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::exmine(size_t y, size_t x) {
-  if (board_[y][x] == kMine) {
+inline void MineSweeper<width, height>::exmine(pos_t p) {
+  if (board_[p.y][p.x] == kMine) {
     state_ = GameState::kMineExploded;
     return;
   }
-  if (board_mask_[y][x] == kClose)
-    openRecursive(y, x);
+  if (board_mask_[p.y][p.x] == kClose)
+    openRecursive(p);
   if (unknown_tiles_ == 0) {
     state_ = GameState::kMineSwept;
   }
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::mark(size_t y, size_t x) {
-  if (board_mask_[y][x] != kClose)
+inline void MineSweeper<width, height>::mark(pos_t p) {
+  if (board_mask_[p.y][p.x] != kClose)
     return;
-  board_mask_[y][x] = kMark;
-  if (board_[y][x] == kMine)
+  board_mask_[p.y][p.x] = kMark;
+  if (board_[p.y][p.x] == kMine)
     --unknown_tiles_;
   if (unknown_tiles_ == 0) {
     state_ = GameState::kMineSwept;
@@ -223,11 +230,11 @@ inline void MineSweeper<width, height>::mark(size_t y, size_t x) {
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::unMark(size_t y, size_t x) {
-  if (board_mask_[y][x] != kMark)
+inline void MineSweeper<width, height>::unMark(pos_t p) {
+  if (board_mask_[p.y][p.x] != kMark)
     return;
-  board_mask_[y][x] = kClose;
-  if (board_[y][x] == kMine)
+  board_mask_[p.y][p.x] = kClose;
+  if (board_[p.y][p.x] == kMine)
     ++unknown_tiles_;
   if (unknown_tiles_ == 0) {
     state_ = GameState::kMineSwept;
@@ -260,20 +267,21 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     for (size_t j = 0; j < width; ++j) {
       if (j != 0)
         ss << "│";
+      pos_t p = {i, j};
       if (mask_board) {
         switch (board_mask_[i][j]) {
           case kClose:
             ss << " .";
             break;
           case kOpen:
-            ss << ' ' << getBoardChar(i, j);
+            ss << ' ' << getBoardChar(p);
             break;
           case kMark:
             ss << " P";
             break;
         }
       } else {
-        ss << ' ' << getBoardChar(i, j);
+        ss << ' ' << getBoardChar(p);
       }
     }
   }
