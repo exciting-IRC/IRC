@@ -166,7 +166,10 @@ inline std::string MineSweeper<width, height>::getBoardChar(pos p) const {
         color = MAG;
     }
     return color + std::string(1, board_.at(p) + '0');
+  } else if (board_.at(p) == kMine) {
+    return BHRED + std::string(1, kMine);
   }
+
   return std::string(1, board_.at(p));
 }
 
@@ -273,7 +276,7 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
             break;
         }
       } else {
-        ss << " " << getBoardChar(p);
+        ss << " " << getBoardChar(p) << END;
       }
     }
   }
