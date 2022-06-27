@@ -8,9 +8,6 @@
 
 template <typename T, size_t width, size_t height>
 class board {
- private:
-  util::array<T, width * height> data_;
-
  public:
   typedef T value_type;
   typedef value_type& reference;
@@ -23,15 +20,23 @@ class board {
   typedef std::ptrdiff_t difference_type;
   typedef std::reverse_iterator<iterator> reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+  static const size_type size = width * height;
+
+ private:
+  util::array<value_type, size> data_;
 
  public:
-  board() { data_.fill(T()); }
-  board(const T& val) { data_.fill(val); }
+  board() { data_.fill(value_type()); }
+  board(const value_type& val) { data_.fill(val); }
 
-  T at(size_type y, size_type x) const { return data_[y * width + x]; }
+  value_type at(size_type y, size_type x) const { return data_[y * width + x]; }
   reference at(size_type y, size_type x) { return data_[y * width + x]; }
-  T at(pos p) const { return data_[p.y * width + p.x]; }
+  value_type at(pos p) const { return data_[p.y * width + p.x]; }
   reference at(pos p) { return data_[p.y * width + p.x]; }
+  value_type at(size_type i) const { return data_[i]; }
+  reference at(size_type i) { return data_[i]; }
+  value_type random() const { return data_[util::randRange(size)]; }
+  reference random() { return data_[util::randRange(size)]; }
 
   bool in_bounds(pos p) const { return p.y < height and p.x < width; }
   bool in_bounds(size_type y, size_type x) const {

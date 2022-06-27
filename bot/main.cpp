@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "MineSweeper.hpp"
 #include "util/strutil/format.hpp"
 
