@@ -1,3 +1,4 @@
 <map id="그래픽컬한 클래스 계통도" name="그래픽컬한 클래스 계통도">
-<area shape="rect" id="node1" href="$classvec__of__any_1_1Template.html" title=" " alt="" coords="5,5,151,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node2" href="$classutil_1_1LazyString.html" title="apply()를 하기 전까지는 문자열의 포인터만 가지고 있다가 apply()를 하는 순간 실제 string으로 적용해주는 클래스" alt="" coords="132,5,239,32"/>
 </map>

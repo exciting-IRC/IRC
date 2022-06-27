@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ieventhandler_0',['IEventHandler',['../classIEventHandler.html',1,'']]],
-  ['ircparser_1',['IRCParser',['../classIRCParser.html',1,'']]]
+  ['gameaction_0',['GameAction',['../structGameAction.html',1,'']]],
+  ['gamestate_1',['GameState',['../structGameState.html',1,'']]]
 ];
