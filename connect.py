@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.NOTSET)
 class Config(Enum):
     host = socket.gethostname()
     port = 6667
-    serverName = "excitingirc"
+    serverName = "excitingirc"  # "penguin.omega.example.org"
 
 
 def create_socket() -> socket.socket:
@@ -47,9 +47,9 @@ class Client:
         self.send(
             dedent(
                 f"""\
-                PASS :password\r
+                PASS password\r
                 NICK {self.name}\r
-                USER user user localhost :longusername\r
+                USER youkim 0 * :Younghyun Kim\r
                 """
             )
         )
@@ -66,6 +66,7 @@ class Client:
 def main() -> None:
     client = Client()
     client.connect()
+    time.sleep(1)
     client.send(f"PING :{Config.serverName.value}\r\n")
 
 
