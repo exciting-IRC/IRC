@@ -25,7 +25,7 @@ int main() {
 
     x = toupper(x) - 'A';
     y = y - '0' - 1;
-    pos_t p = {y, x};
+    pos p = {y, x};
 
     switch (cmd) {
       case 'x':
