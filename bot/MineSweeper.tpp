@@ -24,7 +24,10 @@ std::ostream &operator<<(std::ostream &stream,
 
 template <size_t width, size_t height>
 inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
-    : unknown_tiles_(size), board_(kEmpty), board_mask_(kClose), state_(GameState::kContinue) {
+    : unopend_tiles_(size),
+      board_(kEmpty),
+      board_mask_(GameAction::kClose),
+      state_(GameState::kContinue) {
   if (not(6 <= width && width <= 10) or not(6 <= height && height <= 10)) {
     throw std::invalid_argument("width and height must be between 6 and 10");
   }
@@ -104,13 +107,13 @@ inline std::string MineSweeper<width, height>::getBoardChar(pos p) const {
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::openTile(pos p) {
-  board_mask_.at(p) = kOpen;
-  --unknown_tiles_;
+  board_mask_.at(p) = GameAction::kOpen;
+  --unopend_tiles_;
 }
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::_openRecursive(pos p) {
-  if (board_mask_.at(p) != kClose) {
+  if (board_mask_.at(p) != GameAction::kClose) {
     return;
   }
   openTile(p);
@@ -143,33 +146,20 @@ inline void MineSweeper<width, height>::exmine(pos p) {
     state_ = GameState::kMineExploded;
     return;
   }
-  if (board_mask_.at(p) == kClose)
+  if (board_mask_.at(p) == GameAction::kClose)
     openRecursive(p);
-  if (unknown_tiles_ == 0) {
+  if (unopend_tiles_ == 0) {
     state_ = GameState::kMineSwept;
   }
 }
 
 template <size_t width, size_t height>
-inline void MineSweeper<width, height>::mark(pos p) {
-  if (board_mask_.at(p) != kClose)
+inline void MineSweeper<width, height>::toggleFlag(pos p) {
+  char &c = board_mask_.at(p);
+  if (c == GameAction::kOpen)
     return;
-  board_mask_.at(p) = kMark;
-  if (board_.at(p) == kMine)
-    --unknown_tiles_;
-  if (unknown_tiles_ == 0) {
-    state_ = GameState::kMineSwept;
-  }
-}
-
-template <size_t width, size_t height>
-inline void MineSweeper<width, height>::unMark(pos p) {
-  if (board_mask_.at(p) != kMark)
-    return;
-  board_mask_.at(p) = kClose;
-  if (board_.at(p) == kMine)
-    ++unknown_tiles_;
-  if (unknown_tiles_ == 0) {
+  c = (c == GameAction::kFlag) ? GameAction::kClose : GameAction::kFlag;
+  if (unopend_tiles_ == 0) {
     state_ = GameState::kMineSwept;
   }
 }
@@ -181,7 +171,6 @@ inline GameState::e MineSweeper<width, height>::getState() {
 
 template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
-  std::stringstream ss;
   FUNCTOR(void, add_column, (std::stringstream & ss), {
     const static std::string col_str = "abcdefghij";
     ss << "  ";
@@ -194,6 +183,8 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     ss << HBLU << row_str[i] << " " << END;
   });
 
+  std::stringstream ss;
+
   add_column(ss);
   for (size_t i = 0; i < height; ++i) {
     add_row(ss, i);
@@ -201,13 +192,13 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
       pos p(i, j);
       if (mask_board) {
         switch (board_mask_.at(p)) {
-          case kClose:
+          case GameAction::kClose:
             ss << GRNHB " ." END;
             break;
-          case kOpen:
+          case GameAction::kOpen:
             ss << " " << getBoardChar(p) << END;
             break;
-          case kMark:
+          case GameAction::kFlag:
             ss << GRNHB BHRED " P" END;
             break;
         }

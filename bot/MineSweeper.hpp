@@ -19,6 +19,9 @@ extern const pos dir_offset_[8];
 struct GameState {
   enum e { kContinue, kMineExploded, kMineSwept };
 };
+struct GameAction {
+  enum e { kClose, kOpen, kFlag, kExit };
+};
 
 template <size_t width, size_t height>
 class MineSweeper {
@@ -27,7 +30,6 @@ class MineSweeper {
 
  private:
   enum { kMine = '*', kEmpty = 0 };
-  enum { kClose, kOpen, kMark };
 
   typedef board<char, height, width> board_type;
   typedef typename board_type::iterator iterator;
@@ -57,16 +59,14 @@ class MineSweeper {
 
   void exmine(pos p);
 
-  void mark(pos p);
-
-  void unMark(pos p);
+  void toggleFlag(pos p);
 
   GameState::e getState();
 
   std::string toString(bool mask_board) const;
 
  private:
-  size_t unknown_tiles_;
+  size_t unopend_tiles_;
   board_type board_;
   board_type board_mask_;
   GameState::e state_;
