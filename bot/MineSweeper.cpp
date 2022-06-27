@@ -17,6 +17,8 @@ size_t randRange(size_t min, size_t max) {
   return n + min;
 }
 
+size_t randRange(size_t max) { return randRange(0, max); }
+
 }  // namespace util
 
 const pos_t dir_offset_[8] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
