@@ -2,8 +2,6 @@
 
 #include <unistd.h>
 
-#include <iostream>
-
 #include "returncode.hpp"
 #include "server/Server.hpp"
 #include "util/algorithm/algorithm.hpp"
@@ -377,7 +375,7 @@ result_t::e Client::join(const Message &m) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
       // send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
-      sendList(FMT(":{server} {code} {nick} = {channel} :",
+      sendList(FMT(":{server} {code} {nick} {channel} :",
                    (server.config_.name, util::pad_num(util::RPL_NAMREPLY),
                     ident_.nickname_, *it)),
                util::keys(new_channel->getUsers()),
