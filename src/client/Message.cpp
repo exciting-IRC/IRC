@@ -11,17 +11,7 @@ Message::operator std::string() const { return util::to_string(*this); }
 
 Message Message::as_reply(const std::string& prefix, const std::string& command,
                           const std::vector<std::string>& params) {
-  typedef std::vector<util::LazyString> lazyvec;
-  typedef std::vector<std::string>::const_iterator const_it;
-
-  lazyvec lazy_params;
-  lazy_params.reserve(params.size());
-  for (const_it it = params.begin(); it != params.end(); ++it) {
-    lazy_params.push_back(util::LazyString(*it));
-  }
-
-  Message reply = {util::LazyString(prefix), util::LazyString(command),
-                   lazy_params};
+  Message reply = {prefix, command, params};
   return reply;
 }
 
@@ -36,7 +26,7 @@ Message Message::as_not_enough_params_reply(std::string command) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Message& msg) {
-  typedef std::vector<util::LazyString>::const_iterator const_it;
+  typedef std::vector<std::string>::const_iterator const_it;
 
   if (not msg.prefix.empty()) {
     os << ":" << msg.prefix << " ";

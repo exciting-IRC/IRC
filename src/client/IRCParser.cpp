@@ -8,39 +8,51 @@ IRCParser::IRCParser() : state_(ParserState::kBegin), length_(0) {}
 
 ParserResult::e IRCParser::parseBegin(const char *cursor) {
   if (*cursor == ':') {
-    state_ = ParserState::kPrefix;
-    msg_.prefix.setStart(cursor);
+    state_ = ParserState::kPrefixBegin;
   } else if (*cursor == '\r') {
     state_ = ParserState::kEmptyLF;
   } else if (util::isLetter(*cursor) || util::isDigit(*cursor)) {
     state_ = ParserState::kCommand;
-    msg_.command.setStart(cursor);
+    msg_.command.push_back(*cursor);
   } else {
     return ParserResult::kFailure;
   }
   return ParserResult::kSuccess;
 }
 
+ParserResult::e IRCParser::parsePrefixBegin(const char *cursor) {
+  msg_.prefix.push_back(*cursor);
+  state_ = ParserState::kPrefix;
+  return ParserResult::kSuccess;
+}
+
 ParserResult::e IRCParser::parsePrefix(const char *cursor) {
   if (*cursor == ' ') {
-    msg_.prefix.setEnd(cursor);
-    msg_.prefix.apply();
-    state_ = ParserState::kCommand;
+    state_ = ParserState::kCommandBegin;
+  } else {
+    msg_.prefix.push_back(*cursor);
   }
   return ParserResult::kSuccess;
 }
 
+ParserResult::e IRCParser::parseCommandBegin(const char *cursor) {
+  if (util::isLetter(*cursor) || util::isDigit(*cursor)) {
+    state_ = ParserState::kCommand;
+    msg_.command.push_back(*cursor);
+    return ParserResult::kSuccess;
+  }
+  return ParserResult::kFailure;
+}
+
 ParserResult::e IRCParser::parseCommand(const char *cursor) {
   if (*cursor == ' ') {
-    msg_.command.setEnd(cursor);
-    msg_.command.apply();
     state_ = ParserState::kParamStart;
   } else if (*cursor == '\r') {
-    msg_.command.setEnd(cursor);
-    msg_.command.apply();
     state_ = ParserState::kLF;
   } else if (!util::isLetter(*cursor) && !util::isDigit(*cursor)) {
     return ParserResult::kFailure;
+  } else {
+    msg_.command.push_back(*cursor);
   }
   return ParserResult::kSuccess;
 }
@@ -50,8 +62,7 @@ ParserResult::e IRCParser::parseParamStart(const char *cursor) {
     state_ = ParserState::kTrailingStart;
   } else if (util::isRegular(*cursor)) {
     state_ = ParserState::kParam;
-    msg_.params.push_back(util::LazyString());
-    msg_.params.back().setStart(cursor);
+    msg_.params.push_back(std::string("") + *cursor);
   } else {
     return ParserResult::kFailure;
   }
@@ -61,14 +72,10 @@ ParserResult::e IRCParser::parseParamStart(const char *cursor) {
 ParserResult::e IRCParser::parseParam(const char *cursor) {
   switch (*cursor) {
     case ' ':
-      msg_.params.back().setEnd(cursor);
-      msg_.params.back().apply();
       state_ = ParserState::kParamStart;
       break;
 
     case '\r':
-      msg_.params.back().setEnd(cursor);
-      msg_.params.back().apply();
       state_ = ParserState::kLF;
       break;
 
@@ -78,13 +85,14 @@ ParserResult::e IRCParser::parseParam(const char *cursor) {
       break;
 
     default:
+      msg_.params.back().push_back(*cursor);
       break;
   }
   return ParserResult::kSuccess;
 }
 
 ParserResult::e IRCParser::parseTrailingStart(const char *cursor) {
-  msg_.params.push_back(util::LazyString());
+  msg_.params.push_back("");
   switch (*cursor) {
     case '\r':
       state_ = ParserState::kLF;
@@ -95,8 +103,9 @@ ParserResult::e IRCParser::parseTrailingStart(const char *cursor) {
       return ParserResult::kFailure;
       break;
     default:
-      msg_.params.back().setStart(cursor);
+      msg_.params.back().push_back(*cursor);
       state_ = ParserState::kTrailing;
+      break;
   }
   return ParserResult::kSuccess;
 }
@@ -104,8 +113,6 @@ ParserResult::e IRCParser::parseTrailingStart(const char *cursor) {
 ParserResult::e IRCParser::parseTrailing(const char *cursor) {
   switch (*cursor) {
     case '\r':
-      msg_.params.back().setEnd(cursor);
-      msg_.params.back().apply();
       state_ = ParserState::kLF;
       break;
     case '\0':
@@ -113,6 +120,7 @@ ParserResult::e IRCParser::parseTrailing(const char *cursor) {
       return ParserResult::kFailure;
       break;
     default:
+      msg_.params.back().push_back(*cursor);
       break;
   }
   return ParserResult::kSuccess;
@@ -139,8 +147,17 @@ ParserResult::e IRCParser::parse(util::Buffer &buffer) {
         if (parseBegin(cursor) == ParserResult::kFailure)
           return ParserResult::kFailure;
         break;
+      case ParserState::kPrefixBegin:
+        if (parsePrefixBegin(cursor) == ParserResult::kFailure) {
+          return ParserResult::kFailure;
+        }
+        break;
       case ParserState::kPrefix:
         if (parsePrefix(cursor) == ParserResult::kFailure)
+          return ParserResult::kFailure;
+        break;
+      case ParserState::kCommandBegin:
+        if (parseCommandBegin(cursor) == ParserResult::kFailure)
           return ParserResult::kFailure;
         break;
       case ParserState::kCommand:
@@ -172,10 +189,10 @@ ParserResult::e IRCParser::parse(util::Buffer &buffer) {
         clear();
         break;
       default:
+        abort();
         return ParserResult::kFailure;
     }
   }
-  applyAll(buffer.data(), buffer.data() + buffer.tellp());
   return ParserResult::kContinue;
 }
 
@@ -195,21 +212,4 @@ Message IRCParser::getMessage() {
   Message msg = msg_;
   clear();
   return msg;
-}
-
-void IRCParser::applyAll(const char *start, const char *end) {
-  if (state_ == ParserState::kPrefix) {
-    msg_.prefix.setEnd(end);
-    msg_.prefix.apply();
-    msg_.prefix.setStart(start);
-  } else if (state_ == ParserState::kCommand) {
-    msg_.command.setEnd(end);
-    msg_.command.apply();
-    msg_.command.setStart(start);
-  } else if (state_ == ParserState::kParam ||
-             state_ == ParserState::kTrailing) {
-    msg_.params.back().setEnd(end);
-    msg_.params.back().apply();
-    msg_.params.back().setStart(start);
-  }
 }

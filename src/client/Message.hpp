@@ -4,15 +4,14 @@
 #include <string>
 
 #include "returncode.hpp"
-#include "util/LazyString/LazyString.hpp"
 #include "util/algorithm/algorithm.hpp"
 #include "util/config/config.hpp"
 #include "util/strutil/conversion.hpp"
 
 struct Message {
-  util::LazyString prefix;
-  util::LazyString command;
-  std::vector<util::LazyString> params;
+  std::string prefix;
+  std::string command;
+  std::vector<std::string> params;
 
   void clear();
   operator std::string() const;
