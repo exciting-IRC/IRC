@@ -1,4 +1,5 @@
 #include "MineSweeper.hpp"
+#include "util/strutil/format.hpp"
 
 int main() {
   MineSweeper<9, 9> ms(0.12);
@@ -9,12 +10,16 @@ int main() {
     char cmd, x, y;
 
     std::cin >> cmd >> x >> y;
+    if (std::cin.eof()) {
+      break;
+    }
+
     if (!isalpha(x)) {
-      std::cout << x << ": Unknown x coord" << std::endl;
+      COUT_FMT("{}: Unknown x coord", (x));
       continue;
     }
     if (!isdigit(y)) {
-      std::cout << y << ": Unknown y coord" << std::endl;
+      COUT_FMT("{}: Unknown y coord", (y));
       continue;
     }
 
@@ -26,8 +31,7 @@ int main() {
         if (ms.isInBoard(y, x)) {
           ms.exmine(y, x);
         } else {
-          std::cout << "(x, y)=(" << (int)x << "," << (int)y
-                    << ") is not valid coord" << std::endl;
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
         }
         break;
 
@@ -35,8 +39,7 @@ int main() {
         if (ms.isInBoard(y, x)) {
           ms.mark(y, x);
         } else {
-          std::cout << "(x, y)=(" << (int)x << "," << (int)y
-                    << ") is not valid coord" << std::endl;
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
         }
         break;
 
@@ -44,8 +47,7 @@ int main() {
         if (ms.isInBoard(y, x)) {
           ms.unMark(y, x);
         } else {
-          std::cout << "(x, y)=(" << (int)x << "," << (int)y
-                    << ") is not valid coord" << std::endl;
+          COUT_FMT("(x, y)=({x}, {y}) is not valid coord", (x, y));
         }
         break;
 
@@ -54,7 +56,7 @@ int main() {
         break;
 
       default:
-        std::cout << cmd << ": Unknown command" << std::endl;
+        COUT_FMT("{}: Unknown command", (cmd));
         break;
     }
   }
