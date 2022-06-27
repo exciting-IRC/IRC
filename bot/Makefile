@@ -3,10 +3,10 @@ MAKEFLAGS += -j
 
 CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
-CXXFLAGS += -I .
+CXXFLAGS += -I . -I ../src
 CXXFLAGS += -MMD -MP
 
-SRC := $(shell find . -name '*.cpp')
+SRC := $(shell find . ../src/util -name '*.cpp')
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(OBJ:%.o=%.d)
 
