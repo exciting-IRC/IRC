@@ -11,7 +11,6 @@
 
 #include "MineSweeper.hpp"
 #include "util/algorithm/functor.hpp"
-#include "util/strutil/format.hpp"
 
 const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
                             pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};
@@ -151,7 +150,6 @@ inline void MineSweeper<width, height>::exmine(pos p) {
   }
   if (board_mask_.at(p) == GameAction::kClose)
     openRecursive(p);
-  COUT_FMT("unopend_tiles: {}", (unopend_tiles_));
   if (unopend_tiles_ == num_mines_) {
     state_ = GameState::kMineSwept;
   }
