@@ -25,10 +25,8 @@ class board {
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
  public:
-  board() { std::memset(data_.data(), 0, sizeof(T) * data_.size()); }
-  board(const board& other) {
-    std::memcpy(data_.data(), other.data_.data(), sizeof(T) * data_.size());
-  }
+  board() { data_.fill(T()); }
+  board(const T& val) { data_.fill(val); }
 
   T at(size_type y, size_type x) const { return data_[y * width + x]; }
   reference at(size_type y, size_type x) { return data_[y * width + x]; }

@@ -82,7 +82,9 @@ std::ostream &operator<<(std::ostream &stream, const MineSweeper<W, H> &ms) {
 
 template <size_t width, size_t height>
 inline MineSweeper<width, height>::MineSweeper(double mine_ratio)
-    : unknown_tiles_(width * height), state_(GameState::kContinue) {
+    : unknown_tiles_(width * height),
+      board_(kEmpty),
+      state_(GameState::kContinue) {
   std::srand(std::clock());
   initMines(mine_ratio);
   initBoardMask();
@@ -106,17 +108,13 @@ inline void MineSweeper<width, height>::initMines(double mine_ratio) {
   for (size_t i = 0; i < mine_count; ++i) {
     board_.at(i / height, i % width) = kMine;
   }
-  for (size_t i = mine_count; i < size; ++i) {
-    board_.at(i / height, i % width) = kEmpty;
-  }
 }
 
 template <size_t width, size_t height>
 inline void MineSweeper<width, height>::initBoardMask() {
-  for (size_t i = 0; i < height; ++i) {
-    for (size_t j = 0; j < width; ++j) {
-      board_mask_.at(i, j) = kClose;
-    }
+  for (typename board_type::iterator it = board_mask_.begin();
+       it != board_mask_.end(); ++it) {
+    *it = kClose;
   }
 }
 
@@ -255,14 +253,15 @@ template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   std::stringstream ss;
 
-  ss << "  ";
-  for (size_t i = 0; i < width; ++i) {
-    ss << " " HMAG << static_cast<char>('A' + i);
+  {
+    ss << "  ";
+    for (size_t i = 0; i < width; ++i) {
+      ss << " " HMAG << static_cast<char>('A' + i);
+    }
+    ss << END << "\n";
   }
-  ss << END;
   for (size_t i = 0; i < height; ++i) {
-    ss << "\n ";
-    ss << HBLU << static_cast<char>('0' + i + 1) << END;
+    ss << HBLU << static_cast<char>('0' + i + 1) << " " << END;
     for (size_t j = 0; j < width; ++j) {
       pos p(i, j);
       if (mask_board) {
@@ -281,6 +280,7 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
         ss << " " << getBoardChar(p) << END;
       }
     }
+    ss << "\n";
   }
   return ss.str();
 }
