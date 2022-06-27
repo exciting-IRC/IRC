@@ -1,5 +1,5 @@
-#ifndef STRUTIL_HPP
-#define STRUTIL_HPP
+#ifndef STRUTIL_TPP
+#define STRUTIL_TPP
 
 #include <iomanip>
 #include <sstream>
@@ -36,4 +36,4 @@ string pad_num(const T& t, size_t width, char fill) {
 
 }  // namespace util
 
-#endif  // STRUTIL_HPP
+#endif  // STRUTIL_TPP
