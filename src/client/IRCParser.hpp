@@ -13,7 +13,9 @@ struct ParserResult {
 struct ParserState {
   enum e {
     kBegin,
+    kPrefixBegin,
     kPrefix,
+    kCommandBegin,
     kCommand,
     kParamStart,
     kParam,
@@ -41,9 +43,10 @@ class IRCParser {
   Message getMessage();
 
  private:
-  void applyAll(const char *start, const char *end);
   ParserResult::e parseBegin(const char *cursor);
+  ParserResult::e parsePrefixBegin(const char *cursor);
   ParserResult::e parsePrefix(const char *cursor);
+  ParserResult::e parseCommandBegin(const char *cursor);
   ParserResult::e parseCommand(const char *cursor);
   ParserResult::e parseParamStart(const char *cursor);
   ParserResult::e parseParam(const char *cursor);

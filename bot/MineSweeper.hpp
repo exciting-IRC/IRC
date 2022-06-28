@@ -55,7 +55,7 @@ class MineSweeper {
   void openRecursive(pos p);
 
  public:
-  bool isInBoard(pos p) const { return board_.in_bounds(p); }
+  bool isInBoard(pos p) const;
 
   void exmine(pos p);
 

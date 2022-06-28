@@ -12,9 +12,6 @@
 #include "MineSweeper.hpp"
 #include "util/algorithm/functor.hpp"
 
-const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
-                            pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};
-
 template <size_t width, size_t height>
 std::ostream &operator<<(std::ostream &stream,
                          const MineSweeper<width, height> &ms) {
@@ -211,6 +208,11 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     ss << "\n";
   }
   return ss.str();
+}
+
+template <size_t width, size_t height>
+inline bool MineSweeper<width, height>::isInBoard(pos p) const {
+  return board_.in_bounds(p);
 }
 
 #endif  // BOT_MINESWEEPER_TPP

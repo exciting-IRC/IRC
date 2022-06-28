@@ -8,7 +8,6 @@
 #include "util/general/logging.hpp"
 
 Server::Server() : config_(), sock_(-1) {}
-
 Server::~Server() {
   for (ClientList::iterator it = unregistered_clients_.begin(),
                             end = unregistered_clients_.end();
@@ -174,3 +173,5 @@ void Channel::changeUserName(const std::string &oldnick,
 }
 
 ClientMap Channel::getUsers() { return users_; }
+
+Server server;

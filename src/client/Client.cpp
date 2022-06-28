@@ -2,8 +2,6 @@
 
 #include <unistd.h>
 
-#include <iostream>
-
 #include "returncode.hpp"
 #include "server/Server.hpp"
 #include "util/algorithm/algorithm.hpp"
@@ -209,7 +207,8 @@ result_t::e Client::handleReadEvent(Event &e) {
 }
 
 ssize_t Client::recvToBuffer(size_t length) {
-  ssize_t ret = util::recv(sock_, recv_buffer_.begin(), length);
+  ssize_t ret = util::recv(sock_, recv_buffer_.begin(),
+                           std::min(length, recv_buffer_.max_size()));
   if (ret == -1)
     return ret;
   recv_buffer_.seekg(0);

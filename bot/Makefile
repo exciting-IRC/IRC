@@ -2,11 +2,11 @@ NAME := msbot
 # MAKEFLAGS += -j
 
 CXX := c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g -fsanitize=address
 CXXFLAGS += -I . -I ../src
 CXXFLAGS += -MMD -MP
 
-SRC := $(shell find . ../src/util -name '*.cpp')
+SRC := $(shell find ../src -name '*.cpp' ! -name 'main.cpp') $(shell find . -name '*.cpp')
 OBJ := $(SRC:%.cpp=%.o)
 DEP := $(OBJ:%.o=%.d)
 
