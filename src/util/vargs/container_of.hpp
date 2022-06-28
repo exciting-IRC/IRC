@@ -4,9 +4,10 @@
 // do not try to directly edit this file.
 // generate using container_of.py instead
 
-#define MAP_OF(K, V, param) container_of<std::map<K, V>, std::pair<K, V> > param
+#define MAP_OF(K, V, param) container_of<std::map<K, V> > param
 #define VEC_OF(T, param) container_of<std::vector<T> > param
 #define V(param) VEC_OF(std::string, param)
+#define T typename C::value_type
 
 namespace util {
 template <typename K, typename V>
@@ -15,75 +16,70 @@ std::pair<K, V> p(K k, V v) {
 }
 }  // namespace util
 
-// hardcoded size 0 cases
+// hardcoded size 0 case
 template <typename C>
-inline C container_of() {
-  return C();
-}
-
-template <typename C, typename T>
 inline C container_of() {
   return C();
 }
 // end of hardcoded size 0 cases
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0) {
   const T args[1] = {arg0};
   return C(args, args + 1);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1) {
   const T args[2] = {arg0, arg1};
   return C(args, args + 2);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2) {
   const T args[3] = {arg0, arg1, arg2};
   return C(args, args + 3);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3) {
   const T args[4] = {arg0, arg1, arg2, arg3};
   return C(args, args + 4);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4) {
   const T args[5] = {arg0, arg1, arg2, arg3, arg4};
   return C(args, args + 5);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5) {
   const T args[6] = {arg0, arg1, arg2, arg3, arg4, arg5};
   return C(args, args + 6);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6) {
   const T args[7] = {arg0, arg1, arg2, arg3, arg4, arg5, arg6};
   return C(args, args + 7);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7) {
   const T args[8] = {arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7};
   return C(args, args + 8);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8) {
   const T args[9] = {arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8};
   return C(args, args + 9);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9) {
   const T args[10] = {arg0, arg1, arg2, arg3, arg4,
@@ -91,7 +87,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 10);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10) {
   const T args[11] = {arg0, arg1, arg2, arg3, arg4, arg5,
@@ -99,7 +95,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 11);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11) {
   const T args[12] = {arg0, arg1, arg2, arg3, arg4,  arg5,
@@ -107,7 +103,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 12);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12) {
   const T args[13] = {arg0, arg1, arg2, arg3,  arg4,  arg5, arg6,
@@ -115,7 +111,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 13);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13) {
@@ -124,7 +120,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 14);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14) {
@@ -133,7 +129,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 15);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15) {
@@ -142,7 +138,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 16);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16) {
@@ -152,7 +148,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 17);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17) {
@@ -162,7 +158,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 18);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18) {
@@ -172,7 +168,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 19);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -183,7 +179,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 20);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -194,7 +190,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 21);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -205,7 +201,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 22);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -216,7 +212,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 23);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -227,7 +223,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 24);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -239,7 +235,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 25);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -252,7 +248,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 26);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -265,7 +261,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 27);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -278,7 +274,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 28);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -291,7 +287,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 29);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -304,7 +300,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 30);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -317,7 +313,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 31);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -331,7 +327,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 32);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -346,7 +342,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 33);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -361,7 +357,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 34);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -376,7 +372,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 35);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -391,7 +387,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 36);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -406,7 +402,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 37);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -422,7 +418,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 38);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -438,7 +434,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
   return C(args, args + 39);
 }
 
-template <typename C, typename T>
+template <typename C>
 inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       T arg7, T arg8, T arg9, T arg10, T arg11, T arg12,
                       T arg13, T arg14, T arg15, T arg16, T arg17, T arg18,
@@ -453,5 +449,7 @@ inline C container_of(T arg0, T arg1, T arg2, T arg3, T arg4, T arg5, T arg6,
                       arg32, arg33, arg34, arg35, arg36, arg37, arg38, arg39};
   return C(args, args + 40);
 }
+
+#undef T
 
 #endif  // SRC_UTIL_VARGS_CONTAINER_OF_HPP

@@ -17,7 +17,7 @@
 using util::p;
 
 const Client::CmdMap Client::map_before_register_ =
-    container_of<CmdMap, CmdMap::value_type>(
+    container_of<CmdMap>(
         p("PING", &Client::notRegistered), p("QUIT", &Client::notRegistered),
         p("JOIN", &Client::notRegistered), p("PRIVMSG", &Client::notRegistered),
         p("KILL", &Client::notRegistered), p("OPER", &Client::notRegistered),
@@ -26,7 +26,7 @@ const Client::CmdMap Client::map_before_register_ =
         p("NICK", &Client::registerNick), p("PONG", &Client::notRegistered));
 
 const Client::CmdMap Client::map_after_register_ =
-    container_of<CmdMap, CmdMap::value_type>(
+    container_of<CmdMap>(
         p("PING", &Client::ping), p("QUIT", &Client::quit),
         p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
         p("KILL", &Client::kill), p("OPER", &Client::oper),

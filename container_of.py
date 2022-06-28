@@ -28,9 +28,10 @@ template = dedent(
     // do not try to directly edit this file.
     // generate using container_of.py instead
 
-    #define MAP_OF(K, V, param) container_of<std::map<K, V>, std::pair<K, V> > param
+    #define MAP_OF(K, V, param) container_of<std::map<K, V> > param
     #define VEC_OF(T, param) container_of<std::vector<T> > param
     #define V(param) VEC_OF(std::string, param)
+    #define T typename C::value_type
 
     namespace util {{
     template <typename K, typename V>
@@ -39,19 +40,16 @@ template = dedent(
     }}
     }} // namespace util
 
-    // hardcoded size 0 cases
+    // hardcoded size 0 case
     template <typename C>
-    inline C container_of() {{
-      return C();
-    }}
-
-    template <typename C, typename T>
     inline C container_of() {{
       return C();
     }}
     // end of hardcoded size 0 cases
 
     {text}
+
+    #undef T
     """
 )
 
@@ -62,7 +60,7 @@ class Template:
     size must be greater than 0
 
     typename C <- container type
-    typename T <- value type, intended to pass by value
+    typename T <- value type, expands to typename C::value_type
     """
 
     size: int = 10
@@ -80,7 +78,7 @@ class Template:
     def __str__(self) -> str:
         return dedent(
             f"""\
-            template <typename C, typename T>
+            template <typename C>
             inline C container_of({self.create_args(with_type=True)}) {{
                 {self.create_args_array()}
                 {self.create_return()}
