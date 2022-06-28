@@ -55,7 +55,7 @@ struct Config {
   static Config from(const string &filename) {
     std::ifstream configfile(filename.c_str());
     if (configfile.fail())
-      throw std::invalid_argument("config file not found: " + filename);
+      throw std::invalid_argument(FMT("config file not found: {}", (filename)));
 
     size_t i = 0;
     std::string line;
