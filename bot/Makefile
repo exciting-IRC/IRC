@@ -1,5 +1,5 @@
 NAME := msbot
-# MAKEFLAGS += -j
+MAKEFLAGS += -j
 
 CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g -fsanitize=address
