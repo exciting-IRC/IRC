@@ -34,6 +34,14 @@ re: fclean
 run: all
 	./$(NAME)
 
-.PHONY: all clean fclean re run
+test:
+	./test/joinpart.sh	
+	./test/change_nick.sh
+	./test/quit.sh
+	./test/kill.sh
+	./test/stress.sh
+	./test/manual.sh
+
+.PHONY: all clean fclean re run test
 
 include color.mk
