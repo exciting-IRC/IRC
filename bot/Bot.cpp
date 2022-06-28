@@ -4,8 +4,8 @@
 
 using util::p;
 
-const Bot::CmdMap Bot::map_ =
-    container_of<CmdMap, CmdMap::value_type>(p("PRIVMSG", &Bot::privmsg));
+const Bot::CmdMap Bot::map_ = container_of<CmdMap, CmdMap::value_type>(
+    p("PRIVMSG", &Bot::privmsg), p("PING", &Bot::ping));
 
 Bot::Bot(const BotConfig config) : sock_(-1), config_(config) {}
 
@@ -36,9 +36,7 @@ result_t::e Bot::init(int backlog) {
                     sizeof(addr)) == -1) {
     return result_t::kError;
   }
-  // if (util::connect_in(sock_, addr) == -1) {
-  //   return result_t::kError;
-  // }
+
   pool_.addEvent(EventKind::kRead, this);
 
   send(FMT("PASS {password}", (config_.password)));
@@ -71,8 +69,6 @@ result_t::e Bot::handle(Event e) {
 int Bot::getFd() const { return sock_; }
 
 void Bot::send(const std::string &str) {
-  util::debug_output(str);
-  std::cout << str.size() + 2 << std::endl;
   send_queue_.push(StringBuffer(str + "\r\n"));
   pool_.addEvent(EventKind::kWrite, this);
 }
@@ -150,9 +146,7 @@ result_t::e Bot::handleReadEvent(Event &e) {
 result_t::e Bot::processMessage(const Message &m) {
   CmdMap::const_iterator it = map_.find(util::to_upper(m.command));
 
-  std::cout << "CMD [" << m.command << "]" << std::endl;
   const bool found = it != map_.end();
-  util::debug_input(std::string(m), found);
   if (found)
     return (this->*(it->second))(m);
   return result_t::kOK;
@@ -241,8 +235,6 @@ void Bot::runGame(MSMap::iterator user, std::string line) {
     str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
   });
 
-  std::cout << ms.toString(true) << std::endl;
-
   erase_spaces(line);
   command cmd;
   for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
@@ -307,16 +299,12 @@ void Bot::runGame(MSMap::iterator user, std::string line) {
 result_t::e Bot::privmsg(const Message &m) {
   const std::string &msg_string = m.params[1];
 
-  std::cout << "NICK: " << m.prefix << std::endl;
   std::size_t nick_end = m.prefix.find("!");
 
   if (nick_end == std::string::npos)
     return result_t::kOK;  // 메시지 무시
 
   std::string nickname = m.prefix.substr(0, nick_end);
-
-  std::cout << nickname << std::endl;
-  std::cout << nickname.size() << std::endl;
 
   MSMap::iterator user = user_map_.find(nickname);
 
@@ -346,5 +334,15 @@ result_t::e Bot::privmsg(const Message &m) {
       runGame(user, msg_string);
     }
   }
+  return result_t::kOK;
+}
+
+result_t::e Bot::ping(const Message &m) {
+  if (m.params.size() != 1) {
+    send(Message::as_numeric_reply(util::ERR_NOORIGIN,
+                                   VA(("No origin specified"))));
+    return result_t::kOK;
+  }
+  send(FMT("PONG {origin}", (m.params[0])));
   return result_t::kOK;
 }

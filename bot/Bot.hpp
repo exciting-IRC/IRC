@@ -74,6 +74,7 @@ class Bot : public IEventHandler {
   void runGame(MSMap::iterator user, std::string line);
 
   result_t::e privmsg(const Message &m);
+  result_t::e ping(const Message &m);
 
  private:
   int sock_;
