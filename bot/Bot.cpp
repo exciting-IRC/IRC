@@ -107,7 +107,6 @@ void Bot::sendSyncTimeout(const std::string &str, int sec) {
     struct timespec wait_duration = {sec / 10, 0};
     pool_.dispatchEvent(wait_duration);
   }
-  std::cout << "sent!" << std::endl;
 }
 
 result_t::e Bot::handleWriteEvent(Event &e) {
