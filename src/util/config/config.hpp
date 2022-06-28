@@ -18,7 +18,7 @@ using std::map;
 using std::pair;
 using std::string;
 
-pair<string, string> getkv(string line);
+map<string, string> read_config(const string &filename);
 
 struct Config {
   string name;
@@ -53,24 +53,7 @@ struct Config {
         timeout(convert_to<uint16_t>(timeout)) {}
 
   static Config from(const string &filename) {
-    std::ifstream configfile(filename.c_str());
-    if (configfile.fail())
-      throw std::invalid_argument(FMT("config file not found: {}", (filename)));
-
-    size_t i = 0;
-    std::string line;
-    map<string, string> m;
-    while (std::getline(configfile, line)) {
-      i++;
-      line = util::trim(util::erase_from(line, "#"));
-      if (line.empty())
-        continue;
-      try {
-        m.insert(getkv(line));
-      } catch (const std::invalid_argument &e) {
-        throw std::invalid_argument(FMT("on line {}: {}", (i, e.what())));
-      }
-    }
+    map<string, string> m = read_config(filename);
     return Config(map_get(m, "name"), m["info"], m["motd"], m["oper_user"],
                   m["oper_password"], map_get(m, "address"),
                   map_get(m, "max_clients"), map_get(m, "ping"),
