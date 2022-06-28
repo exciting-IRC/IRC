@@ -33,9 +33,9 @@ struct Config {
   string password;
   uint16_t port;
 
-  uint32_t max_clients;
-  uint32_t ping;
-  uint32_t timeout;
+  uint16_t max_clients;
+  uint16_t ping;
+  uint16_t timeout;
 
   Config() {}
   Config(string name, string info, string motd, string oper_user,
@@ -48,22 +48,28 @@ struct Config {
         oper_user(oper_user),
         oper_password(oper_password),
         address(address),
-        max_clients(convert_to<uint32_t>(max_clients)),
-        ping(convert_to<uint32_t>(ping)),
-        timeout(convert_to<uint32_t>(timeout)) {}
+        max_clients(convert_to<uint16_t>(max_clients)),
+        ping(convert_to<uint16_t>(ping)),
+        timeout(convert_to<uint16_t>(timeout)) {}
 
   static Config from(const string &filename) {
     std::ifstream configfile(filename.c_str());
     if (configfile.fail())
       throw std::invalid_argument("config file not found: " + filename);
 
+    size_t i = 0;
     std::string line;
     map<string, string> m;
     while (std::getline(configfile, line)) {
+      i++;
       line = util::trim(util::erase_from(line, "#"));
       if (line.empty())
         continue;
-      m.insert(getkv(line));
+      try {
+        m.insert(getkv(line));
+      } catch (const std::invalid_argument &e) {
+        throw std::invalid_argument(FMT("on line {}: {}", (i, e.what())));
+      }
     }
     return Config(map_get(m, "name"), m["info"], m["motd"], m["oper_user"],
                   m["oper_password"], map_get(m, "address"),
