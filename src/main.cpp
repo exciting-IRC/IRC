@@ -60,7 +60,7 @@ int main(const int argc, const char* argv[]) {
 
   server.config_ = init_config(argc, argv);
   if (server.init(64) == result_t::kError) {
-    debug_info("Fail at server initialization", strerror(errno), false);
+    debug_info("Fail at server initialization:", strerror(errno), false);
     return 1;
   }
 
@@ -70,8 +70,9 @@ int main(const int argc, const char* argv[]) {
 
   try {
     loop();
-  } catch (std::exception& e) {
-    std::cerr << e.what() << std::endl;
+  } catch (std::bad_alloc& e) {
+    debug(e.what(), false);
+    return 1;
   }
 
   return 0;

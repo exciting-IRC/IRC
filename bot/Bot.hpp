@@ -12,11 +12,6 @@
 #include "event/EventPool.hpp"
 #include "util/StringBuffer.hpp"
 
-// SRC ONLY
-#include "socket/socket.hpp"
-#include "util/config/config.hpp"
-#include "util/general/logging.hpp"
-
 struct BotConfig {
   std::string nickname;
   std::string channel;
@@ -61,9 +56,9 @@ class Bot : public IEventHandler {
  public:
   result_t::e init(int backlog);
 
-  void loop();
-
   result_t::e handle(Event e);
+
+  void dispatchEvent();
 
   void handleError() {}
 
@@ -72,6 +67,8 @@ class Bot : public IEventHandler {
   void send(const std::string &str);
 
   void sendTo(const std::string &target, const std::string &str);
+
+  void sendSyncTimeout(const std::string &str, int sec);
 
  private:
   result_t::e handleWriteEvent(Event &e);
@@ -88,9 +85,6 @@ class Bot : public IEventHandler {
                    const std::string &nickname);
 
   void checkState(MSMap::iterator user);
-
-  static result_t::e parseCoord(const std::string &x, const std::string &y,
-                                std::pair<int, int> &result);
 
   void runGame(MSMap::iterator user, std::string line);
 

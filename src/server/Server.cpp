@@ -94,7 +94,9 @@ result_t::e Server::handle(Event e) {
   }
 }
 
-void Server::handleError() {}
+void Server::handleError() {
+  util::debug("error occered in event handler", false);
+}
 
 void Server::eraseFromClientList(ClientList::iterator pos) {
   unregistered_clients_.erase(pos);
