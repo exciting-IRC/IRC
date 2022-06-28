@@ -48,6 +48,8 @@ result_t::e Bot::init(int backlog) {
   return result_t::kOK;
 }
 
+void Bot::loop() { pool_.dispatchEvent(1); }
+
 result_t::e Bot::handle(Event e) {
   result_t::e result;
   switch (e.kind) {
@@ -106,7 +108,8 @@ result_t::e Bot::handleWriteEvent(Event &e) {
 }
 
 ssize_t Bot::recvToBuffer(size_t length) {
-  ssize_t ret = util::recv(sock_, recv_buffer_.begin(), length);
+  ssize_t ret = util::recv(sock_, recv_buffer_.begin(),
+                           std::min(length, recv_buffer_.max_size()));
   if (ret == -1)
     return ret;
   recv_buffer_.seekg(0);
@@ -200,52 +203,107 @@ result_t::e Bot::parseCoord(const std::string &x, const std::string &y,
   result.first = std::toupper(y[0]) - 'A';
   return result_t::kOK;
 }
+//========================================================================================================================================
 
-void Bot::runGame(MSMap::iterator user, const std::string &msg) {
-  board_type &board = user->second;
+#include <algorithm>
+#include <iostream>
+
+#include "MineSweeper.hpp"
+#include "util/algorithm/functor.hpp"
+#include "util/strutil/format.hpp"
+struct command {
+  bool typed_x;
+  bool typed_y;
+  pos p;
+  GameAction::e action;
+
+  command() : typed_x(false), typed_y(false), action(GameAction::kOpen) {}
+
+  bool is_typed() const { return typed_x && typed_y; }
+
+  void parseline(std::string s);
+};
+
+/**
+ * @brief 메인 게임 루프
+ *
+ * 명령어 일람
+ * - (a-jA-J): x 좌표 입력
+ * - (0-9): y 좌표 입력
+ * - p, (m)ark: 깃발 추가 및 제거
+ * - x, (q)uit: 게임 종료
+ */
+void Bot::runGame(MSMap::iterator user, std::string line) {
+  MineSweeper<9, 9> &ms = user->second;
   const std::string &nickname = user->first;
-  if (msg.empty()) {
-    sendTo(nickname, "empty command received.");
-    return;
-  }
 
-  std::vector<std::string> v = util::split(msg, " ");
-  if (v.size() != 3) {
-    sendTo(nickname, "invalid argument count.");
-    return;
-  }
-  std::pair<int, int> coord;
+  FUNCTOR(void, erase_spaces, (std::string & str), {
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+  });
 
-  if (parseCoord(v[1], v[2], coord) == result_t::kError) {
-    sendTo(nickname, "invalid coord.");
+  std::cout << ms.toString(true) << std::endl;
+
+  erase_spaces(line);
+  command cmd;
+  for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
+    const char c = tolower(*it);
+    if (isdigit(c)) {
+      cmd.typed_y = true;
+      cmd.p.y = c - '0';
+    } else {
+      switch (c) {
+        case 'p':
+        case 'm':
+          cmd.action = GameAction::kFlag;
+          break;
+
+        case 'x':
+        case 'q':
+          cmd.action = GameAction::kExit;
+          break;
+
+        default:
+          cmd.typed_x = true;
+          cmd.p.x = c - 'a';
+          break;
+      }
+    }
+  }
+  if (cmd.action == GameAction::kExit) {
+    sendTo(nickname, "goodbye...");
+    user_map_.erase(user);
     return;
   }
-  if (v[0] == "x") {
-    if (!board.isInBoard(coord.first, coord.second)) {
-      sendTo(nickname, "invalid coord.");
-      return;
-    }
-    board.exmine(coord.first, coord.second);
-    checkState(user);
-  } else if (v[0] == "m") {
-    if (!board.isInBoard(coord.first, coord.second)) {
-      sendTo(nickname, "invalid coord.");
-      return;
-    }
-    board.mark(coord.first, coord.second);
-    checkState(user);
-  } else if (v[0] == "u") {
-    if (!board.isInBoard(coord.first, coord.second)) {
-      sendTo(nickname, "invalid coord.");
-      return;
-    }
-    board.unMark(coord.first, coord.second);
-    checkState(user);
-  } else {
-    sendTo(nickname, "invalid command.");
+  if (not cmd.is_typed()) {
+    sendTo(nickname, "command is missing.");
+    return;
+  }
+  if (not ms.isInBoard(cmd.p)) {
+    sendTo(nickname, FMT("{}, {} is not in board", (cmd.p.x, cmd.p.y)));
+    return;
+  }
+  switch (cmd.action) {
+    case GameAction::kFlag:
+      ms.toggleFlag(cmd.p);
+      break;
+    default:
+      ms.exmine(cmd.p);
+      break;
+  }
+  sendBoardTo(ms, true, nickname);
+  GameState::e state = ms.getState();
+  if (state == GameState::kMineSwept) {
+    sendBoardTo(ms, false, nickname);
+    sendTo(nickname, "All mine swept. congratulations!!!");
+    user_map_.erase(user);
+  } else if (state == GameState::kMineExploded) {
+    sendBoardTo(ms, false, nickname);
+    sendTo(nickname, "Mine exploded. try again...");
+    user_map_.erase(user);
   }
 }
 
+//========================================================================================================================================
 result_t::e Bot::privmsg(const Message &m) {
   const std::string &msg_string = m.params[1];
 
@@ -270,8 +328,8 @@ result_t::e Bot::privmsg(const Message &m) {
               .first->second;
       sendTo(nickname, FMT("{nickname} - you are now registered!", (nickname)));
       sendBoardTo(board, true, nickname);
-      sendTo(nickname, "rule: cmd x_coord y_coord");
-      sendTo(nickname, "cmd: 'x' | 'm' | 'u'");
+      sendTo(nickname, "ex) type c0 to open a tile");
+      sendTo(nickname, "cmd: e(x)it | (p)ut a flag");
       sendTo(nickname, "x_coord: [1-9]");
       sendTo(nickname, "y_coord: [A-I]");
     }

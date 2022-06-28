@@ -40,7 +40,7 @@ class Bot : public IEventHandler {
  public:
   result_t::e init(int backlog);
 
-  void loop() { pool_.dispatchEvent(1); };
+  void loop();
 
   result_t::e handle(Event e);
 
@@ -71,7 +71,7 @@ class Bot : public IEventHandler {
   static result_t::e parseCoord(const std::string &x, const std::string &y,
                                 std::pair<int, int> &result);
 
-  void runGame(MSMap::iterator user, const std::string &msg);
+  void runGame(MSMap::iterator user, std::string line);
 
   result_t::e privmsg(const Message &m);
 

@@ -8,6 +8,9 @@
 #include <iostream>
 #include <string>
 
+const pos dir_offset_[8] = {pos(-1, -1), pos(-1, 0), pos(-1, 1), pos(0, -1),
+                            pos(0, 1),   pos(1, -1), pos(1, 0),  pos(1, 1)};
+
 namespace util {
 
 int randRange(int min, int max) {
@@ -20,6 +23,3 @@ int randRange(int min, int max) {
 }
 
 }  // namespace util
-
-const int dir_offset_[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
-                               {0, 1},   {1, -1}, {1, 0},  {1, 1}};
