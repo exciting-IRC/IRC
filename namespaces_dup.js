@@ -1,5 +1,9 @@
 var namespaces_dup =
 [
+    [ "connect", null, [
+      [ "Client", "classconnect_1_1Client.html", null ],
+      [ "Config", "classconnect_1_1Config.html", null ]
+    ] ],
     [ "container_of", "namespacecontainer__of.html", "namespacecontainer__of" ],
     [ "create", "namespacecreate.html", null ],
     [ "nuke", "namespacenuke.html", null ],

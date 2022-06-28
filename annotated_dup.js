@@ -1,5 +1,9 @@
 var annotated_dup =
 [
+    [ "connect", null, [
+      [ "Client", "classconnect_1_1Client.html", null ],
+      [ "Config", "classconnect_1_1Config.html", null ]
+    ] ],
     [ "container_of", "namespacecontainer__of.html", [
       [ "ContainerOfArgs", "classcontainer__of_1_1ContainerOfArgs.html", null ],
       [ "Template", "classcontainer__of_1_1Template.html", null ]

@@ -11,6 +11,7 @@ var hierarchy =
     [ "BotConfig", "structBotConfig.html", null ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
+    [ "connect.Client", "classconnect_1_1Client.html", null ],
     [ "command", "structcommand.html", null ],
     [ "util::Config", "structutil_1_1Config.html", null ],
     [ "ConnState", "structConnState.html", null ],
@@ -44,5 +45,8 @@ var hierarchy =
     [ "UserMode", "structUserMode.html", null ],
     [ "vec2< T >", "structvec2.html", null ],
     [ "vec2< size_t >", "structvec2.html", null ],
-    [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ]
+    [ "vec_of_any.VecOfAny", "classvec__of__any_1_1VecOfAny.html", null ],
+    [ "Enum", null, [
+      [ "connect.Config", "classconnect_1_1Config.html", null ]
+    ] ]
 ];
