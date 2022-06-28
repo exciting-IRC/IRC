@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import logging
 import socket
 import time
@@ -73,7 +75,6 @@ class Client:
 def main() -> None:
     for i in range(100):
         with Client(f"user{i:02}") as client:
-            time.sleep(0.1)
             client.send(f"PING :{Config.serverName.value}\r\n")
 
 

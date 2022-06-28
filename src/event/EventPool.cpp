@@ -159,8 +159,10 @@ int EventPool::handleEvent(struct kevent &kev) {
       break;
   }
   IEventHandler *handler = static_cast<IEventHandler *>(kev.udata);
-  if (handler->handle(ev) == result_t::kError)
+  if (handler->handle(ev) == result_t::kError) {
     handler->handleError();
+    return -1;
+  }
   return 0;
 }
 
@@ -169,7 +171,8 @@ int EventPool::dispatchEvent(const struct timespec &ts) {
   if (events == -1)
     return -1;
   for (ssize_t i = 0; i < events; ++i) {
-    handleEvent(event_list_[i]);
+    if (handleEvent(event_list_[i]))
+      return i;
   }
   return events;
 }

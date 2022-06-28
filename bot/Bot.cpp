@@ -12,8 +12,8 @@
 #include "util/vargs/container_of.hpp"
 
 using util::p;
-const Bot::CmdMap Bot::map_ = container_of<CmdMap, CmdMap::value_type>(
-    p("PRIVMSG", &Bot::privmsg), p("PING", &Bot::ping));
+const Bot::CmdMap Bot::map_ =
+    container_of<CmdMap>(p("PRIVMSG", &Bot::privmsg), p("PING", &Bot::ping));
 
 Bot::Bot(const BotConfig config) : sock_(-1), config_(config) {}
 
@@ -28,7 +28,7 @@ result_t::e Bot::init(int backlog) {
   if (pool_.init(backlog) == result_t::kError)
     return result_t::kError;
 
-  sock_ = util::socket(PF_INET, SOCK_STREAM);
+  sock_ = socket(PF_INET, SOCK_STREAM, 0);
   if (sock_ == -1)
     return result_t::kError;
 
@@ -36,10 +36,10 @@ result_t::e Bot::init(int backlog) {
   std::memset(&addr, 0, sizeof(addr));
   addr.sin_family = AF_INET;
   addr.sin_addr.s_addr = inet_addr(config_.server_ip.c_str());
-  if (addr.sin_addr.s_addr == INADDR_NONE)
+  if (addr.sin_addr.s_addr == INADDR_NONE) {
     return result_t::kError;
+  }
   addr.sin_port = htons(config_.port);
-
   if (util::connect(sock_, reinterpret_cast<const struct sockaddr *>(&addr),
                     sizeof(addr)) == -1) {
     return result_t::kError;
@@ -324,12 +324,12 @@ result_t::e Bot::privmsg(const Message &m) {
     }
     // 이미 등록된 경우
     else {
-      sendTo("#minesweeper",
+      sendTo(config_.channel,
              FMT("{nickname} - you are already registered!", (nickname)));
     }
   } else {
     if (user == user_map_.end()) {
-      sendTo("#minesweeper",
+      sendTo(config_.channel,
              FMT("{nickname} - type '!start' to start new game", (nickname)));
     } else {
       runGame(user, msg_string);
