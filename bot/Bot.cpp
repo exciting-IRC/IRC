@@ -46,7 +46,10 @@ result_t::e Bot::init(int backlog) {
   return result_t::kOK;
 }
 
-void Bot::loop() { pool_.dispatchEvent(1); }
+void Bot::loop() {
+  while (true)
+    pool_.dispatchEvent(1);
+}
 
 result_t::e Bot::handle(Event e) {
   result_t::e result;
