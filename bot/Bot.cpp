@@ -102,7 +102,6 @@ void Bot::sendSyncTimeout(const std::string &str, int sec) {
     struct timespec elapsed_time;
     util::timespec_sub(end, start, elapsed_time);
     if (util::timespec_less(timeout, elapsed_time)) {
-      std::cout << "timeout!" << std::endl;
       break;
     }
     struct timespec wait_duration = {sec / 10, 0};
