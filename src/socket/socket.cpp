@@ -11,7 +11,7 @@ socket_t socket(int domain, int type, int protocol) {
   int sock = ::socket(domain, type, protocol);
   if (sock == -1)
     return -1;
-  if (fcntl(sock, F_SETFD, O_NONBLOCK) == -1)
+  if (fcntl(sock, F_SETFL, O_NONBLOCK) == -1)
     return -1;
   return sock;
 }
