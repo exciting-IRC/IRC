@@ -77,25 +77,25 @@ template <size_t width, size_t height>
 inline std::string MineSweeper<width, height>::getBoardChar(pos p) const {
   const char c = board_.at(p);
   if (c == 0) {
-    return " ";
+    return ICOLOR(IBLU, IBLK) "  ";
   } else if (0 < c && c <= 8) {
     std::string color;
     switch (c) {
       case 1:
-        color = HBLU;
+        color = ICOLOR(IBLU, IBLK);
         break;
       case 2:
-        color = GRN;
+        color = ICOLOR(IGRN, IBLK);
         break;
       case 3:
-        color = RED;
+        color = ICOLOR(IRED, IBLK);
         break;
       default:
-        color = MAG;
+        color = ICOLOR(IMAG, IBLK);
     }
-    return color + std::string(1, c + '0');
+    return color + " " + std::string(1, c + '0');
   } else if (c == kMine) {
-    return BHRED + std::string(1, kMine);
+    return ICOLOR(IMAG, IBLK) + (" " + std::string(1, kMine));
   }
 
   return std::string(1, c);
@@ -174,12 +174,12 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
     const static std::string col_str = "abcdefghij";
     ss << "  ";
     for (size_t i = 0; i < width; ++i)
-      ss << " " HMAG << col_str[i];
-    ss << END << "\n";
+      ss << " " IBEG IMAG << col_str[i];
+    ss << "\n";
   });
   FUNCTOR(void, add_row, (std::stringstream & ss, size_t i), {
     const static std::string row_str = "0123456789";
-    ss << HBLU << row_str[i] << " " << END;
+    ss << IBEG IBLU << row_str[i] << " ";
   });
 
   std::stringstream ss;
@@ -187,22 +187,23 @@ inline std::string MineSweeper<width, height>::toString(bool mask_board) const {
   add_column(ss);
   for (size_t i = 0; i < height; ++i) {
     add_row(ss, i);
+    ss << IBLD;
     for (size_t j = 0; j < width; ++j) {
       pos p(i, j);
       if (mask_board) {
         switch (board_mask_.at(p)) {
           case GameAction::kClose:
-            ss << GRNHB " ." END;
+            ss << ICOLOR(IBLK, ILGR) " .";
             break;
           case GameAction::kOpen:
-            ss << " " << getBoardChar(p) << END;
+            ss << getBoardChar(p);
             break;
           case GameAction::kFlag:
-            ss << GRNHB BHRED " P" END;
+            ss << ICOLOR(IRED, ILGR) " P";
             break;
         }
       } else {
-        ss << " " << getBoardChar(p) << END;
+        ss << getBoardChar(p);
       }
     }
     ss << "\n";
