@@ -60,6 +60,8 @@ Client::~Client() {
                                server.config_.timeout);
   server.getPool().removeTimer(TimerKind::kPong, this, server.config_.timeout);
   server.getPool().removeTimer(TimerKind::kPing, this, server.config_.ping);
+  removeEvent(EventKind::kRead);
+  removeEvent(EventKind::kWrite);
   close(sock_);
 }
 
