@@ -39,7 +39,7 @@ static util::Config init_config(const int argc, const char* argv[]) {
     }
     return config;
   } catch (std::exception& e) {
-    debug_info("on reading:", e.what(), false);
+    debug_info("on config init:", e.what(), false);
     exit(1);
   }
 }

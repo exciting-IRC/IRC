@@ -13,9 +13,29 @@
 #include "util/StringBuffer.hpp"
 
 struct BotConfig {
+  std::string nickname;
+  std::string channel;
   std::string password;
   std::string server_ip;
   uint16_t port;
+
+  BotConfig() {}
+  BotConfig(const std::string &nickname, const std::string &channel,
+            const std::string &password, const std::string &server_ip,
+            uint16_t port)
+      : nickname(nickname),
+        channel(channel),
+        password(password),
+        server_ip(server_ip),
+        port(port) {}
+
+  static BotConfig from(const std::string &filename) {
+    std::map<std::string, std::string> m = util::read_config(filename);
+    return BotConfig(util::map_get(m, "nickname", "msbot"),
+                     "#" + util::map_get(m, "channel", "ms"),
+                     util::map_get(m, "password"), util::map_get(m, "address"),
+                     util::convert_to<uint16_t>(util::map_get(m, "port")));
+  }
 };
 
 typedef std::map<std::string, MineSweeper<9, 9> > MSMap;

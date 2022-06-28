@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "util/strutil/conversion.hpp"
+#include "util/strutil/format.hpp"
 
 namespace util {
 using std::map;
@@ -14,7 +14,7 @@ const typename C::mapped_type& map_get(const C& m,
   typename C::const_iterator it = m.find(k);
 
   if (it == m.end())
-    throw std::out_of_range("tried to get non-existent key" + to_string(k));
+    throw std::out_of_range(FMT("tried to get non-existent key {}", (k)));
 
   return it->second;
 }

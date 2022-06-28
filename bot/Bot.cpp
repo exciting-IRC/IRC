@@ -48,9 +48,9 @@ result_t::e Bot::init(int backlog) {
   pool_.addEvent(EventKind::kRead, this);
 
   send(FMT("PASS {password}", (config_.password)));
-  send(FMT("USER msbot msbot {server} :msbot", (config_.server_ip)));
-  send("NICK msbot");
-  send("JOIN #minesweeper");
+  send(FMT("USER {0} {0} {1} :{0}", (config_.nickname, config_.server_ip)));
+  send(FMT("NICK {}", (config_.nickname)));
+  send(FMT("JOIN {}", (config_.channel)));
   return result_t::kOK;
 }
 
