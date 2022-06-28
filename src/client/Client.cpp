@@ -207,7 +207,8 @@ result_t::e Client::handleReadEvent(Event &e) {
 }
 
 ssize_t Client::recvToBuffer(size_t length) {
-  ssize_t ret = util::recv(sock_, recv_buffer_.begin(), length);
+  ssize_t ret = util::recv(sock_, recv_buffer_.begin(),
+                           std::min(length, recv_buffer_.max_size()));
   if (ret == -1)
     return ret;
   recv_buffer_.seekg(0);
@@ -375,7 +376,7 @@ result_t::e Client::join(const Message &m) {
       joined_channels_.insert(std::make_pair(*it, new_channel));
       // send(Message::as_numeric_reply(util::RPL_TOPIC, VA((*it, ""))));
 
-      sendList(FMT(":{server} {code} {nick} {channel} :",
+      sendList(FMT(":{server} {code} {nick} = {channel} :",
                    (server.config_.name, util::pad_num(util::RPL_NAMREPLY),
                     ident_.nickname_, *it)),
                util::keys(new_channel->getUsers()),

@@ -7,10 +7,7 @@
 #include "socket/socket.hpp"
 #include "util/general/logging.hpp"
 
-Server::Server() : config_(), sock_(-1) {
-  std::cout << "SRV-init" << std::endl;
-}
-
+Server::Server() : config_(), sock_(-1) {}
 Server::~Server() {
   for (ClientList::iterator it = unregistered_clients_.begin(),
                             end = unregistered_clients_.end();
