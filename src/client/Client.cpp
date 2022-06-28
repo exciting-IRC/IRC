@@ -16,24 +16,21 @@
 
 using util::p;
 
-const Client::CmdMap Client::map_before_register_ =
-    container_of<CmdMap>(
-        p("PING", &Client::notRegistered), p("QUIT", &Client::notRegistered),
-        p("JOIN", &Client::notRegistered), p("PRIVMSG", &Client::notRegistered),
-        p("KILL", &Client::notRegistered), p("OPER", &Client::notRegistered),
-        p("MODE", &Client::notRegistered), p("PART", &Client::notRegistered),
-        p("PASS", &Client::registerPass), p("USER", &Client::registerUser),
-        p("NICK", &Client::registerNick), p("PONG", &Client::notRegistered));
+const Client::CmdMap Client::map_before_register_ = container_of<CmdMap>(
+    p("PING", &Client::notRegistered), p("QUIT", &Client::notRegistered),
+    p("JOIN", &Client::notRegistered), p("PRIVMSG", &Client::notRegistered),
+    p("KILL", &Client::notRegistered), p("OPER", &Client::notRegistered),
+    p("MODE", &Client::notRegistered), p("PART", &Client::notRegistered),
+    p("PASS", &Client::registerPass), p("USER", &Client::registerUser),
+    p("NICK", &Client::registerNick), p("PONG", &Client::notRegistered));
 
-const Client::CmdMap Client::map_after_register_ =
-    container_of<CmdMap>(
-        p("PING", &Client::ping), p("QUIT", &Client::quit),
-        p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
-        p("KILL", &Client::kill), p("OPER", &Client::oper),
-        p("MODE", &Client::mode), p("PART", &Client::part),
-        p("PASS", &Client::alredyRegistered),
-        p("USER", &Client::alredyRegistered), p("NICK", &Client::nick),
-        p("PONG", &Client::pong));
+const Client::CmdMap Client::map_after_register_ = container_of<CmdMap>(
+    p("PING", &Client::ping), p("QUIT", &Client::quit),
+    p("JOIN", &Client::join), p("PRIVMSG", &Client::privmsg),
+    p("KILL", &Client::kill), p("OPER", &Client::oper),
+    p("MODE", &Client::mode), p("PART", &Client::part),
+    p("PASS", &Client::alredyRegistered), p("USER", &Client::alredyRegistered),
+    p("NICK", &Client::nick), p("PONG", &Client::pong));
 /*CLIENT===============================*/
 
 Client::Client(int sock, struct sockaddr_in addr, ClientList::iterator pos)
@@ -60,8 +57,6 @@ Client::~Client() {
                                server.config_.timeout);
   server.getPool().removeTimer(TimerKind::kPong, this, server.config_.timeout);
   server.getPool().removeTimer(TimerKind::kPing, this, server.config_.ping);
-  removeEvent(EventKind::kRead);
-  removeEvent(EventKind::kWrite);
   close(sock_);
 }
 

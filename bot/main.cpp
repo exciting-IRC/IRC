@@ -19,7 +19,7 @@ int main() {
   Bot bot(config);
 
   if (bot.init(1024) == result_t::kError) {
-    util::debug_info("Failed to init bot.", false);
+    util::debug_info("Failed to init bot.:", strerror(errno), false);
     return 1;
   }
 
