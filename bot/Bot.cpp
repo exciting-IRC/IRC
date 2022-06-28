@@ -1,9 +1,17 @@
 #include "Bot.hpp"
 
+#include <algorithm>
+#include <iostream>
+
+#include "MineSweeper.hpp"
+#include "socket/socket.hpp"
+#include "timeutil.hpp"
+#include "util/algorithm/functor.hpp"
+#include "util/general/logging.hpp"
+#include "util/strutil/format.hpp"
 #include "util/vargs/container_of.hpp"
 
 using util::p;
-
 const Bot::CmdMap Bot::map_ = container_of<CmdMap, CmdMap::value_type>(
     p("PRIVMSG", &Bot::privmsg), p("PING", &Bot::ping));
 
@@ -11,7 +19,7 @@ Bot::Bot(const BotConfig config) : sock_(-1), config_(config) {}
 
 Bot::~Bot() {
   if (sock_ != -1) {
-    send("QUIT :goodbye");
+    sendSyncTimeout("QUIT :goodbye", 5);
     close(sock_);
   }
 }
@@ -46,8 +54,6 @@ result_t::e Bot::init(int backlog) {
   return result_t::kOK;
 }
 
-void Bot::loop() { pool_.dispatchEvent(1); }
-
 result_t::e Bot::handle(Event e) {
   result_t::e result;
   switch (e.kind) {
@@ -66,6 +72,8 @@ result_t::e Bot::handle(Event e) {
   return result;
 }
 
+void Bot::dispatchEvent() { pool_.dispatchEvent(1); }
+
 int Bot::getFd() const { return sock_; }
 
 void Bot::send(const std::string &str) {
@@ -75,6 +83,32 @@ void Bot::send(const std::string &str) {
 
 void Bot::sendTo(const std::string &target, const std::string &str) {
   send(FMT("PRIVMSG {target} :{message}", (target, str)));
+}
+
+void Bot::sendSyncTimeout(const std::string &str, int sec) {
+  struct timespec timeout;
+  timeout.tv_sec = sec;
+  timeout.tv_nsec = 0;
+
+  send(str);
+  pool_.removeEvent(EventKind::kRead, this);
+
+  struct timespec start;
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
+  struct timespec end;
+  while (!send_queue_.empty()) {  //
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    struct timespec elapsed_time;
+    util::timespec_sub(end, start, elapsed_time);
+    if (util::timespec_less(timeout, elapsed_time)) {
+      std::cout << "timeout!" << std::endl;
+      break;
+    }
+    struct timespec wait_duration = {sec / 10, 0};
+    pool_.dispatchEvent(wait_duration);
+  }
+  std::cout << "sent!" << std::endl;
 }
 
 result_t::e Bot::handleWriteEvent(Event &e) {
@@ -185,26 +219,6 @@ void Bot::checkState(MSMap::iterator user) {
   }
 }
 
-result_t::e Bot::parseCoord(const std::string &x, const std::string &y,
-                            std::pair<int, int> &result) {
-  if (x.size() != 1 || y.size() != 1) {
-    return result_t::kError;
-  }
-  if (!std::isdigit(x[0]) || x[0] == 0 || !std::isalpha(y[0])) {
-    return result_t::kError;
-  }
-  result.first = x[0] - '0' - 1;
-  result.first = std::toupper(y[0]) - 'A';
-  return result_t::kOK;
-}
-//========================================================================================================================================
-
-#include <algorithm>
-#include <iostream>
-
-#include "MineSweeper.hpp"
-#include "util/algorithm/functor.hpp"
-#include "util/strutil/format.hpp"
 struct command {
   bool typed_x;
   bool typed_y;
@@ -282,20 +296,9 @@ void Bot::runGame(MSMap::iterator user, std::string line) {
       ms.exmine(cmd.p);
       break;
   }
-  sendBoardTo(ms, true, nickname);
-  GameState::e state = ms.getState();
-  if (state == GameState::kMineSwept) {
-    sendBoardTo(ms, false, nickname);
-    sendTo(nickname, "All mine swept. congratulations!!!");
-    user_map_.erase(user);
-  } else if (state == GameState::kMineExploded) {
-    sendBoardTo(ms, false, nickname);
-    sendTo(nickname, "Mine exploded. try again...");
-    user_map_.erase(user);
-  }
+  checkState(user);
 }
 
-//========================================================================================================================================
 result_t::e Bot::privmsg(const Message &m) {
   const std::string &msg_string = m.params[1];
 
