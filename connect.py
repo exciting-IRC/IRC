@@ -30,18 +30,25 @@ def send_and_recieve(sock: socket.socket, msg: bytes) -> bytes:
     logging.info(f"sent {msg = }")
     result = sock.recv(1024)
     logging.info(f"received {result = }")
+    if b"PING" in result:
+        sock.sendall(f"PONG :{Config.serverName.value}\r\n".encode())
     return result
 
 
 @dataclass
 class Client:
-    no: ClassVar[int] = 0
-    name: str = field(init=False)
+    name: str
     sock: socket.socket = field(init=False, default_factory=create_socket)
 
-    def __post_init__(self):
-        self.name = f"user{Client.no:02}"
-        Client.no += 1
+    def __enter__(self):
+        self.connect()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
+        self.sock.close()
 
     def connect(self):
         self.send(
@@ -49,7 +56,7 @@ class Client:
                 f"""\
                 PASS password\r
                 NICK {self.name}\r
-                USER youkim 0 * :Younghyun Kim\r
+                USER person 0 * :long name here\r
                 """
             )
         )
@@ -64,10 +71,10 @@ class Client:
 
 
 def main() -> None:
-    client = Client()
-    client.connect()
-    time.sleep(1)
-    client.send(f"PING :{Config.serverName.value}\r\n")
+    for i in range(100):
+        with Client(f"user{i:02}") as client:
+            time.sleep(0.1)
+            client.send(f"PING :{Config.serverName.value}\r\n")
 
 
 if __name__ == "__main__":
