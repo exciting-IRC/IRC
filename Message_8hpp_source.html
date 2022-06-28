@@ -93,31 +93,29 @@ $(document).ready(function(){initNavTree('Message_8hpp_source.html',''); initRes
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;returncode.hpp&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;util/LazyString/LazyString.hpp&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;util/algorithm/algorithm.hpp&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;util/config/config.hpp&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;util/strutil/conversion.hpp&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structMessage.html">   12</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structMessage.html">Message</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <a class="code hl_class" href="classutil_1_1LazyString.html">util::LazyString</a> prefix;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <a class="code hl_class" href="classutil_1_1LazyString.html">util::LazyString</a> <a class="code hl_struct" href="structcommand.html">command</a>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  std::vector&lt;util::LazyString&gt; params;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">void</span> clear();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">operator</span> std::string() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_reply(<span class="keyword">const</span> std::string&amp; prefix, <span class="keyword">const</span> std::string&amp; <a class="code hl_struct" href="structcommand.html">command</a>,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                          <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; params);</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_numeric_reply(util::returnCode code,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                                  std::vector&lt;std::string&gt; params);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_not_enough_params_reply(std::string <a class="code hl_struct" href="structcommand.html">command</a>);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_struct" href="structMessage.html">Message</a>&amp; msg);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif  </span><span class="comment">// CLIENT_MESSAGE_HPP</span></div>
-<div class="ttc" id="aclassutil_1_1LazyString_html"><div class="ttname"><a href="classutil_1_1LazyString.html">util::LazyString</a></div><div class="ttdoc">apply()를 하기 전까지는 문자열의 포인터만 가지고 있다가 apply()를 하는 순간 실제 string으로 적용해주는 클래스</div><div class="ttdef"><b>Definition:</b> LazyString.hpp:12</div></div>
-<div class="ttc" id="astructMessage_html"><div class="ttname"><a href="structMessage.html">Message</a></div><div class="ttdef"><b>Definition:</b> Message.hpp:12</div></div>
-<div class="ttc" id="astructcommand_html"><div class="ttname"><a href="structcommand.html">command</a></div><div class="ttdef"><b>Definition:</b> main.cpp:7</div></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;util/algorithm/algorithm.hpp&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;util/config/config.hpp&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;util/strutil/conversion.hpp&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="structMessage.html">   11</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structMessage.html">Message</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  std::string prefix;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  std::string <a class="code hl_struct" href="structcommand.html">command</a>;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  std::vector&lt;std::string&gt; params;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">void</span> clear();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">operator</span> std::string() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_reply(<span class="keyword">const</span> std::string&amp; prefix, <span class="keyword">const</span> std::string&amp; <a class="code hl_struct" href="structcommand.html">command</a>,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                          <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; params);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_numeric_reply(util::returnCode code,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                  std::vector&lt;std::string&gt; params);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structMessage.html">Message</a> as_not_enough_params_reply(std::string <a class="code hl_struct" href="structcommand.html">command</a>);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, <span class="keyword">const</span> <a class="code hl_struct" href="structMessage.html">Message</a>&amp; msg);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif  </span><span class="comment">// CLIENT_MESSAGE_HPP</span></div>
+<div class="ttc" id="astructMessage_html"><div class="ttname"><a href="structMessage.html">Message</a></div><div class="ttdef"><b>Definition:</b> Message.hpp:11</div></div>
+<div class="ttc" id="astructcommand_html"><div class="ttname"><a href="structcommand.html">command</a></div><div class="ttdef"><b>Definition:</b> Bot.cpp:208</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

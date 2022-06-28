@@ -1,5 +1,4 @@
 <map id="Message" name="Message">
-<area shape="rect" id="node1" title=" " alt="" coords="21,185,96,212"/>
-<area shape="rect" id="node2" href="$classutil_1_1LazyString.html" title="apply()를 하기 전까지는 문자열의 포인터만 가지고 있다가 apply()를 하는 순간 실제 string으로 적용해주는 클래스" alt="" coords="5,81,112,108"/>
-<area shape="rect" id="node3" title=" " alt="" coords="19,5,98,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,109,80,136"/>
+<area shape="rect" id="node2" title=" " alt="" coords="15,5,70,32"/>
 </map>

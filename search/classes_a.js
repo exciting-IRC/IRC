@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['recvflag_5ft_0',['RecvFlag_t',['../structutil_1_1RecvFlag__t.html',1,'util']]],
-  ['result_5ft_1',['result_t',['../structresult__t.html',1,'']]]
+  ['sendflag_5ft_0',['SendFlag_t',['../structutil_1_1SendFlag__t.html',1,'util']]],
+  ['server_1',['Server',['../classServer.html',1,'']]],
+  ['sockprotocol_5ft_2',['SockProtocol_t',['../structutil_1_1SockProtocol__t.html',1,'util']]],
+  ['stringbuffer_3',['StringBuffer',['../classStringBuffer.html',1,'']]]
 ];

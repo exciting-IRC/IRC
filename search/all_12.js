@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['w_0',['w',['../structUserMode.html#af4641482ae160c3edd52b872eb2288a6a22cb7129f07ad9504369b4c3b181ffb4',1,'UserMode']]]
+  ['명령어_20반환값_0',['명령어 반환값',['../md_docs_responses.html',1,'']]]
 ];

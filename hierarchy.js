@@ -8,6 +8,7 @@ var hierarchy =
     ] ],
     [ "board< T, width, height >", "classboard.html", null ],
     [ "board< char, height, width >", "classboard.html", null ],
+    [ "BotConfig", "structBotConfig.html", null ],
     [ "Channel", "classChannel.html", null ],
     [ "ChannelMode", "structChannelMode.html", null ],
     [ "command", "structcommand.html", null ],
@@ -22,6 +23,7 @@ var hierarchy =
     [ "GameAction", "structGameAction.html", null ],
     [ "GameState", "structGameState.html", null ],
     [ "IEventHandler", "classIEventHandler.html", [
+      [ "Bot", "classBot.html", null ],
       [ "Client", "classClient.html", null ],
       [ "Server", "classServer.html", null ]
     ] ],
@@ -34,9 +36,6 @@ var hierarchy =
     [ "result_t", "structresult__t.html", null ],
     [ "util::SendFlag_t", "structutil_1_1SendFlag__t.html", null ],
     [ "util::SockProtocol_t", "structutil_1_1SockProtocol__t.html", null ],
-    [ "std::string", null, [
-      [ "util::LazyString", "classutil_1_1LazyString.html", null ]
-    ] ],
     [ "StringBuffer", "classStringBuffer.html", null ],
     [ "container_of.Template", "classcontainer__of_1_1Template.html", null ],
     [ "vec_of_any.Template", "classvec__of__any_1_1Template.html", null ],
