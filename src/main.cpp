@@ -60,7 +60,7 @@ int main(const int argc, const char* argv[]) {
 
   server.config_ = init_config(argc, argv);
   if (server.init(64) == result_t::kError) {
-    debug_info("Fail at server initialization: ", strerror(errno), false);
+    debug_info("Fail at server initialization:", strerror(errno), false);
     return 1;
   }
 
