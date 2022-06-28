@@ -6,7 +6,5 @@ int main() {
   Bot bot(config);
 
   bot.init(1024);
-
-
-    bot.loop();
+  bot.loop();
 }

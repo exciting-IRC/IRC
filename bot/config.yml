@@ -1,3 +1,6 @@
 password: password
 port: 6667
 address: 127.0.0.1
+
+channel: ms # 지뢰찾기 게임에 접속할 채널 이름 (#는 제외)
+nickname: MS # 봇의 이름
