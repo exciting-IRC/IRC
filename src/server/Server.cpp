@@ -25,7 +25,7 @@ Server::~Server() {
   ::close(sock_);
 }
 
-result_t::e Server::init(int backlog) {
+result_t::e Server::init() {
   sock_ = util::socket(PF_INET, SOCK_STREAM);
   if (sock_ == -1) {
     return result_t::kError;
@@ -51,10 +51,10 @@ result_t::e Server::init(int backlog) {
   if (util::bind_in(sock_, &addr) == result_t::kError)
     return result_t::kError;
 
-  if (util::listen(sock_, backlog) == result_t::kError)
+  if (util::listen(sock_, config_.max_clients) == result_t::kError)
     return result_t::kError;
 
-  if (pool_.init(backlog) == result_t::kError)
+  if (pool_.init(config_.max_clients) == result_t::kError)
     return result_t::kError;
 
   if (getPool().addEvent(EventKind::kRead, this) == result_t::kError)

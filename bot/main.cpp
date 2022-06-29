@@ -14,9 +14,17 @@ void loop(Bot &bot) {
   }
 }
 
+static BotConfig init_config() {
+  try {
+    return BotConfig::from("config.yml");
+  } catch (const std::exception &e) {
+    util::debug_info("on bot init:", e.what(), false);
+    exit(1);
+  }
+}
+
 int main() {
-  BotConfig config = BotConfig::from("config.yml");
-  Bot bot(config);
+  Bot bot(init_config());
 
   if (bot.init(1024) == result_t::kError) {
     util::debug_info("Failed to init bot.:", strerror(errno), false);

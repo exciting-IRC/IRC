@@ -59,7 +59,7 @@ int main(const int argc, const char* argv[]) {
   signal(SIGTERM, server_close_handler);
 
   server.config_ = init_config(argc, argv);
-  if (server.init(1000) == result_t::kError) {
+  if (server.init() == result_t::kError) {
     debug_info("Fail at server initialization:", strerror(errno), false);
     return 1;
   }
