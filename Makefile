@@ -35,13 +35,16 @@ run: all
 	./$(NAME)
 
 test:
-	./test/joinpart.sh	
+	./test/joinpart.sh
 	./test/change_nick.sh
 	./test/quit.sh
 	./test/kill.sh
 	./test/stress.sh
 	./test/manual.sh
 
-.PHONY: all clean fclean re run test
+bot:
+	$(MAKE) -C bot run
+
+.PHONY: all clean fclean re run test bot
 
 include color.mk
